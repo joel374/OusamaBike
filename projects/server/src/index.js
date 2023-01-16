@@ -13,9 +13,16 @@ app.use(express.json());
 const PORT = 8000;
 
 // Import Route
+const { verifyToken } = require("../middlewares/authMiddleware");
 const authRoute = require("../routes/authRoutes");
+const productRoute = require("../routes/productRoute");
+const categoryRoute = require("../routes/categoryRoute");
+const favoriteRoute = require("../routes/favoriteRoute");
 
 app.use("/auth", authRoute);
+app.use("/product", verifyToken, productRoute);
+app.use("/category", verifyToken, categoryRoute);
+app.use("/favorite", verifyToken, favoriteRoute);
 
 app.listen(PORT, (err) => {
   if (err) {
