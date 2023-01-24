@@ -18,7 +18,7 @@ const authController = {
 
       if (findEmail) {
         return res.status(400).json({
-          message: "Email has been used",
+          message: "Email sudah terdaftar",
         });
       }
 
@@ -62,12 +62,12 @@ const authController = {
       await emailer({
         to: email,
         html: htmlResult,
-        subject: "Verify your account",
-        text: "please verify your account",
+        subject: "Verifikasi akun anda",
+        text: "silahkan verifikasi akun anda",
       });
 
       return res.status(200).json({
-        message: "User Registered",
+        message: "Akun Terdaftar",
         data: createUser,
       });
     } catch (error) {
@@ -92,7 +92,7 @@ const authController = {
 
       if (!findUser) {
         return res.status(400).json({
-          message: "User has been verified",
+          message: "Akun sudah diverifikasi",
         });
       }
 
@@ -100,7 +100,7 @@ const authController = {
 
       if (!otpValid) {
         return res.status(400).json({
-          message: "OTP invalid",
+          message: "OTP salah",
         });
       }
 
@@ -116,7 +116,7 @@ const authController = {
       );
 
       return res.status(200).json({
-        message: "User verified",
+        message: "Akun terverifikasi",
       });
     } catch (error) {
       console.log(error);
@@ -137,13 +137,13 @@ const authController = {
 
       if (!findUser) {
         return res.status(400).json({
-          message: "Email not found",
+          message: "Email tidak ditemukan",
         });
       }
 
       if (findUser.is_verify === false) {
         return res.status(400).json({
-          message: "Email not verified",
+          message: "Email tidak terverifikasi",
         });
       }
 
@@ -151,7 +151,7 @@ const authController = {
 
       if (!passwordValid) {
         return res.status(400).json({
-          message: "Password invalid",
+          message: "Kata sandi salah",
         });
       }
 
@@ -162,7 +162,7 @@ const authController = {
       });
 
       return res.status(201).json({
-        message: "User logged in",
+        message: "Akun masuk",
         data: findUser,
         token: token,
       });

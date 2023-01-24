@@ -9,16 +9,13 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import { useFormik } from "formik";
 import { useState } from "react";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { useFormik } from "formik";
 import { axiosInstance } from "../api";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/features/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const dispatch = useDispatch();
+const Register = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -29,41 +26,35 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
+      username: "",
       email: "",
       password: "",
     },
-    onSubmit: async ({ email, password }) => {
+    onSubmit: async ({ username, email, password }) => {
       try {
-        const response = await axiosInstance.post("/auth/login", {
+        const response = await axiosInstance.post("/auth/register", {
+          username,
           email,
           password,
         });
 
         toast({
-          title: "Login Sukses",
+          title: "Daftar sukses",
           status: "success",
           description: response.data.message,
         });
 
-        dispatch(
-          login({
-            id: response.data.data.id,
-            username: response.data.data.username,
-            email: response.data.data.email,
-            is_verify: response.data.data.is_verify,
-          })
-        );
-
+        formik.setFieldValue("username", "");
         formik.setFieldValue("email", "");
         formik.setFieldValue("password", "");
 
-        navigate("/");
+        navigate("/login");
       } catch (error) {
         console.warn(error);
         toast({
-          title: "Login Gagal",
+          title: "Daftar gagal",
           status: "error",
-          description: error.response.data.message,
+          description: error.response,
         });
       }
     },
@@ -74,13 +65,12 @@ const Login = () => {
     const { name, value } = target;
     formik.setFieldValue(name, value);
   };
-
   return (
     <Box>
       <Text textAlign={"center"} fontSize="20px">
         OusamaBike
       </Text>
-      <Box m="14% 0">
+      <Box m="12% 0">
         <Box
           boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
           borderRadius="8px"
@@ -91,10 +81,20 @@ const Login = () => {
         >
           <Box p="20px">
             <Text fontSize={"32px"} fontWeight="semibold">
-              Masuk
+              Daftar
             </Text>
 
             <form onSubmit={formik.handleSubmit}>
+              <FormControl m="20px 0" isInvalid={formik.errors.username}>
+                <Input
+                  name="username"
+                  type={"username"}
+                  placeholder="Nama Pengguna"
+                  onChange={formChangeHandler}
+                  value={formik.values.username}
+                />
+                <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+              </FormControl>
               <FormControl m="20px 0" isInvalid={formik.errors.email}>
                 <Input
                   name="email"
@@ -109,7 +109,7 @@ const Login = () => {
                 <InputGroup>
                   <Input
                     name="password"
-                    placeholder="Password"
+                    placeholder="Kata Sandi"
                     onChange={formChangeHandler}
                     type={showPassword ? "text" : "password"}
                     value={formik.values.password}
@@ -130,7 +130,7 @@ const Login = () => {
               </FormControl>
 
               <Box fontSize={"12px"} textAlign="right">
-                Belum punya akun? <Link to="/register">Daftar</Link>
+                Sudah punya akun? <Link to="/login">Masuk</Link>
               </Box>
 
               <Box textAlign={"center"} mt="2">
@@ -143,7 +143,7 @@ const Login = () => {
                   }
                   type="submit"
                 >
-                  Masuk
+                  Daftar
                 </Button>
               </Box>
             </form>
@@ -154,4 +154,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
