@@ -20,7 +20,7 @@ const categoryRoute = require("../routes/categoryRoute");
 const favoriteRoute = require("../routes/favoriteRoute");
 
 app.use("/auth", authRoute);
-app.use("/product", verifyToken, productRoute);
+app.use("/product", productRoute);
 app.use("/category", verifyToken, categoryRoute);
 app.use("/favorite", verifyToken, favoriteRoute);
 

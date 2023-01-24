@@ -14,14 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Image_Url.init(
     {
-      username: DataTypes.STRING,
-      email: DataTypes.STRING,
-      password: DataTypes.STRING,
-      is_admin: DataTypes.BOOLEAN,
-      is_verify: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
+      image_url: DataTypes.STRING,
     },
     {
       sequelize,
