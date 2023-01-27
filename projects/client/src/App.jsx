@@ -3,6 +3,7 @@ import Sidebar from "./components/admin/Sidebar";
 import Navbar from "./components/Navbar";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import ManageProduct from "./pages/admin/ManageProduct";
+import NewProduct from "./pages/admin/NewProduct";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -27,6 +28,7 @@ const App = () => {
         {/* Admin */}
         <Route path="/admin" element={<HomeAdmin />} />
         <Route path="/admin/manage-product" element={<ManageProduct />} />
+        <Route path="/admin/add-product" element={<NewProduct />} />
       </Routes>
     </>
   );

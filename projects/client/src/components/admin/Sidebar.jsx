@@ -64,19 +64,21 @@ const Sidebar = () => {
         fontWeight="normal"
         bgColor={"white"}
       >
-        <Box m="2px 0" pl="29px">
-          <Box
-            p="4px 0"
-            pl="12px"
-            borderLeftRadius={"8px"}
-            _hover={{
-              backgroundColor: "var(--N50,#F3F4F5)",
-              fontWeight: "bold",
-            }}
-          >
-            Tambah Produk
+        <Link to="/admin/add-product">
+          <Box m="2px 0" pl="29px">
+            <Box
+              p="4px 0"
+              pl="12px"
+              borderLeftRadius={"8px"}
+              _hover={{
+                backgroundColor: "var(--N50,#F3F4F5)",
+                fontWeight: "bold",
+              }}
+            >
+              Tambah Produk
+            </Box>
           </Box>
-        </Box>
+        </Link>
         <Link to="/admin/manage-product">
           <Box m="2px 0" pl="29px">
             <Box
