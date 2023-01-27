@@ -7,13 +7,15 @@ import NewProduct from "./pages/admin/NewProduct";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Verification from "./pages/Verification";
 
 const App = () => {
   const location = useLocation();
   return (
     <>
       {location.pathname === "/login" ||
-      location.pathname === "/register" ? null : (
+      location.pathname === "/register" ||
+      location.pathname === "/verification" ? null : (
         <Navbar />
       )}
       {location.pathname === "/admin" ||
@@ -23,6 +25,7 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verification" element={<Verification />} />
         <Route path="/" element={<Home />} />
 
         {/* Admin */}

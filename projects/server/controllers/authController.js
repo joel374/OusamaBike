@@ -47,7 +47,7 @@ const authController = {
         id: createUser.id,
       });
 
-      const verificationLink = ` ${process.env.BASE_URL_FE}register/verification?verification_token=${verificationToken}`;
+      const verificationLink = ` ${process.env.BASE_URL_FE}/verification?verification_token=${verificationToken}`;
 
       const rawHTML = fs.readFileSync("templates/verification.html", "utf-8");
 
@@ -137,7 +137,7 @@ const authController = {
 
       if (!findUser) {
         return res.status(400).json({
-          message: "Email tidak ditemukan",
+          message: "Email tidak ditemukan atau Kata Sandi salah",
         });
       }
 
@@ -151,7 +151,7 @@ const authController = {
 
       if (!passwordValid) {
         return res.status(400).json({
-          message: "Kata sandi salah",
+          message: "Email tidak ditemukan atau Kata Sandi salah",
         });
       }
 
@@ -170,6 +170,26 @@ const authController = {
       console.log(error);
       return res.status(500).json({
         message: "Server Error",
+      });
+    }
+  },
+  refreshToken: async (req, res) => {
+    try {
+      const findUserById = await User.findByPk(req.user.id);
+
+      const renewedToken = signToken({
+        id: req.user.id,
+      });
+
+      return res.status(200).json({
+        message: "Renewed user token",
+        data: findUserById,
+        token: renewedToken,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Server error",
       });
     }
   },
