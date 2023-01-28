@@ -18,6 +18,8 @@ import { useDispatch } from "react-redux";
 import { login } from "../redux/features/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import Logo, { heroColor } from "../components/reuseable/Logo";
+import ButtonMod from "../components/reuseable/ButtonMod";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -93,9 +95,9 @@ const Login = () => {
   };
   return (
     <Box>
-      <Text textAlign={"center"} fontSize="20px">
-        OusamaBike
-      </Text>
+      <Box justifyContent={"center"} display="flex">
+        <Logo />
+      </Box>
       <Box m="14% 0">
         <Box
           boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
@@ -191,21 +193,24 @@ const Login = () => {
                 </FormControl>
 
                 <Box fontSize={"12px"} textAlign="right">
-                  Belum punya akun? <Link to="/register">Daftar</Link>
+                  Belum punya akun?{" "}
+                  <Link to="/register">
+                    <Text display={"inline"} color={heroColor}>
+                      Daftar
+                    </Text>
+                  </Link>
                 </Box>
 
                 <Box textAlign={"center"} mt="2">
-                  <Button
+                  <ButtonMod
                     isDisabled={
                       formik.values.email.includes("@") &&
                       formik.values.email.includes(".co")
                         ? false
                         : true
                     }
-                    type="submit"
-                  >
-                    Masuk
-                  </Button>
+                    text={"Masuk"}
+                  />
                 </Box>
               </form>
             </Box>

@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { TbSearch } from "react-icons/tb";
 import { BiLogOutCircle } from "react-icons/bi";
 import { useSelector } from "react-redux";
+import Logo, { heroColor } from "./reuseable/Logo";
 
 const Navbar = () => {
   const authSelector = useSelector((state) => state.auth);
@@ -33,15 +34,7 @@ const Navbar = () => {
         <HStack height={"65px"} width="96%" mx={"auto"}>
           {/* Brand */}
           <Link to={"/"}>
-            <Text
-              fontSize={"30px"}
-              fontWeight="bold"
-              color={"#0095DA"}
-              display="inline"
-              ml={"-3px"}
-            >
-              OusamaBike
-            </Text>
+            <Logo />
           </Link>
 
           {/* Search Input */}
@@ -49,11 +42,14 @@ const Navbar = () => {
             <form
             //   onSubmit={formikSearch.handleSubmit}
             >
-              <FormControl>
+              <FormControl ml="16px">
                 <InputGroup textAlign={"right"}>
                   <Input
                     type={"text"}
-                    //   placeholder={placeholder}
+                    placeholder={"Find in OusamaBike"}
+                    _placeholder={{
+                      fontSize: "14px",
+                    }}
                     name="search"
                     //   w={width}
                     //   onChange={searchHandler}
@@ -68,7 +64,7 @@ const Navbar = () => {
                     type="submit"
                     bgColor={"white"}
                     _hover={false}
-                    border="1px solid #e2e8f0"
+                    border={`1px solid #e6e6e6`}
                     borderLeft={"0px"}
                   >
                     <TbSearch />
@@ -206,9 +202,9 @@ const Navbar = () => {
                     <Button
                       _hover={"null"}
                       height="32px"
-                      border={"1px solid #0095DA"}
+                      border={`1px solid ${heroColor}`}
                       bgColor={"white"}
-                      color={"#0095DA"}
+                      color={heroColor}
                       fontSize="12px"
                       fontWeight={"bold"}
                       borderRadius={"8px"}
@@ -223,8 +219,8 @@ const Navbar = () => {
                       _hover={"null"}
                       height="32px"
                       borderRadius={"8px"}
-                      bgColor={"#0095DA"}
-                      border={"1px solid #0095DA"}
+                      bgColor={heroColor}
+                      border={`1px solid ${heroColor}`}
                       color={"#fff"}
                       fontWeight={"bold"}
                       fontSize="12px"

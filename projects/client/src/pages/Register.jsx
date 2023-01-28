@@ -16,6 +16,8 @@ import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { axiosInstance } from "../api";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import Logo, { heroColor } from "../components/reuseable/Logo";
+import ButtonMod from "../components/reuseable/ButtonMod";
 
 const Register = () => {
   const toast = useToast();
@@ -92,9 +94,9 @@ const Register = () => {
   };
   return (
     <Box>
-      <Text textAlign={"center"} fontSize="20px">
-        OusamaBike
-      </Text>
+      <Box justifyContent={"center"} display="flex">
+        <Logo />
+      </Box>
       <Box m="12% 0">
         <Box
           boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
@@ -207,21 +209,24 @@ const Register = () => {
                 </FormControl>
 
                 <Box fontSize={"12px"} textAlign="right">
-                  Sudah punya akun? <Link to="/login">Masuk</Link>
+                  Sudah punya akun?{" "}
+                  <Link to="/login">
+                    <Text display={"inline"} color={heroColor}>
+                      Masuk
+                    </Text>
+                  </Link>
                 </Box>
 
                 <Box textAlign={"center"} mt="2">
-                  <Button
+                  <ButtonMod
                     isDisabled={
                       formik.values.email.includes("@") &&
                       formik.values.email.includes(".co")
                         ? false
                         : true
                     }
-                    type="submit"
-                  >
-                    Daftar
-                  </Button>
+                    text={"Daftar"}
+                  />
                 </Box>
               </form>
             </Box>

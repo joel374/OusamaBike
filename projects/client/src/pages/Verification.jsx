@@ -16,6 +16,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../api";
 import * as Yup from "yup";
+import { color } from "../components/Navbar";
+import Logo from "../components/reuseable/Logo";
+import ButtonMod from "../components/reuseable/ButtonMod";
 
 const Verification = () => {
   const toast = useToast();
@@ -63,10 +66,11 @@ const Verification = () => {
         setIsLoading(true);
       }
     },
-    // validationSchema: Yup.object({
-    //   otp: Yup.string().required("OTP tidak boleh kosong"),
-    //   //     .min(4, "OTP harus berisi 4 angka"),
-    // }),
+    validationSchema: Yup.object({
+      otp: Yup.number()
+        .required("OTP tidak boleh kosong")
+        .min(4, "OTP harus berisi 4 angka"),
+    }),
     validateOnChange: false,
   });
 
@@ -74,11 +78,12 @@ const Verification = () => {
     const { name, value } = target;
     formik.setFieldValue(name, value);
   };
+  console.log(formik.values.otp);
   return (
     <Box>
-      <Text textAlign={"center"} fontSize="20px">
-        OusamaBike
-      </Text>
+      <Box justifyContent={"center"} display="flex">
+        <Logo />
+      </Box>
       <Box m="12% 0">
         <Box
           boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
@@ -121,38 +126,54 @@ const Verification = () => {
               </Text>
 
               <form onSubmit={formik.handleSubmit}>
-                <FormControl
-                  m="20px 0"
-                  isInvalid={formik.errors.username}
-                  display="flex"
-                  justifyContent={"center"}
-                >
-                  {/* <PinInput name="otp" value={formik.values.otp}>
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                    <PinInputField />
-                  </PinInput> */}
+                <FormControl m="20px 0" isInvalid={formik.errors.otp}>
+                  <Box display="flex" justifyContent={"center"}>
+                    <PinInput
+                      name="otp"
+                      value={formik.values.otp}
+                      // onChange={formChangeHandler}
+                    >
+                      <PinInputField
+                        name="otp"
+                        mr={2}
+                        value={formik.values.otp}
+                        // onChange={formChangeHandler}
+                      />
+                      <PinInputField
+                        name="otp"
+                        mr={2}
+                        value={formik.values.otp}
+                        // onChange={formChangeHandler}
+                      />
+                      <PinInputField
+                        name="otp"
+                        mr={2}
+                        value={formik.values.otp}
+                        // onChange={formChangeHandler}
+                      />
+                      <PinInputField
+                        name="otp"
+                        value={formik.values.otp}
+                        // onChange={formChangeHandler}
+                      />
+                    </PinInput>
+                  </Box>
                   <Input
                     name="otp"
                     value={formik.values.otp}
                     onChange={formChangeHandler}
                   />
-                  <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
+                  <Box display={"flex"} justifyContent="center">
+                    <FormErrorMessage>{formik.errors.otp}</FormErrorMessage>
+                  </Box>
                 </FormControl>
 
                 <Box textAlign={"center"} mt="2">
-                  <Button
-                    // isDisabled={
-                    //   formik.values.email.includes("@") &&
-                    //   formik.values.email.includes(".co")
-                    //     ? false
-                    //     : true
-                    // }
-                    type="submit"
-                  >
-                    Verifikasi
-                  </Button>
+                  <ButtonMod
+                    // isDisabled={!formik.values.otp}
+                    // isDisabled={formik.values.otp == null ? false : true}
+                    text={"Verifikasi"}
+                  />
                 </Box>
               </form>
             </Box>
