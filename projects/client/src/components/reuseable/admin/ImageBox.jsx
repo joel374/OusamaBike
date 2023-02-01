@@ -1,11 +1,19 @@
 import { Box, Image, Input } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { RiImageAddLine } from "react-icons/ri";
+import useFormik from "formik";
 
 const ImageBox = ({ desc }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const inputFileRef = useRef();
   const cancelRef = React.useRef();
+
+  // const formik = useFormik({
+  //   initialValues:{
+  //     product_name
+  //   },
+  // });
+
   return (
     <Box>
       <Box display={"flex"}>
@@ -39,7 +47,7 @@ const ImageBox = ({ desc }) => {
                   </Box>
                   <Input
                     onChange={(e) => {
-                      // formikAddNewAdmin.setFieldValue(
+                      // formikImage.setFieldValue(
                       //   "profile_picture",
                       //   e.target.files[0]
                       // );
@@ -72,7 +80,7 @@ const ImageBox = ({ desc }) => {
                       h="25px"
                       borderRadius={"50%"}
                       textAlign="center"
-                      onClick={() => cancelRef}
+                      // onChange={(e) => (e.target.values = null)}
                       justifyContent={"center"}
                     >
                       X

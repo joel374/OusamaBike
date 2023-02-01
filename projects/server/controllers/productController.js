@@ -4,6 +4,8 @@ const db = require("../models");
 const productController = {
   add: async (req, res) => {
     try {
+      const image_url = req.file.filename;
+
       const {
         product_name,
         stock,
@@ -25,7 +27,9 @@ const productController = {
         });
       }
 
-      await db.Product.create(req.body);
+      const response = await db.Product.create(req.body);
+
+      await db.Image_Url.create({ image_url, ProductId: response.id });
 
       return res.status(200).json({
         message: "Product added",
@@ -40,6 +44,8 @@ const productController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
+
+      const image_url = req.file.filename;
 
       const {
         product_name,
@@ -68,11 +74,22 @@ const productController = {
         });
       }
 
-      await db.Product.update(req.body, {
+      const response = await db.Product.update(req.body, {
         where: {
           id,
         },
       });
+
+      await db.Image_Url.update(
+        {
+          image_url,
+        },
+        {
+          where: {
+            ProductId: response.id,
+          },
+        }
+      );
 
       return res.status(200).json({
         message: "Product edited",

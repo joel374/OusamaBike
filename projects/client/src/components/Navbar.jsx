@@ -200,7 +200,8 @@ const Navbar = () => {
                 <Link to={"/login"}>
                   <Box width={"73px"}>
                     <Button
-                      _hover={"null"}
+                      _hover={false}
+                      _active={false}
                       height="32px"
                       border={`1px solid ${heroColor}`}
                       bgColor={"white"}
@@ -216,7 +217,8 @@ const Navbar = () => {
                 <Link to="/register">
                   <Box width={"72px"}>
                     <Button
-                      _hover={"null"}
+                      _hover={false}
+                      _active={false}
                       height="32px"
                       borderRadius={"8px"}
                       bgColor={heroColor}
