@@ -10,24 +10,24 @@ import {
   Skeleton,
   Text,
   useToast,
-} from "@chakra-ui/react";
-import { useFormik } from "formik";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "../api";
-import * as Yup from "yup";
-import { color } from "../components/Navbar";
-import Logo from "../components/reuseable/Logo";
-import ButtonMod from "../components/reuseable/ButtonMod";
+} from "@chakra-ui/react"
+import { useFormik } from "formik"
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { axiosInstance } from "../api"
+import * as Yup from "yup"
+import { color } from "../components/Navbar"
+import Logo from "../components/reuseable/Logo"
+import ButtonMod from "../components/reuseable/ButtonMod"
 
 const Verification = () => {
-  const toast = useToast();
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const toast = useToast()
+  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
-  });
+  })
 
   const formik = useFormik({
     initialValues: {
@@ -36,34 +36,36 @@ const Verification = () => {
     },
     onSubmit: async ({ otp, token }) => {
       try {
-        setIsLoading(false);
+        setIsLoading(false)
         const response = await axiosInstance.patch("/auth/verification", {
           otp,
           token: params.verification_token,
-        });
+        })
 
         toast({
           title: "Verifikasi Sukses",
           status: "success",
+          variant: "top-accent",
           description: response.data.message,
-        });
+        })
 
-        formik.setFieldValue("otp", "");
+        formik.setFieldValue("otp", "")
 
-        setIsLoading(true);
+        setIsLoading(true)
 
-        navigate("/login");
+        navigate("/login")
       } catch (error) {
-        console.log(error);
+        console.log(error)
         toast({
           title: "Verifikasi Gagal",
           status: "warning",
+          variant: "top-accent",
           description: error.response.data.message,
-        });
+        })
 
-        formik.setFieldValue("otp", "");
+        formik.setFieldValue("otp", "")
 
-        setIsLoading(true);
+        setIsLoading(true)
       }
     },
     validationSchema: Yup.object({
@@ -72,13 +74,13 @@ const Verification = () => {
         .min(4, "OTP harus berisi 4 angka"),
     }),
     validateOnChange: false,
-  });
+  })
 
   const formChangeHandler = ({ target }) => {
-    const { name, value } = target;
-    formik.setFieldValue(name, value);
-  };
-  console.log(formik.values.otp);
+    const { name, value } = target
+    formik.setFieldValue(name, value)
+  }
+  console.log(formik.values.otp)
   return (
     <Box>
       <Box justifyContent={"center"} display="flex">
@@ -181,7 +183,7 @@ const Verification = () => {
         </Box>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default Verification;
+export default Verification

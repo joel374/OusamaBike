@@ -9,28 +9,28 @@ import {
   Skeleton,
   Text,
   useToast,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { useFormik } from "formik";
-import { axiosInstance } from "../api";
-import { useDispatch } from "react-redux";
-import { login } from "../redux/features/authSlice";
-import { Link, useNavigate } from "react-router-dom";
-import * as Yup from "yup";
-import Logo, { heroColor } from "../components/reuseable/Logo";
-import ButtonMod from "../components/reuseable/ButtonMod";
+} from "@chakra-ui/react"
+import { useState } from "react"
+import { VscEye, VscEyeClosed } from "react-icons/vsc"
+import { useFormik } from "formik"
+import { axiosInstance } from "../api"
+import { useDispatch } from "react-redux"
+import { login } from "../redux/features/authSlice"
+import { Link, useNavigate } from "react-router-dom"
+import * as Yup from "yup"
+import Logo, { heroColor } from "../components/reuseable/Logo"
+import ButtonMod from "../components/reuseable/ButtonMod"
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const toast = useToast();
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch()
+  const toast = useToast()
+  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
+    setShowPassword(!showPassword)
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -39,17 +39,19 @@ const Login = () => {
     },
     onSubmit: async ({ email, password }) => {
       try {
-        setIsLoading(false);
+        setIsLoading(false)
         const response = await axiosInstance.post("/auth/login", {
           email,
           password,
-        });
+        })
 
         toast({
           title: "Login Sukses",
           status: "success",
+          variant: "top-accent",
           description: response.data.message,
-        });
+        })
+        localStorage.setItem("auth_token", response.data.token)
 
         dispatch(
           login({
@@ -58,26 +60,27 @@ const Login = () => {
             email: response.data.data.email,
             is_verify: response.data.data.is_verify,
           })
-        );
+        )
 
-        formik.setFieldValue("email", "");
-        formik.setFieldValue("password", "");
+        formik.setFieldValue("email", "")
+        formik.setFieldValue("password", "")
 
-        setIsLoading(true);
+        setIsLoading(true)
 
-        navigate("/");
+        navigate("/")
       } catch (error) {
-        console.log(error);
+        console.log(error)
         toast({
           title: "Login Gagal",
           status: "warning",
+          variant: "top-accent",
           description: error.response.data.message,
-        });
+        })
 
-        formik.setFieldValue("email", "");
-        formik.setFieldValue("password", "");
+        formik.setFieldValue("email", "")
+        formik.setFieldValue("password", "")
 
-        setIsLoading(true);
+        setIsLoading(true)
       }
     },
     validationSchema: Yup.object({
@@ -87,12 +90,12 @@ const Login = () => {
       password: Yup.string().required("Kata Sandi tidak boleh kosong"),
     }),
     validateOnChange: false,
-  });
+  })
 
   const formChangeHandler = ({ target }) => {
-    const { name, value } = target;
-    formik.setFieldValue(name, value);
-  };
+    const { name, value } = target
+    formik.setFieldValue(name, value)
+  }
   return (
     <Box>
       <Box justifyContent={"center"} display="flex">
@@ -218,7 +221,7 @@ const Login = () => {
         </Box>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

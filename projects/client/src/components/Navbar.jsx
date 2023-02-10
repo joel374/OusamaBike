@@ -11,15 +11,30 @@ import {
   PopoverContent,
   PopoverTrigger,
   Text,
-} from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { TbSearch } from "react-icons/tb";
-import { BiLogOutCircle } from "react-icons/bi";
-import { useSelector } from "react-redux";
-import Logo, { heroColor } from "./reuseable/Logo";
+  useToast,
+} from "@chakra-ui/react"
+import { Link } from "react-router-dom"
+import { TbSearch } from "react-icons/tb"
+import { BiLogOutCircle } from "react-icons/bi"
+import { useDispatch, useSelector } from "react-redux"
+import Logo, { heroColor } from "./reuseable/Logo"
+import { logout } from "../redux/features/authSlice"
 
 const Navbar = () => {
-  const authSelector = useSelector((state) => state.auth);
+  const authSelector = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const toast = useToast()
+
+  const logoutBtnHandler = () => {
+    localStorage.removeItem("auth_token")
+    dispatch(logout())
+
+    toast({
+      status: "info",
+      title: "Akun Logout",
+      variant: "top-accent",
+    })
+  }
   return (
     <Box
       boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
@@ -94,40 +109,36 @@ const Navbar = () => {
                       paddingLeft="5px"
                       paddingRight={"5px"}
                       _hover={{
-                        bgColor: "#A5D8F8",
-                        color: "orange",
+                        bgColor: "#CAD5E2",
+                        color: heroColor,
                         borderRadius: "3px",
                       }}
-                      color={"rgba(0,0,0,.54)"}
                     >
                       <Avatar
                         size="sm"
                         name={authSelector.username}
                         mr={2}
+                        ml={2}
                         width={"25px"}
                         height="25px"
                         my="auto"
                         // src={`${apiImg}/${authSelector.profile_picture}`}
                       />
-                      <Text
-                        my="auto"
-                        padding={"8px"}
-                        textTransform={"capitalize"}
-                      >
+                      <Text my="auto" padding={"8px"}>
                         {authSelector.username.split(" ")[0]}
                       </Text>
                     </Box>
                   </PopoverTrigger>
-                  <PopoverContent w={"300px"} mr="4" bgColor={"#E5F9F6"}>
+                  <PopoverContent w={"300px"} mr="4" bgColor={"#ecf0f1"}>
                     <PopoverBody>
-                      <Box p="2 4" bgColor={"#E5F9F6"}>
+                      <Box p="2 4" bgColor={"#ecf0f1"}>
                         <Box
                           boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
                           display={"flex"}
                           my="auto"
                           padding="6px 12px"
                           borderRadius={"5px"}
-                          bgColor={"#E5F9F6"}
+                          bgColor={"#ecf0f1"}
                           cursor={"pointer"}
                         >
                           <Avatar
@@ -143,46 +154,23 @@ const Navbar = () => {
                             padding={"8px"}
                             fontSize="16px"
                             fontWeight={"bold"}
-                            color={"rgba(0,0,0,.54)"}
-                            textTransform={"capitalize"}
+                            textOverflow="ellipsis"
                           >
                             {authSelector.username}
                           </Text>
                         </Box>
 
                         <Box fontSize={"14px"} p="10px 0">
-                          <Link to="/user/profile">
-                            <Box
-                              _hover={{
-                                bgColor: "#A5D8F8",
-                                borderRadius: "7px",
-                              }}
-                              p={"5px 4px"}
-                            >
-                              <Text>Profile</Text>
-                            </Box>
-                          </Link>
-
-                          <Link to={"/transaction-list"}>
-                            <Box
-                              _hover={{
-                                bgColor: "#A5D8F8",
-                                borderRadius: "7px",
-                              }}
-                              p={"5px 4px"}
-                            >
-                              <Text>Transaction-list</Text>
-                            </Box>
-                          </Link>
                           <Box
                             display={"flex"}
                             _hover={{
-                              bgColor: "#A5D8F8",
+                              bgColor: "#CAD5E2",
                               borderRadius: "7px",
+                              color: heroColor,
                             }}
                             p={"5px 4px"}
                             b="0"
-                            // onClick={logoutBtnHandler}
+                            onClick={logoutBtnHandler}
                           >
                             <Text>Logout</Text>
                             <Box my="auto" ml="1">
@@ -240,7 +228,7 @@ const Navbar = () => {
         </HStack>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

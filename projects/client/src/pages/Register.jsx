@@ -9,25 +9,25 @@ import {
   Skeleton,
   Text,
   useToast,
-} from "@chakra-ui/react";
-import { useFormik } from "formik";
-import { useState } from "react";
-import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { axiosInstance } from "../api";
-import { Link, useNavigate } from "react-router-dom";
-import * as Yup from "yup";
-import Logo, { heroColor } from "../components/reuseable/Logo";
-import ButtonMod from "../components/reuseable/ButtonMod";
+} from "@chakra-ui/react"
+import { useFormik } from "formik"
+import { useState } from "react"
+import { VscEye, VscEyeClosed } from "react-icons/vsc"
+import { axiosInstance } from "../api"
+import { Link, useNavigate } from "react-router-dom"
+import * as Yup from "yup"
+import Logo, { heroColor } from "../components/reuseable/Logo"
+import ButtonMod from "../components/reuseable/ButtonMod"
 
 const Register = () => {
-  const toast = useToast();
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const toast = useToast()
+  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
+    setShowPassword(!showPassword)
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -37,37 +37,39 @@ const Register = () => {
     },
     onSubmit: async ({ username, email, password }) => {
       try {
-        setIsLoading(false);
+        setIsLoading(false)
         const response = await axiosInstance.post("/auth/register", {
           username,
           email,
           password,
-        });
+        })
 
         toast({
           title: "Daftar Sukses",
           status: "success",
+          variant: "top-accent",
           description: response.data.message,
-        });
+        })
 
-        formik.setFieldValue("username", "");
-        formik.setFieldValue("email", "");
-        formik.setFieldValue("password", "");
+        formik.setFieldValue("username", "")
+        formik.setFieldValue("email", "")
+        formik.setFieldValue("password", "")
 
-        setIsLoading(true);
+        setIsLoading(true)
       } catch (error) {
-        console.log(error);
+        console.log(error)
         toast({
           title: "Daftar Gagal",
           status: "warning",
+          variant: "top-accent",
           description: error.response.data.message,
-        });
+        })
 
-        formik.setFieldValue("username", "");
-        formik.setFieldValue("email", "");
-        formik.setFieldValue("password", "");
+        formik.setFieldValue("username", "")
+        formik.setFieldValue("email", "")
+        formik.setFieldValue("password", "")
 
-        setIsLoading(true);
+        setIsLoading(true)
       }
     },
     validationSchema: Yup.object({
@@ -86,12 +88,12 @@ const Register = () => {
         ),
     }),
     validateOnChange: false,
-  });
+  })
 
   const formChangeHandler = ({ target }) => {
-    const { name, value } = target;
-    formik.setFieldValue(name, value);
-  };
+    const { name, value } = target
+    formik.setFieldValue(name, value)
+  }
   return (
     <Box>
       <Box justifyContent={"center"} display="flex">
@@ -234,7 +236,7 @@ const Register = () => {
         </Box>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register
