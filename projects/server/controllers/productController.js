@@ -13,6 +13,7 @@ const productController = {
         BrandCategoryId,
         price,
         description,
+        isActive,
       } = req.body;
 
       const findProduct = await db.Product.findOne({

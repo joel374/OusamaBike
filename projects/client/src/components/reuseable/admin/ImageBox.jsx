@@ -1,19 +1,11 @@
 import { Box, Image, Input } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { RiImageAddLine } from "react-icons/ri";
-import useFormik from "formik";
+import { IoMdTrash } from "react-icons/io";
 
-const ImageBox = ({ desc }) => {
+const ImageBox = ({ desc, formik }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const inputFileRef = useRef();
-  const cancelRef = React.useRef();
-
-  // const formik = useFormik({
-  //   initialValues:{
-  //     product_name
-  //   },
-  // });
-
   return (
     <Box>
       <Box display={"flex"}>
@@ -21,7 +13,11 @@ const ImageBox = ({ desc }) => {
           <Box w="152px" h="160px" m="10px 0" mr="12px">
             <Box
               borderRadius={"8px"}
-              border={"2px dashed var(--N100,#DBDEE2)"}
+              border={
+                selectedImage
+                  ? "1px solid var(--N100,#DBDEE2)"
+                  : "2px dashed var(--N100,#DBDEE2)"
+              }
               w="140px"
               h="140px"
               verticalAlign={"middle"}
@@ -47,14 +43,11 @@ const ImageBox = ({ desc }) => {
                   </Box>
                   <Input
                     onChange={(e) => {
-                      // formikImage.setFieldValue(
-                      //   "profile_picture",
-                      //   e.target.files[0]
-                      // );
+                      formik.setFieldValue("image_url", e.target.files[0]);
                       setSelectedImage(URL.createObjectURL(e.target.files[0]));
                     }}
                     accept="image/*"
-                    name="profile_picture"
+                    name="image_url"
                     type="file"
                     display={"none"}
                     ref={inputFileRef}
@@ -64,26 +57,28 @@ const ImageBox = ({ desc }) => {
                 <>
                   <Image
                     w="140px"
-                    h="140px"
+                    h="99.9%"
                     src={
                       selectedImage
                         ? selectedImage
                         : "Input Your Profile Picture"
                     }
-                    objectFit={"fill"}
+                    objectFit={"contain"}
                   />
-                  <Box display={"flex"} justifyContent="right" mt="-20px">
+                  <Box mt="-28px" ml="110px">
                     <Box
-                      bgColor={"blackAlpha.700"}
+                      bgColor={"white"}
                       color="white"
-                      w="20px"
+                      w="25px"
                       h="25px"
-                      borderRadius={"50%"}
-                      textAlign="center"
-                      // onChange={(e) => (e.target.values = null)}
+                      borderRadius={"4px"}
+                      display="flex"
+                      alignItems={"center"}
+                      onClick={() => setSelectedImage(null)}
                       justifyContent={"center"}
+                      cursor="pointer"
                     >
-                      X
+                      <IoMdTrash color="#606060" />
                     </Box>
                   </Box>
                 </>
@@ -97,42 +92,3 @@ const ImageBox = ({ desc }) => {
 };
 
 export default ImageBox;
-
-{
-  /* <Button
-                  borderRadius={"50%"}
-                  w="auto"
-                  h="30px"
-                  border="2px solid"
-                  onClick={() => inputFileRef.current.click()}
-                  color={"#F7931E"}
-                  _hover={false}
-                  ml="392px"
-                  //   bgColor={color}
-                  size={"xs"}
-                  mt="-33px"
-                >
-                  <TbCameraPlus color={"#F7931E"} />
-                </Button>
-
-                <Input
-                  w="100%"
-                  _hover={false}
-                  fontWeight="bold"
-                  bgColor={"white"}
-                  onChange={(e) => {
-                    formikAddNewAdmin.setFieldValue(
-                      "profile_picture",
-                      e.target.files[0]
-                    );
-                    setSelectedImage(URL.createObjectURL(e.target.files[0]));
-                  }}
-                  accept="image/*"
-                  name="profile_picture"
-                  type="file"
-                  color="transparent"
-                  border="0"
-                  display={"none"}
-                  ref={inputFileRef}
-                /> */
-}

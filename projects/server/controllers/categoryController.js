@@ -5,7 +5,7 @@ const categoryController = {
     try {
       const { category_name } = req.body;
 
-      const findCategory = await db.Cetegory.findOne({
+      const findCategory = await db.Category.findOne({
         where: {
           category_name,
         },
@@ -17,7 +17,8 @@ const categoryController = {
         });
       }
 
-      await db.Cetegory.create(req.body);
+      const response = await db.Category.create(req.body);
+      console.log(response);
 
       return res.status(200).json({
         message: "Category added",
@@ -92,6 +93,19 @@ const categoryController = {
       return res.status(500).json({
         message: "Server Error",
       });
+    }
+  },
+  get: async (req, res) => {
+    try {
+      const response = await db.Category.findAll();
+
+      return res.status(200).json({
+        message: "Get Category",
+        data: response,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500);
     }
   },
   addBrand: async (req, res) => {

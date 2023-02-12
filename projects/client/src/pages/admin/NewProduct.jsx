@@ -13,8 +13,18 @@ import Wajib from "../../components/reuseable/admin/Wajib";
 import ImageBox from "../../components/reuseable/admin/ImageBox";
 import { useFormik } from "formik";
 import { axiosInstance } from "../../api/index";
+import { useEffect, useState } from "react";
+import { fetchCategory } from "../../components/reuseable/fetch";
 
 const NewProduct = () => {
+  const [category, setCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+
+  const categoryHandler = ({ target }) => {
+    const { value } = target;
+    setSelectedCategory(value);
+  };
+
   const formik = useFormik({
     initialValues: {
       product_name: "",
@@ -38,6 +48,21 @@ const NewProduct = () => {
         if (product_name) {
           productData.append("product_name", product_name);
         }
+        if (CategoryId) {
+          productData.append("CategoryId", selectedCategory);
+        }
+        if (description) {
+          productData.append("description", description);
+        }
+        if (price) {
+          productData.append("price", price);
+        }
+        if (stock) {
+          productData.append("stock", stock);
+        }
+        if (sku) {
+          productData.append("sku", sku);
+        }
         await axiosInstance.post("/product/add");
       } catch (error) {
         console.log(error);
@@ -49,6 +74,10 @@ const NewProduct = () => {
     const { name, value } = target;
     formik.setFieldValue(name, value);
   };
+
+  useEffect(() => {
+    fetchCategory().then((res) => setCategory(res));
+  }, []);
   return (
     <Box m="85px auto" w="1200px">
       <Box m="16px" fontWeight={"bold"} fontSize="20px">
@@ -90,11 +119,11 @@ const NewProduct = () => {
             </Box>
             <Box>
               <Box ml="70px" display={"flex"}>
-                <ImageBox desc={"Foto Utama"} />
-                <ImageBox desc={"Foto 2"} />
-                <ImageBox desc={"Foto 3"} />
-                <ImageBox desc={"Foto 4"} />
-                <ImageBox desc={"Foto 5"} />
+                <ImageBox desc={"Foto Utama"} formik={formik} />
+                <ImageBox desc={"Foto 2"} formik={formik} />
+                <ImageBox desc={"Foto 3"} formik={formik} />
+                <ImageBox desc={"Foto 4"} formik={formik} />
+                <ImageBox desc={"Foto 5"} formik={formik} />
               </Box>
             </Box>
           </Box>
@@ -158,7 +187,14 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="100%">
-              <Select />
+              <FormControl isInvalid={formik.errors.CategoryId}>
+                <Select placeholder="Pilih Kategori" onChange={categoryHandler}>
+                  {category.map((val) => (
+                    <option value={val.id}>{val.category_name}</option>
+                  ))}
+                </Select>
+                <FormErrorMessage>{formik.errors.CategoryId}</FormErrorMessage>
+              </FormControl>
             </Box>
           </Box>
         </Box>
@@ -194,15 +230,21 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="605px">
-              <Textarea
-                h="208px"
-                overflowY="scroll"
-                p="4px"
-                borderRadius={"8px"}
-                resize={"none"}
-                _placeholder={{ fontSize: "12px" }}
-                placeholder="Masukkan Deskripsi"
-              />
+              <FormControl isInvalid={formik.errors.description}>
+                <Textarea
+                  h="208px"
+                  overflowY="scroll"
+                  p="4px"
+                  borderRadius={"8px"}
+                  resize={"none"}
+                  _placeholder={{ fontSize: "12px" }}
+                  placeholder="Masukkan Deskripsi"
+                  value={formik.values.description}
+                  name="description"
+                  onChange={formChangeHandler}
+                />
+                <FormErrorMessage>{formik.errors.description}</FormErrorMessage>
+              </FormControl>
             </Box>
           </Box>
         </Box>
@@ -223,7 +265,15 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="605px">
-              <Input />
+              <FormControl isInvalid={formik.errors.price}>
+                <Input
+                  name="price"
+                  value={formik.values.price}
+                  onChange={formChangeHandler}
+                  type="number"
+                />
+                <FormErrorMessage>{formik.errors.price}</FormErrorMessage>
+              </FormControl>
             </Box>
           </Box>
         </Box>
