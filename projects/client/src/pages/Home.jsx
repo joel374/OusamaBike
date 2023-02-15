@@ -1,17 +1,21 @@
-import { Box, Grid, Image, Text } from "@chakra-ui/react"
+import { Box, Grid, Text } from "@chakra-ui/react"
 import { useEffect } from "react"
 import { useState } from "react"
-import { axiosInstance } from "../api"
 import Card from "../components/Card"
-import { fetchProduct } from "../components/reuseable/fetch"
+import { fetchCategory, fetchProduct } from "../components/reuseable/fetch"
 
 const Home = () => {
   const [seeMore, setSeeMore] = useState(false)
   const [product, setProduct] = useState([])
-  console.log(product)
+  const [category, setCategory] = useState([])
+
+  const seeMoreBtnHandler = () => {
+    seeMore ? setSeeMore(false) : setSeeMore(true)
+  }
 
   useEffect(() => {
     fetchProduct().then((res) => setProduct(res))
+    fetchCategory().then((res) => setCategory(res))
   }, [])
   return (
     <Box>
@@ -25,10 +29,13 @@ const Home = () => {
             >
               <Box
                 p="10px 8px 9px 12px"
-                h={seeMore}
-                onClick={() => setSeeMore("200px")}
+                onClick={() => seeMoreBtnHandler()}
+                cursor="pointer"
               >
                 Kategori
+                <Box display={seeMore ? "block" : "none"}>
+                  {category.map((val) => val.category_name)}
+                </Box>
               </Box>
               <Box p="10px 8px 9px 12px">Merek</Box>
             </Box>
