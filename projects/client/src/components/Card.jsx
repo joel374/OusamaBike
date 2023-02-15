@@ -1,4 +1,4 @@
-import { Box, Image, Text } from "@chakra-ui/react"
+import { Box, Image, Text } from "@chakra-ui/react";
 
 const Card = ({ image_url, product_name, price }) => {
   return (
@@ -22,12 +22,12 @@ const Card = ({ image_url, product_name, price }) => {
             </Text>
           </Box>
           <Box mb="4px" fontSize={"14px"} fontWeight="bold">
-            {price}
+            Rp{price.toLocaleString("id-ID")}
           </Box>
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

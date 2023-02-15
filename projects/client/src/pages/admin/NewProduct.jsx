@@ -8,6 +8,7 @@ import {
   Switch,
   Text,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import Wajib from "../../components/reuseable/admin/Wajib";
 import ImageBox from "../../components/reuseable/admin/ImageBox";
@@ -19,10 +20,17 @@ import { fetchCategory } from "../../components/reuseable/fetch";
 const NewProduct = () => {
   const [category, setCategory] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
+  const [active, setActive] = useState(false);
+
+  const toast = useToast();
 
   const categoryHandler = ({ target }) => {
     const { value } = target;
     setSelectedCategory(value);
+  };
+
+  const activeHandler = () => {
+    active ? setActive(false) : setActive(true);
   };
 
   const formik = useFormik({
@@ -41,6 +49,7 @@ const NewProduct = () => {
       price,
       stock,
       sku,
+      isActive,
     }) => {
       try {
         const productData = new FormData();
@@ -63,9 +72,25 @@ const NewProduct = () => {
         if (sku) {
           productData.append("sku", sku);
         }
-        await axiosInstance.post("/product/add");
+        if (isActive) {
+          productData.append("isActive", sku);
+        }
+        const response = await axiosInstance.post("/product/add");
+
+        toast({
+          title: "Produk ditambahkan",
+          status: "success",
+          description: response.data.message,
+          variant: "top-accent",
+        });
       } catch (error) {
         console.log(error);
+        toast({
+          title: "Produk gagal ditambahkan",
+          status: "warning",
+          description: error.response.data.message,
+          variant: "top-accent",
+        });
       }
     },
   });
@@ -303,7 +328,7 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="605px">
-              <Switch size={"md"} />
+              <Switch size={"md"} onChange={activeHandler} />
             </Box>
           </Box>
           <Box display={"flex"} fontSize={"14px"} pb="40px">

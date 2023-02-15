@@ -15,9 +15,9 @@ import {
 import { useEffect } from "react";
 import { useState } from "react";
 import { TbSearch } from "react-icons/tb";
-import { axiosInstance } from "../../api";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { BsPencil, BsTrash } from "react-icons/bs";
+import { fetchProduct } from "../../components/reuseable/fetch";
 
 const ManageProduct = () => {
   const [product, setProduct] = useState([]);
@@ -26,18 +26,8 @@ const ManageProduct = () => {
     icon ? setIcon(false) : setIcon(true);
   };
 
-  const fetchProduct = async () => {
-    try {
-      const response = await axiosInstance.get("/product/get");
-      console.log(response);
-      setProduct(response.data.data);
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
-
   useEffect(() => {
-    fetchProduct();
+    fetchProduct().then((res) => setProduct(res));
   }, []);
   return (
     <Box pl="237px" bgColor={"var(--N50,#F3F4F5)"} fontSize="14px" h="100%">

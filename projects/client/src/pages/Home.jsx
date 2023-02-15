@@ -1,22 +1,22 @@
-import { Box, Grid, Text } from "@chakra-ui/react"
-import { useEffect } from "react"
-import { useState } from "react"
-import Card from "../components/Card"
-import { fetchCategory, fetchProduct } from "../components/reuseable/fetch"
+import { Box, Grid, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useState } from "react";
+import Card from "../components/Card";
+import { fetchCategory, fetchProduct } from "../components/reuseable/fetch";
 
 const Home = () => {
-  const [seeMore, setSeeMore] = useState(false)
-  const [product, setProduct] = useState([])
-  const [category, setCategory] = useState([])
+  const [seeMore, setSeeMore] = useState(false);
+  const [product, setProduct] = useState([]);
+  const [category, setCategory] = useState([]);
 
   const seeMoreBtnHandler = () => {
-    seeMore ? setSeeMore(false) : setSeeMore(true)
-  }
+    seeMore ? setSeeMore(false) : setSeeMore(true);
+  };
 
   useEffect(() => {
-    fetchProduct().then((res) => setProduct(res))
-    fetchCategory().then((res) => setCategory(res))
-  }, [])
+    fetchProduct().then((res) => setProduct(res));
+    fetchCategory().then((res) => setCategory(res));
+  }, []);
   return (
     <Box>
       <Box mx="auto" w="1190px" mt="36px" mb="50px">
@@ -34,7 +34,9 @@ const Home = () => {
               >
                 Kategori
                 <Box display={seeMore ? "block" : "none"}>
-                  {category.map((val) => val.category_name)}
+                  {category.map((val) => (
+                    <Text>{val.category_name}</Text>
+                  ))}
                 </Box>
               </Box>
               <Box p="10px 8px 9px 12px">Merek</Box>
@@ -46,7 +48,7 @@ const Home = () => {
             <Grid templateColumns={"repeat(5,1fr)"}>
               {product.map((val) => (
                 <Card
-                  image_url={val.image_url}
+                  image_url={val.Image_Urls[0].image_url}
                   price={val.price}
                   product_name={val.product_name}
                 />
@@ -56,7 +58,7 @@ const Home = () => {
         </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
