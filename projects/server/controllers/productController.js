@@ -4,7 +4,7 @@ const db = require("../models");
 const productController = {
   add: async (req, res) => {
     try {
-      const image_url = req.file.filename;
+      // console.log(req.file);
 
       const {
         product_name,
@@ -13,8 +13,10 @@ const productController = {
         BrandCategoryId,
         price,
         description,
-        isActive,
+        is_active,
       } = req.body;
+
+      console.log(req.body);
 
       const findProduct = await db.Product.findOne({
         where: {
@@ -29,6 +31,7 @@ const productController = {
       }
 
       const response = await db.Product.create(req.body);
+      const image_url = req.file.filename;
 
       await db.Image_Url.create({ image_url, ProductId: response.id });
 
@@ -145,15 +148,15 @@ const productController = {
         _page = 1,
       } = req.query;
 
-      if (id === Number) {
-        const response = await db.Product.findAndCountAll({
+      if (id) {
+        const response = await db.Product.findOne({
           include: [
             { model: db.Category },
             { model: db.Brand_Category },
             { model: db.Image_Url },
           ],
           where: {
-            id,
+            id: id,
           },
         });
 

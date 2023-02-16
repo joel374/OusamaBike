@@ -49,7 +49,8 @@ const NewProduct = () => {
       price,
       stock,
       sku,
-      isActive,
+      is_active,
+      image_url,
     }) => {
       try {
         const productData = new FormData();
@@ -57,25 +58,33 @@ const NewProduct = () => {
         if (product_name) {
           productData.append("product_name", product_name);
         }
+
         if (CategoryId) {
           productData.append("CategoryId", selectedCategory);
         }
+
         if (description) {
           productData.append("description", description);
         }
+
         if (price) {
           productData.append("price", price);
         }
+
         if (stock) {
           productData.append("stock", stock);
         }
         if (sku) {
           productData.append("sku", sku);
         }
-        if (isActive) {
-          productData.append("isActive", sku);
+
+        if (is_active) {
+          productData.append("is_active", active);
         }
-        const response = await axiosInstance.post("/product/add");
+        if (image_url) {
+          productData.append("image_url", image_url);
+        }
+        const response = await axiosInstance.post("/product/add", productData);
 
         toast({
           title: "Produk ditambahkan",
@@ -94,6 +103,8 @@ const NewProduct = () => {
       }
     },
   });
+
+  console.log(formik.values.image_url);
 
   const formChangeHandler = ({ target }) => {
     const { name, value } = target;

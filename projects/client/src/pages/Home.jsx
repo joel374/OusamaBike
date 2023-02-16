@@ -7,6 +7,7 @@ import { fetchCategory, fetchProduct } from "../components/reuseable/fetch";
 const Home = () => {
   const [seeMore, setSeeMore] = useState(false);
   const [product, setProduct] = useState([]);
+  console.log(product);
   const [category, setCategory] = useState([]);
 
   const seeMoreBtnHandler = () => {
@@ -35,7 +36,7 @@ const Home = () => {
                 Kategori
                 <Box display={seeMore ? "block" : "none"}>
                   {category.map((val) => (
-                    <Text>{val.category_name}</Text>
+                    <Text>{val?.category_name}</Text>
                   ))}
                 </Box>
               </Box>
@@ -48,7 +49,7 @@ const Home = () => {
             <Grid templateColumns={"repeat(5,1fr)"}>
               {product.map((val) => (
                 <Card
-                  image_url={val.Image_Urls[0].image_url}
+                  image_url={val.Image_Urls[0]?.image_url}
                   price={val.price}
                   product_name={val.product_name}
                   id={val.id}

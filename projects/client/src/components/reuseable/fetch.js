@@ -12,7 +12,10 @@ export const fetchCategory = async () => {
 
 export const fetchProduct = async (id) => {
   try {
-    const response = await axiosInstance.get(`/product/get?id=${id}`);
+    const response = await axiosInstance.get(
+      `/product/get?${id ? `id=${id}` : ""}`
+    );
+    console.log(response);
 
     return response.data.data;
   } catch (error) {
