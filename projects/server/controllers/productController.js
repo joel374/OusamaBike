@@ -134,6 +134,7 @@ const productController = {
   get: async (req, res) => {
     try {
       const {
+        id = "",
         SKU = "",
         product_name = "",
         CategoryId = "",
@@ -143,6 +144,25 @@ const productController = {
         _limit = 12,
         _page = 1,
       } = req.query;
+
+      if (id === Number) {
+        const response = await db.Product.findAndCountAll({
+          include: [
+            { model: db.Category },
+            { model: db.Brand_Category },
+            { model: db.Image_Url },
+          ],
+          where: {
+            id,
+          },
+        });
+
+        return res.status(200).json({
+          message: "Get Product By Id",
+          data: response.rows,
+          dataCount: response.count,
+        });
+      }
 
       const response = await db.Product.findAndCountAll({
         limit: Number(_limit),

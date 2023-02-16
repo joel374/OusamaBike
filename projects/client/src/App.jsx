@@ -11,6 +11,7 @@ import ManageProduct from "./pages/admin/ManageProduct";
 import NewProduct from "./pages/admin/NewProduct";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Product from "./pages/Product";
 import Register from "./pages/Register";
 import Verification from "./pages/Verification";
 import { login } from "./redux/features/authSlice";
@@ -97,6 +98,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/verification" element={<Verification />} />
         <Route path="/" element={<Home />} />
+        <Route path="/:product_name/:id" element={<Product />} />
 
         {/* Admin */}
         <Route path="/admin" element={<HomeAdmin />} />

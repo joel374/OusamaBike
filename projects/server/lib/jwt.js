@@ -4,7 +4,7 @@ const SECRET_KEY = "1234";
 
 const signToken = (payload) => {
   return jwt.sign(payload, SECRET_KEY, {
-    expiresIn: "1h",
+    expiresIn: "30d",
   });
 };
 

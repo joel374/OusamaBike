@@ -51,6 +51,7 @@ const Home = () => {
                   image_url={val.Image_Urls[0].image_url}
                   price={val.price}
                   product_name={val.product_name}
+                  id={val.id}
                 />
               ))}
             </Grid>

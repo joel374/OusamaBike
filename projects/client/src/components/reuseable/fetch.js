@@ -1,21 +1,21 @@
-import { axiosInstance } from "../../api"
+import { axiosInstance } from "../../api";
 
 export const fetchCategory = async () => {
   try {
-    const response = await axiosInstance.get("/category/get")
+    const response = await axiosInstance.get("/category/get");
 
-    return response.data.data
+    return response.data.data;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-export const fetchProduct = async () => {
+export const fetchProduct = async (id) => {
   try {
-    const response = await axiosInstance.get("/product/get")
+    const response = await axiosInstance.get(`/product/get?id=${id}`);
 
-    return response.data.data
+    return response.data.data;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
