@@ -116,12 +116,31 @@ const Product = () => {
                 {product[0]?.stock}
               </Text>
             </Text>
-            <Button w="100%" mb="8px">
-              Wishlist
-            </Button>
-            <Button w="100%" mb="12px">
-              Chat
-            </Button>
+            <Box>
+              <Button
+                w="100%"
+                mb="8px"
+                _hover={false}
+                _active={false}
+                bgColor={heroColor}
+                color="white"
+                fontSize={"14px"}
+              >
+                Wishlist
+              </Button>
+              <Button
+                w="100%"
+                mb="12px"
+                border={`1px solid ${heroColor}`}
+                bgColor="white"
+                color={heroColor}
+                _hover={false}
+                _active={false}
+                fontSize={"14px"}
+              >
+                Chat
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Grid>
