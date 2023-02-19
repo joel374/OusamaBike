@@ -7,7 +7,6 @@ import { fetchCategory, fetchProduct } from "../components/reuseable/fetch";
 const Home = () => {
   const [seeMore, setSeeMore] = useState(false);
   const [product, setProduct] = useState([]);
-  console.log(product);
   const [category, setCategory] = useState([]);
 
   const seeMoreBtnHandler = () => {

@@ -24,7 +24,7 @@ const Card = ({ image_url, product_name, price, id }) => {
               </Text>
             </Box>
             <Box mb="4px" fontSize={"14px"} fontWeight="bold">
-              Rp{price.toLocaleString("id-ID")}
+              Rp{price?.toLocaleString("id-ID")}
             </Box>
           </Box>
         </Box>

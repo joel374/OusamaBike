@@ -178,6 +178,21 @@ const categoryController = {
       });
     }
   },
+  getBrand: async (req, res) => {
+    try {
+      const response = await db.Brand_Category.findAll();
+
+      return res.status(200).json({
+        message: "Get Brand Category",
+        data: response,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Server Error",
+      });
+    }
+  },
 };
 
 module.exports = categoryController;

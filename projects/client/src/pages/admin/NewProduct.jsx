@@ -15,11 +15,17 @@ import ImageBox from "../../components/reuseable/admin/ImageBox";
 import { useFormik } from "formik";
 import { axiosInstance } from "../../api/index";
 import { useEffect, useState } from "react";
-import { fetchCategory } from "../../components/reuseable/fetch";
+import {
+  fetchBrandCategory,
+  fetchCategory,
+} from "../../components/reuseable/fetch";
 
 const NewProduct = () => {
   const [category, setCategory] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [brand, setBrand] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  console.log(selectedCategory);
   const [active, setActive] = useState(false);
 
   const toast = useToast();
@@ -45,6 +51,7 @@ const NewProduct = () => {
     onSubmit: async ({
       product_name,
       CategoryId,
+      BrandCategoryId,
       description,
       price,
       stock,
@@ -61,6 +68,10 @@ const NewProduct = () => {
 
         if (CategoryId) {
           productData.append("CategoryId", selectedCategory);
+        }
+
+        if (BrandCategoryId) {
+          productData.append("BrandCategoryId", selectedBrand);
         }
 
         if (description) {
@@ -92,6 +103,18 @@ const NewProduct = () => {
           description: response.data.message,
           variant: "top-accent",
         });
+
+        formik.setFieldValue("product_name", "");
+        formik.setFieldValue("description", "");
+        formik.setFieldValue("price", "");
+        formik.setFieldValue("CategoryId", "");
+        formik.setFieldValue("BrandCategoryId", "");
+        formik.setFieldValue("price", "");
+        formik.setFieldValue("stock", "");
+        formik.setFieldValue("image_url", "");
+        setSelectedCategory(0);
+        setSelectedCategory(0);
+        setActive(false);
       } catch (error) {
         console.log(error);
         toast({
@@ -104,7 +127,7 @@ const NewProduct = () => {
     },
   });
 
-  console.log(formik.values.image_url);
+  // console.log(formik.values.image_url);
 
   const formChangeHandler = ({ target }) => {
     const { name, value } = target;
@@ -113,6 +136,7 @@ const NewProduct = () => {
 
   useEffect(() => {
     fetchCategory().then((res) => setCategory(res));
+    fetchBrandCategory().then((res) => setBrand(res));
   }, []);
   return (
     <Box m="85px auto" w="1200px">
@@ -227,6 +251,34 @@ const NewProduct = () => {
                 <Select placeholder="Pilih Kategori" onChange={categoryHandler}>
                   {category.map((val) => (
                     <option value={val.id}>{val.category_name}</option>
+                  ))}
+                </Select>
+                <FormErrorMessage>{formik.errors.CategoryId}</FormErrorMessage>
+              </FormControl>
+            </Box>
+          </Box>
+          <Box display={"flex"} fontSize={"14px"} pb="40px">
+            <Box display={"flex"} flexDirection="column" s w="350px" pr="100px">
+              <Box display={"flex"} pb="8px">
+                <Text>Merek</Text>
+                <Wajib />
+              </Box>
+              <Box>
+                <Text
+                  color={"var(--N700,#31353B)AD"}
+                  fontSize="12px"
+                  fontWeight={"normal"}
+                  whiteSpace="pre-line"
+                >
+                  Pilih merek yang sesuai
+                </Text>
+              </Box>
+            </Box>
+            <Box w="100%">
+              <FormControl isInvalid={formik.errors.CategoryId}>
+                <Select placeholder="Pilih Merek" onChange={categoryHandler}>
+                  {brand?.map((val) => (
+                    <option value={val.id}>{val.brand_name}</option>
                   ))}
                 </Select>
                 <FormErrorMessage>{formik.errors.CategoryId}</FormErrorMessage>

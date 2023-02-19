@@ -7,8 +7,15 @@ import { heroColor } from "../components/reuseable/Logo";
 
 const Product = () => {
   const [product, setProduct] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOver, setIsOver] = useState(false);
   console.log(product);
+  const [image, setImage] = useState(
+    isLoading && product?.Image_Urls[0]?.image_url
+  );
   const params = useParams();
+
+  const setProductLoading = () => {};
 
   useEffect(() => {
     fetchProduct(params.id).then((res) => setProduct(res));
@@ -59,23 +66,30 @@ const Product = () => {
             <Image
               w="348px"
               h="348px"
-              // src={product?.Image_Urls[0]?.image_url}
+              src={isOver ? isOver : image}
+              onMouseOver={{ innerHeight: "200px" }}
+              objectFit="cover"
             />
           </Box>
-          <Box h="64px" display={"flex"}>
-            {/* {product?.Image_Urls.map((val) => (
-              <Box pr="7px">
+          <Box h="64px" display={"flex"} mt="8px">
+            {product?.Image_Urls?.map((val) => (
+              <Box
+                pr="7px"
+                onClick={() => setImage(val.image_url)}
+                cursor={"pointer"}
+              >
                 <Image
                   key={val.id}
                   src={val.image_url}
                   border="2px solid white"
+                  // onMouseOver={overHandler}
                   borderRadius={"8px"}
                   w="60px"
                   h="60px"
                   _hover={{ border: `2px solid ${heroColor}` }}
                 />
               </Box>
-            ))} */}
+            ))}
           </Box>
         </Box>
         <Box mb="4px">
@@ -83,7 +97,7 @@ const Product = () => {
             {product?.product_name}
           </Text>
           <Text fontSize={"28px"} fontWeight="extrabold">
-            Rp{product?.price.toLocaleString("id-ID")}
+            Rp{product?.price?.toLocaleString("id-ID")}
           </Text>
           <Box h="1px" backgroundColor={"var(--NN50,#F0F3F7)"} m="16px 0"></Box>
           <Box fontSize={"14px"} color="var(--NN600,#6D7588)">

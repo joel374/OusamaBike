@@ -31,7 +31,7 @@ const productController = {
       }
 
       const response = await db.Product.create(req.body);
-      const image_url = req.file.filename;
+      const image_url = `http://localhost:8000/public/${req.file.filename}`;
 
       await db.Image_Url.create({ image_url, ProductId: response.id });
 
@@ -162,8 +162,7 @@ const productController = {
 
         return res.status(200).json({
           message: "Get Product By Id",
-          data: response.rows,
-          dataCount: response.count,
+          data: response,
         });
       }
 

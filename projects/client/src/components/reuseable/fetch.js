@@ -10,6 +10,16 @@ export const fetchCategory = async () => {
   }
 };
 
+export const fetchBrandCategory = async () => {
+  try {
+    const response = await axiosInstance.get("/category/getBrand");
+    console.log(response);
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const fetchProduct = async (id) => {
   try {
     const response = await axiosInstance.get(
