@@ -11,19 +11,44 @@ import {
   MenuList,
   Switch,
   Text,
+  useToast,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TbSearch } from "react-icons/tb";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { fetchProduct } from "../../components/reuseable/fetch";
+import { axiosInstance } from "../../api";
+import Alert from "../../components/reuseable/Alert";
+import { heroColor } from "../../components/reuseable/Logo";
 
 const ManageProduct = () => {
   const [product, setProduct] = useState([]);
+  const [deleteAlert, setDeleteAlert] = useState(null);
+  console.log(deleteAlert?.id);
   const [icon, setIcon] = useState(false);
   const iconHandler = () => {
     icon ? setIcon(false) : setIcon(true);
+  };
+  const toast = useToast();
+  const cancelRef = React.useRef();
+
+  const doubleOnclick = (function1, function2) => {};
+
+  const deleteHandler = async (id) => {
+    try {
+      const response = await axiosInstance.delete(`/product/delete/${id}`);
+
+      toast({
+        title: "Produk dihapus",
+        status: "success",
+        variant: "top-accent",
+        description: response.data.message,
+      });
+      fetchProduct().then((res) => setProduct(res));
+    } catch (error) {
+      console.log(error.response);
+    }
   };
 
   useEffect(() => {
@@ -137,9 +162,14 @@ const ManageProduct = () => {
                       <Box w="30%">
                         <Box w="180px" mb="8px">
                           <InputGroup>
-                            <InputLeftAddon children="Rp" fontSize={"14px"} />
+                            <InputLeftAddon
+                              children="Rp"
+                              p="0px 12px"
+                              fontSize={"14px"}
+                            />
                             <Input
-                              type="number"
+                              p="8px 12px"
+                              type="text"
                               value={val?.price.toLocaleString("id-ID")}
                               fontSize="14px"
                             />
@@ -181,13 +211,22 @@ const ManageProduct = () => {
                             Atur
                           </MenuButton>
                           <MenuList fontSize={"12px"}>
-                            <MenuItem p="6px 12px" h="36px">
+                            <MenuItem
+                              p="6px 12px"
+                              h="36px"
+                              // onClick={() => setAlert(val)}
+                            >
                               <Box mr="8px">
                                 <BsPencil fontSize={"18px"} />
                               </Box>
                               Edit
                             </MenuItem>
-                            <MenuItem p="6px 12px" h="36px">
+                            <MenuItem
+                              p="6px 12px"
+                              h="36px"
+                              onClick={() => setDeleteAlert(val)}
+                              value={val.id}
+                            >
                               <Box mr="8px">
                                 <BsTrash fontSize={"18px"} />
                               </Box>
@@ -204,6 +243,22 @@ const ManageProduct = () => {
           </Box>
         </Box>
       </Box>
+
+      <Alert
+        // key={deleteAlert?.id.toString()}
+        body={deleteAlert?.product_name}
+        header="Hapus Produk?"
+        responsive="Hapus Produk?"
+        isOpen={deleteAlert}
+        cancelRef={cancelRef}
+        color={heroColor}
+        leftButton="Batalkan"
+        rightButton={"Hapus"}
+        onClose={() => setDeleteAlert(null)}
+        onSubmit={() =>
+          doubleOnclick(deleteHandler(deleteAlert?.id), setDeleteAlert(null))
+        }
+      />
     </Box>
   );
 };

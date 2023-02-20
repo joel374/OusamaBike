@@ -25,8 +25,11 @@ const NewProduct = () => {
   const [brand, setBrand] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
-  console.log(selectedCategory);
-  const [active, setActive] = useState(false);
+  console.log("Kategori", selectedCategory);
+  console.log("Merek", selectedBrand);
+  const [active, setActive] = useState(null);
+  // console.log(selectedBrand);
+  // console.log(selectedCategory);
 
   const toast = useToast();
 
@@ -35,18 +38,24 @@ const NewProduct = () => {
     setSelectedCategory(value);
   };
 
+  const brandCategoryHandler = ({ target }) => {
+    const { value } = target;
+    setSelectedBrand(value);
+  };
+
   const activeHandler = () => {
-    active ? setActive(false) : setActive(true);
+    active ? setActive(0) : setActive(1);
   };
 
   const formik = useFormik({
     initialValues: {
       product_name: "",
       CategoryId: "",
+      BrandCategoryId: "",
       description: "",
       price: "",
       stock: "",
-      sku: "",
+      SKU: "",
     },
     onSubmit: async ({
       product_name,
@@ -55,7 +64,7 @@ const NewProduct = () => {
       description,
       price,
       stock,
-      sku,
+      SKU,
       is_active,
       image_url,
     }) => {
@@ -69,6 +78,7 @@ const NewProduct = () => {
         if (CategoryId) {
           productData.append("CategoryId", selectedCategory);
         }
+        console.log("Kategori", selectedCategory);
 
         if (BrandCategoryId) {
           productData.append("BrandCategoryId", selectedBrand);
@@ -85,16 +95,19 @@ const NewProduct = () => {
         if (stock) {
           productData.append("stock", stock);
         }
-        if (sku) {
-          productData.append("sku", sku);
+
+        if (SKU) {
+          productData.append("SKU", SKU);
         }
 
         if (is_active) {
           productData.append("is_active", active);
         }
+
         if (image_url) {
           productData.append("image_url", image_url);
         }
+        console.log(productData);
         const response = await axiosInstance.post("/product/add", productData);
 
         toast({
@@ -111,10 +124,11 @@ const NewProduct = () => {
         formik.setFieldValue("BrandCategoryId", "");
         formik.setFieldValue("price", "");
         formik.setFieldValue("stock", "");
+        formik.setFieldValue("SKU", "");
         formik.setFieldValue("image_url", "");
-        setSelectedCategory(0);
-        setSelectedCategory(0);
-        setActive(false);
+        // setSelectedCategory(0);
+        // setSelectedCategory(0);
+        // setActive(false);
       } catch (error) {
         console.log(error);
         toast({
@@ -276,7 +290,11 @@ const NewProduct = () => {
             </Box>
             <Box w="100%">
               <FormControl isInvalid={formik.errors.CategoryId}>
-                <Select placeholder="Pilih Merek" onChange={categoryHandler}>
+                <Select
+                  placeholder="Pilih Merek"
+                  name="BrandCategoryId"
+                  onChange={brandCategoryHandler}
+                >
                   {brand?.map((val) => (
                     <option value={val.id}>{val.brand_name}</option>
                   ))}
@@ -391,7 +409,11 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="605px">
-              <Switch size={"md"} onChange={activeHandler} />
+              <Switch
+                size={"md"}
+                onChange={activeHandler}
+                value={formik.values.is_active}
+              />
             </Box>
           </Box>
           <Box display={"flex"} fontSize={"14px"} pb="40px">
@@ -402,7 +424,13 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="605px">
-              <Input placeholder="Masukkan Jumlah Stok" />
+              <Input
+                placeholder="Masukkan Jumlah Stok"
+                value={formik.values.stock}
+                name="stock"
+                onChange={formChangeHandler}
+                type="number"
+              />
             </Box>
           </Box>
           <Box display={"flex"} fontSize={"14px"} pb="40px">
@@ -422,7 +450,13 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="605px">
-              <Input placeholder="Masukkan SKU" />
+              <Input
+                placeholder="Masukkan SKU"
+                value={formik.values.SKU}
+                onChange={formChangeHandler}
+                type="number"
+                name="SKU"
+              />
             </Box>
           </Box>
         </Box>
@@ -436,7 +470,20 @@ const NewProduct = () => {
           <Button h="38px" w="156px" mr="12px" fontSize={"12px"}>
             Batal
           </Button>
-          <Button h="38px" w="156px" fontSize={"12px"} type="submit">
+          <Button
+            h="38px"
+            w="156px"
+            fontSize={"12px"}
+            type="submit"
+            // isDisabled={
+            //   !formik.values.CategoryId ||
+            //   !formik.values.BrandCategoryId ||
+            //   !formik.values.description ||
+            //   !formik.values.price ||
+            //   !formik.values.product_name ||
+            //   !formik.values.stock
+            // }
+          >
             Simpan
           </Button>
         </Box>
