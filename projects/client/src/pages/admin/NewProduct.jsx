@@ -13,6 +13,7 @@ import {
 import Wajib from "../../components/reuseable/admin/Wajib";
 import ImageBox from "../../components/reuseable/admin/ImageBox";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { axiosInstance } from "../../api/index";
 import { useEffect, useState } from "react";
 import {
@@ -23,25 +24,8 @@ import {
 const NewProduct = () => {
   const [category, setCategory] = useState([]);
   const [brand, setBrand] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedBrand, setSelectedBrand] = useState(null);
-  console.log("Kategori", selectedCategory);
-  console.log("Merek", selectedBrand);
-  const [active, setActive] = useState(null);
-  // console.log(selectedBrand);
-  // console.log(selectedCategory);
-
+  const [active, setActive] = useState(0);
   const toast = useToast();
-
-  const categoryHandler = ({ target }) => {
-    const { value } = target;
-    setSelectedCategory(value);
-  };
-
-  const brandCategoryHandler = ({ target }) => {
-    const { value } = target;
-    setSelectedBrand(value);
-  };
 
   const activeHandler = () => {
     active ? setActive(0) : setActive(1);
@@ -56,6 +40,7 @@ const NewProduct = () => {
       price: "",
       stock: "",
       SKU: "",
+      is_active: "",
     },
     onSubmit: async ({
       product_name,
@@ -71,43 +56,20 @@ const NewProduct = () => {
       try {
         const productData = new FormData();
 
-        if (product_name) {
-          productData.append("product_name", product_name);
-        }
-
-        if (CategoryId) {
-          productData.append("CategoryId", selectedCategory);
-        }
-        console.log("Kategori", selectedCategory);
-
-        if (BrandCategoryId) {
-          productData.append("BrandCategoryId", selectedBrand);
-        }
-
+        productData.append("product_name", product_name);
+        productData.append("CategoryId", CategoryId);
+        productData.append("BrandCategoryId", BrandCategoryId);
         if (description) {
           productData.append("description", description);
         }
-
-        if (price) {
-          productData.append("price", price);
-        }
-
-        if (stock) {
-          productData.append("stock", stock);
-        }
-
+        productData.append("price", price);
+        productData.append("stock", stock);
         if (SKU) {
           productData.append("SKU", SKU);
         }
+        productData.append("is_active", active);
+        productData.append("image_url", image_url);
 
-        if (is_active) {
-          productData.append("is_active", active);
-        }
-
-        if (image_url) {
-          productData.append("image_url", image_url);
-        }
-        console.log(productData);
         const response = await axiosInstance.post("/product/add", productData);
 
         toast({
@@ -126,9 +88,6 @@ const NewProduct = () => {
         formik.setFieldValue("stock", "");
         formik.setFieldValue("SKU", "");
         formik.setFieldValue("image_url", "");
-        // setSelectedCategory(0);
-        // setSelectedCategory(0);
-        // setActive(false);
       } catch (error) {
         console.log(error);
         toast({
@@ -139,9 +98,15 @@ const NewProduct = () => {
         });
       }
     },
+    validationSchema: Yup.object({
+      product_name: Yup.string().required().min(15),
+      description: Yup.string(),
+      price: Yup.string().required(),
+      stock: Yup.string().required(),
+      SKU: Yup.string(),
+    }),
+    validateOnChange: false,
   });
-
-  // console.log(formik.values.image_url);
 
   const formChangeHandler = ({ target }) => {
     const { name, value } = target;
@@ -262,7 +227,11 @@ const NewProduct = () => {
             </Box>
             <Box w="100%">
               <FormControl isInvalid={formik.errors.CategoryId}>
-                <Select placeholder="Pilih Kategori" onChange={categoryHandler}>
+                <Select
+                  placeholder="Pilih Kategori"
+                  onChange={formChangeHandler}
+                  name={"CategoryId"}
+                >
                   {category.map((val) => (
                     <option value={val.id}>{val.category_name}</option>
                   ))}
@@ -293,7 +262,7 @@ const NewProduct = () => {
                 <Select
                   placeholder="Pilih Merek"
                   name="BrandCategoryId"
-                  onChange={brandCategoryHandler}
+                  onChange={formChangeHandler}
                 >
                   {brand?.map((val) => (
                     <option value={val.id}>{val.brand_name}</option>
@@ -411,6 +380,7 @@ const NewProduct = () => {
             <Box w="605px">
               <Switch
                 size={"md"}
+                name="is_active"
                 onChange={activeHandler}
                 value={formik.values.is_active}
               />

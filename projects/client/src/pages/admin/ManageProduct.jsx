@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   Image,
   Input,
   InputGroup,
@@ -24,6 +25,7 @@ import { heroColor } from "../../components/reuseable/Logo";
 
 const ManageProduct = () => {
   const [product, setProduct] = useState([]);
+  const [productActive, setProductActive] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState(null);
   console.log(deleteAlert?.id);
   const [icon, setIcon] = useState(false);
@@ -32,6 +34,8 @@ const ManageProduct = () => {
   };
   const toast = useToast();
   const cancelRef = React.useRef();
+
+  console.log(productActive);
 
   const doubleOnclick = (function1, function2) => {};
 
@@ -53,6 +57,7 @@ const ManageProduct = () => {
 
   useEffect(() => {
     fetchProduct().then((res) => setProduct(res));
+    fetchProduct("", 1).then((res) => setProductActive(res));
   }, []);
   return (
     <Box pl="237px" bgColor={"var(--N50,#F3F4F5)"} fontSize="14px" h="100%">
@@ -75,7 +80,7 @@ const ManageProduct = () => {
           <Box h="53px" borderBottom={"1px solid var(--N75,#E5E7E9)"}>
             <Box display={"flex"} alignContent="center" fontWeight={"bold"}>
               <Box p="16px 24px">Semua Produk ({product?.length})</Box>
-              <Box p="16px 24px">Aktif(0)</Box>
+              <Box p="16px 24px">Aktif({productActive?.length})</Box>
             </Box>
           </Box>
           <Box pt="16px" minH={"584px"}>
@@ -170,7 +175,7 @@ const ManageProduct = () => {
                             <Input
                               p="8px 12px"
                               type="text"
-                              value={val?.price.toLocaleString("id-ID")}
+                              value={val?.price?.toLocaleString("id-ID")}
                               fontSize="14px"
                             />
                           </InputGroup>
@@ -187,11 +192,7 @@ const ManageProduct = () => {
                         </Box>
                       </Box>
                       <Box w="16%">
-                        {val?.is_active === 0 ? (
-                          <Switch />
-                        ) : (
-                          <Switch isChecked />
-                        )}
+                        {val?.is_active ? <Switch isChecked /> : <Switch />}
                       </Box>
                       <Box>
                         <Menu>

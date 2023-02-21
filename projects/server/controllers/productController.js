@@ -4,8 +4,6 @@ const db = require("../models");
 const productController = {
   add: async (req, res) => {
     try {
-      // console.log(req.file);
-
       const {
         product_name,
         stock,
@@ -15,8 +13,6 @@ const productController = {
         description,
         is_active,
       } = req.body;
-
-      console.log(req.body);
 
       const findProduct = await db.Product.findOne({
         where: {
@@ -142,9 +138,10 @@ const productController = {
         product_name = "",
         CategoryId = "",
         BrandCategoryId = "",
+        is_active = "",
         _sortBy = "id",
         _sortDir = "ASC",
-        _limit = 12,
+        _limit = 20,
         _page = 1,
       } = req.query;
 
@@ -162,6 +159,24 @@ const productController = {
 
         return res.status(200).json({
           message: "Get Product By Id",
+          data: response,
+        });
+      }
+
+      if (is_active) {
+        const response = await db.Product.findAll({
+          include: [
+            { model: db.Category },
+            { model: db.Brand_Category },
+            { model: db.Image_Url },
+          ],
+          where: {
+            is_active: true,
+          },
+        });
+
+        return res.status(200).json({
+          message: "Get Product By is_active",
           data: response,
         });
       }

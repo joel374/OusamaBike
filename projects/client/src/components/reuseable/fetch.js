@@ -20,10 +20,12 @@ export const fetchBrandCategory = async () => {
   }
 };
 
-export const fetchProduct = async (id) => {
+export const fetchProduct = async (id, is_active) => {
   try {
     const response = await axiosInstance.get(
-      `/product/get?${id ? `id=${id}` : ""}`
+      `/product/get?${
+        id ? `id=${id}` : "" || is_active ? `is_active=${is_active}` : ""
+      }`
     );
     console.log(response);
 
