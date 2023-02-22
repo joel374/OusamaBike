@@ -6,6 +6,10 @@ import { IoMdTrash } from "react-icons/io";
 const ImageBox = ({ desc, formik }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const inputFileRef = useRef();
+  const cancel = () => {
+    setSelectedImage(null);
+    formik.setFieldValue("image_url", null);
+  };
   return (
     <Box>
       <Box display={"flex"}>
@@ -74,7 +78,7 @@ const ImageBox = ({ desc, formik }) => {
                       borderRadius={"4px"}
                       display="flex"
                       alignItems={"center"}
-                      onClick={() => setSelectedImage(null)}
+                      onClick={cancel}
                       justifyContent={"center"}
                       cursor="pointer"
                     >

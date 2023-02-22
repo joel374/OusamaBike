@@ -3,18 +3,22 @@ import { useEffect } from "react";
 import { useState } from "react";
 import Card from "../components/Card";
 import { fetchCategory, fetchProduct } from "../components/reuseable/fetch";
+import { doubleOnclick } from "./admin/ManageProduct";
 
 const Home = () => {
   const [seeMore, setSeeMore] = useState(false);
   const [product, setProduct] = useState([]);
   const [category, setCategory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const seeMoreBtnHandler = () => {
     seeMore ? setSeeMore(false) : setSeeMore(true);
   };
 
   useEffect(() => {
-    fetchProduct().then((res) => setProduct(res));
+    fetchProduct().then((res) =>
+      doubleOnclick(setProduct(res), setIsLoading(true))
+    );
     fetchCategory().then((res) => setCategory(res));
   }, []);
   return (
@@ -46,14 +50,16 @@ const Home = () => {
             <Box mb="16px" />
             {/* Card */}
             <Grid templateColumns={"repeat(5,1fr)"}>
-              {product.map((val) => (
-                <Card
-                  image_url={val.Image_Urls[0]?.image_url}
-                  price={val.price}
-                  product_name={val.product_name}
-                  id={val.id}
-                />
-              ))}
+              {product && isLoading
+                ? product.map((val) => (
+                    <Card
+                      image_url={val.Image_Urls[0]?.image_url}
+                      price={val.price}
+                      product_name={val.product_name}
+                      id={val.id}
+                    />
+                  ))
+                : "Loading Broo"}
             </Grid>
           </Box>
         </Box>

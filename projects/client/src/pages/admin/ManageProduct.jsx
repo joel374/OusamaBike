@@ -1,20 +1,17 @@
 import {
   Box,
   Button,
-  Checkbox,
   Image,
   Input,
   InputGroup,
-  InputLeftAddon,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Switch,
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TbSearch } from "react-icons/tb";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { BsPencil, BsTrash } from "react-icons/bs";
@@ -22,6 +19,9 @@ import { fetchProduct } from "../../components/reuseable/fetch";
 import { axiosInstance } from "../../api";
 import Alert from "../../components/reuseable/Alert";
 import { heroColor } from "../../components/reuseable/Logo";
+import { Link } from "react-router-dom";
+
+export const doubleOnclick = (function1, function2) => {};
 
 const ManageProduct = () => {
   const [product, setProduct] = useState([]);
@@ -36,8 +36,6 @@ const ManageProduct = () => {
   const cancelRef = React.useRef();
 
   console.log(productActive);
-
-  const doubleOnclick = (function1, function2) => {};
 
   const deleteHandler = async (id) => {
     try {
@@ -73,16 +71,20 @@ const ManageProduct = () => {
           <Text fontSize={"24px"} fontWeight="bold">
             Daftar Produk
           </Text>
-          <Button>+ Tambah Produk</Button>
+          <Link to={"/admin/add-product"}>
+            <Button bgColor={heroColor} color="white">
+              + Tambah Produk
+            </Button>
+          </Link>
         </Box>
         {/* Content */}
         <Box borderRadius={"8px"} bgColor="white">
-          <Box h="53px" borderBottom={"1px solid var(--N75,#E5E7E9)"}>
+          {/* <Box h="53px" borderBottom={"1px solid var(--N75,#E5E7E9)"}>
             <Box display={"flex"} alignContent="center" fontWeight={"bold"}>
               <Box p="16px 24px">Semua Produk ({product?.length})</Box>
               <Box p="16px 24px">Aktif({productActive?.length})</Box>
             </Box>
-          </Box>
+          </Box> */}
           <Box pt="16px" minH={"584px"}>
             <Box pl="24px" pr="32px" pb="12px">
               <Box>
@@ -124,7 +126,7 @@ const ManageProduct = () => {
                   </Box>
                   <Box w="30%">HARGA</Box>
                   <Box w="25%">STOK</Box>
-                  <Box w="16%">AKTIF</Box>
+                  <Box w="16%">STATUS</Box>
                   <Box w="6%"> </Box>
                 </Box>
               </Box>
@@ -166,7 +168,8 @@ const ManageProduct = () => {
                       </Box>
                       <Box w="30%">
                         <Box w="180px" mb="8px">
-                          <InputGroup>
+                          Rp{val?.price?.toLocaleString("id-ID")}
+                          {/* <InputGroup>
                             <InputLeftAddon
                               children="Rp"
                               p="0px 12px"
@@ -175,25 +178,24 @@ const ManageProduct = () => {
                             <Input
                               p="8px 12px"
                               type="text"
-                              value={val?.price?.toLocaleString("id-ID")}
+                              value=
                               fontSize="14px"
                             />
-                          </InputGroup>
+                          </InputGroup> */}
                         </Box>
                       </Box>
                       <Box w="25%">
-                        <Box>
+                        {val?.stock}
+                        {/* <Box>
                           <Input
                             w="94px"
                             type="number"
-                            value={val?.stock}
+                            value=
                             fontSize="14px"
                           />
-                        </Box>
+                        </Box> */}
                       </Box>
-                      <Box w="16%">
-                        {val?.is_active ? <Switch isChecked /> : <Switch />}
-                      </Box>
+                      <Box w="16%">{val?.is_active ? "AKTIF" : "NONAKTIF"}</Box>
                       <Box>
                         <Menu>
                           <MenuButton

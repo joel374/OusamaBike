@@ -20,12 +20,14 @@ import {
   fetchBrandCategory,
   fetchCategory,
 } from "../../components/reuseable/fetch";
+import { useNavigate } from "react-router-dom";
 
 const NewProduct = () => {
   const [category, setCategory] = useState([]);
   const [brand, setBrand] = useState([]);
   const [active, setActive] = useState(0);
   const toast = useToast();
+  const navigate = useNavigate();
 
   const activeHandler = () => {
     active ? setActive(0) : setActive(1);
@@ -39,6 +41,7 @@ const NewProduct = () => {
       description: "",
       price: "",
       stock: "",
+      image_url: "",
       SKU: "",
       is_active: "",
     },
@@ -72,13 +75,6 @@ const NewProduct = () => {
 
         const response = await axiosInstance.post("/product/add", productData);
 
-        toast({
-          title: "Produk ditambahkan",
-          status: "success",
-          description: response.data.message,
-          variant: "top-accent",
-        });
-
         formik.setFieldValue("product_name", "");
         formik.setFieldValue("description", "");
         formik.setFieldValue("price", "");
@@ -88,6 +84,15 @@ const NewProduct = () => {
         formik.setFieldValue("stock", "");
         formik.setFieldValue("SKU", "");
         formik.setFieldValue("image_url", "");
+
+        toast({
+          title: "Produk ditambahkan",
+          status: "success",
+          description: response.data.message,
+          variant: "top-accent",
+        });
+
+        navigate("/admin/manage-product");
       } catch (error) {
         console.log(error);
         toast({
@@ -99,11 +104,20 @@ const NewProduct = () => {
       }
     },
     validationSchema: Yup.object({
-      product_name: Yup.string().required().min(15),
+      product_name: Yup.string()
+        .required("Nama produk harus diisi")
+        .min(15, "Tidak boleh kurang dari 15 huruf"),
       description: Yup.string(),
-      price: Yup.string().required(),
-      stock: Yup.string().required(),
-      SKU: Yup.string(),
+      price: Yup.number()
+        .required("Harga harus diisi")
+        .min(1000, "Harga tidak boleh kurang dari Rp1.000"),
+      stock: Yup.number()
+        .required("Stok harus diisi")
+        .min(1, "Tidak boleh kurang dari 1"),
+      image_url: Yup.string().required("Silahkan pilih Foto Produk"),
+      CategoryId: Yup.string().required("Silahkan pilih Kategori"),
+      BrandCategoryId: Yup.string().required("Silahkan pilih Merek"),
+      SKU: Yup.number(),
     }),
     validateOnChange: false,
   });
@@ -157,13 +171,18 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box>
-              <Box ml="70px" display={"flex"}>
-                <ImageBox desc={"Foto Utama"} formik={formik} />
-                <ImageBox desc={"Foto 2"} formik={formik} />
-                <ImageBox desc={"Foto 3"} formik={formik} />
-                <ImageBox desc={"Foto 4"} formik={formik} />
-                <ImageBox desc={"Foto 5"} formik={formik} />
-              </Box>
+              <FormControl isInvalid={formik.errors.image_url}>
+                <Box ml="70px" display={"flex"}>
+                  <ImageBox desc={"Foto Utama"} formik={formik} />
+                  <ImageBox desc={"Foto 2"} formik={formik} />
+                  <ImageBox desc={"Foto 3"} formik={formik} />
+                  <ImageBox desc={"Foto 4"} formik={formik} />
+                  <ImageBox desc={"Foto 5"} formik={formik} />
+                </Box>
+                <FormErrorMessage ml="70px" mt="-20px">
+                  {formik.errors.image_url}
+                </FormErrorMessage>
+              </FormControl>
             </Box>
           </Box>
         </Box>
@@ -258,7 +277,7 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="100%">
-              <FormControl isInvalid={formik.errors.CategoryId}>
+              <FormControl isInvalid={formik.errors.BrandCategoryId}>
                 <Select
                   placeholder="Pilih Merek"
                   name="BrandCategoryId"
@@ -268,7 +287,9 @@ const NewProduct = () => {
                     <option value={val.id}>{val.brand_name}</option>
                   ))}
                 </Select>
-                <FormErrorMessage>{formik.errors.CategoryId}</FormErrorMessage>
+                <FormErrorMessage>
+                  {formik.errors.BrandCategoryId}
+                </FormErrorMessage>
               </FormControl>
             </Box>
           </Box>
@@ -309,10 +330,10 @@ const NewProduct = () => {
                 <Textarea
                   h="208px"
                   overflowY="scroll"
-                  p="4px"
+                  p="4px 16px"
                   borderRadius={"8px"}
                   resize={"none"}
-                  _placeholder={{ fontSize: "12px" }}
+                  _placeholder={{ fontSize: "14px" }}
                   placeholder="Masukkan Deskripsi"
                   value={formik.values.description}
                   name="description"
@@ -343,6 +364,7 @@ const NewProduct = () => {
               <FormControl isInvalid={formik.errors.price}>
                 <Input
                   name="price"
+                  onWheel={(e) => e.target.blur()}
                   value={formik.values.price}
                   onChange={formChangeHandler}
                   type="number"
@@ -394,13 +416,16 @@ const NewProduct = () => {
               </Box>
             </Box>
             <Box w="605px">
-              <Input
-                placeholder="Masukkan Jumlah Stok"
-                value={formik.values.stock}
-                name="stock"
-                onChange={formChangeHandler}
-                type="number"
-              />
+              <FormControl isInvalid={formik.errors.stock}>
+                <Input
+                  placeholder="Masukkan Jumlah Stok"
+                  value={formik.values.stock}
+                  name="stock"
+                  onChange={formChangeHandler}
+                  type="number"
+                />
+                <FormErrorMessage>{formik.errors.stock}</FormErrorMessage>
+              </FormControl>
             </Box>
           </Box>
           <Box display={"flex"} fontSize={"14px"} pb="40px">
@@ -444,15 +469,14 @@ const NewProduct = () => {
             h="38px"
             w="156px"
             fontSize={"12px"}
-            type="submit"
-            // isDisabled={
-            //   !formik.values.CategoryId ||
-            //   !formik.values.BrandCategoryId ||
-            //   !formik.values.description ||
-            //   !formik.values.price ||
-            //   !formik.values.product_name ||
-            //   !formik.values.stock
-            // }
+            isDisabled={
+              !formik.values.CategoryId ||
+              !formik.values.BrandCategoryId ||
+              !formik.values.price ||
+              !formik.values.product_name ||
+              !formik.values.stock ||
+              !formik.values.image_url
+            }
           >
             Simpan
           </Button>
