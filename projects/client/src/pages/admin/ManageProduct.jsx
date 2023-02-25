@@ -27,7 +27,6 @@ const ManageProduct = () => {
   const [product, setProduct] = useState([]);
   const [productActive, setProductActive] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState(null);
-  console.log(deleteAlert?.id);
   const [icon, setIcon] = useState(false);
   const iconHandler = () => {
     icon ? setIcon(false) : setIcon(true);
@@ -77,14 +76,9 @@ const ManageProduct = () => {
             </Button>
           </Link>
         </Box>
+
         {/* Content */}
         <Box borderRadius={"8px"} bgColor="white">
-          {/* <Box h="53px" borderBottom={"1px solid var(--N75,#E5E7E9)"}>
-            <Box display={"flex"} alignContent="center" fontWeight={"bold"}>
-              <Box p="16px 24px">Semua Produk ({product?.length})</Box>
-              <Box p="16px 24px">Aktif({productActive?.length})</Box>
-            </Box>
-          </Box> */}
           <Box pt="16px" minH={"584px"}>
             <Box pl="24px" pr="32px" pb="12px">
               <Box>
@@ -169,32 +163,9 @@ const ManageProduct = () => {
                       <Box w="30%">
                         <Box w="180px" mb="8px">
                           Rp{val?.price?.toLocaleString("id-ID")}
-                          {/* <InputGroup>
-                            <InputLeftAddon
-                              children="Rp"
-                              p="0px 12px"
-                              fontSize={"14px"}
-                            />
-                            <Input
-                              p="8px 12px"
-                              type="text"
-                              value=
-                              fontSize="14px"
-                            />
-                          </InputGroup> */}
                         </Box>
                       </Box>
-                      <Box w="25%">
-                        {val?.stock}
-                        {/* <Box>
-                          <Input
-                            w="94px"
-                            type="number"
-                            value=
-                            fontSize="14px"
-                          />
-                        </Box> */}
-                      </Box>
+                      <Box w="25%">{val?.stock}</Box>
                       <Box w="16%">{val?.is_active ? "AKTIF" : "NONAKTIF"}</Box>
                       <Box>
                         <Menu>
@@ -214,16 +185,22 @@ const ManageProduct = () => {
                             Atur
                           </MenuButton>
                           <MenuList fontSize={"12px"}>
-                            <MenuItem
-                              p="6px 12px"
-                              h="36px"
-                              // onClick={() => setAlert(val)}
+                            <Link
+                              to={`/admin/edit-product/${val.product_name
+                                .replace(/\s+/g, "-")
+                                .toLowerCase()}/${val.id}`}
                             >
-                              <Box mr="8px">
-                                <BsPencil fontSize={"18px"} />
-                              </Box>
-                              Edit
-                            </MenuItem>
+                              <MenuItem
+                                p="6px 12px"
+                                h="36px"
+                                // onClick={() => setAlert(val)}
+                              >
+                                <Box mr="8px">
+                                  <BsPencil fontSize={"18px"} />
+                                </Box>
+                                Edit
+                              </MenuItem>
+                            </Link>
                             <MenuItem
                               p="6px 12px"
                               h="36px"

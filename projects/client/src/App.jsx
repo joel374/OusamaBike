@@ -6,6 +6,7 @@ import { axiosInstance } from "./api";
 import Sidebar from "./components/admin/Sidebar";
 import Navbar from "./components/Navbar";
 import Logo from "./components/reuseable/Logo";
+import EditProduct from "./pages/admin/EditProduct";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import ManageProduct from "./pages/admin/ManageProduct";
 import NewProduct from "./pages/admin/NewProduct";
@@ -94,6 +95,7 @@ const App = () => {
         <Sidebar />
       ) : null}
       <Routes>
+        {/* User */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verification" element={<Verification />} />
@@ -104,6 +106,10 @@ const App = () => {
         <Route path="/admin" element={<HomeAdmin />} />
         <Route path="/admin/manage-product" element={<ManageProduct />} />
         <Route path="/admin/add-product" element={<NewProduct />} />
+        <Route
+          path="/admin/edit-product/:product_name/:id"
+          element={<EditProduct />}
+        />
       </Routes>
     </>
   );
