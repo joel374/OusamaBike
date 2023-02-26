@@ -1,19 +1,22 @@
-import { Box, Button, Grid, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, Image, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { Link, useParams } from "react-router-dom";
-import { fetchProduct } from "../components/reuseable/fetch";
+import {
+  addToWishlistHandler,
+  fetchProduct,
+} from "../components/reuseable/fetch";
 import { heroColor } from "../components/reuseable/Logo";
 
 const Product = () => {
   const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isOver, setIsOver] = useState(false);
-  console.log(product);
   const [image, setImage] = useState(
     isLoading && product?.Image_Urls[0]?.image_url
   );
   const params = useParams();
+  const toast = useToast();
 
   const setProductLoading = () => {};
 
@@ -140,6 +143,23 @@ const Product = () => {
                 bgColor={heroColor}
                 color="white"
                 fontSize={"14px"}
+                onClick={() =>
+                  addToWishlistHandler(params.id).then((res) =>
+                    res.error
+                      ? toast({
+                          title: "Produk gagal ditambahkan ke wishlist",
+                          description: res,
+                          status: "error",
+                          variant: "top-accent",
+                        })
+                      : toast({
+                          title: "Produk ditambahkan ke wishlist",
+                          description: res,
+                          status: "success",
+                          variant: "top-accent",
+                        })
+                  )
+                }
               >
                 Wishlist
               </Button>

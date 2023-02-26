@@ -172,8 +172,8 @@ const EditProduct = () => {
       formik.setFieldValue("stock", product.stock);
       formik.setFieldValue("SKU", product.SKU);
       formik.setFieldValue(
-        "image_url",
-        Array.from(product.Image_Urls).map((val) => val.image_url)
+        "image_url"
+        // Array.from(product.Image_Urls).map((val) => val.image_url)
       );
     }
   }, [product]);

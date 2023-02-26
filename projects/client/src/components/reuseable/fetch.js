@@ -34,3 +34,14 @@ export const fetchProduct = async (id, is_active) => {
     console.log(error);
   }
 };
+
+export const addToWishlistHandler = async (id) => {
+  try {
+    const response = await axiosInstance.post(`/favorite/add/${id}`);
+
+    return response.data.message;
+  } catch (error) {
+    console.log(error);
+    return error.response.data.message;
+  }
+};

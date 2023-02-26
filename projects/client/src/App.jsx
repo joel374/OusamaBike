@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 import Product from "./pages/Product";
 import Register from "./pages/Register";
 import Verification from "./pages/Verification";
+import Wishlist from "./pages/Wishlist";
 import { login } from "./redux/features/authSlice";
 import { attach } from "./redux/features/resetSlice";
 
@@ -101,6 +102,7 @@ const App = () => {
         <Route path="/verification" element={<Verification />} />
         <Route path="/" element={<Home />} />
         <Route path="/:product_name/:id" element={<Product />} />
+        <Route path="/wishlist" element={<Wishlist />} />
 
         {/* Admin */}
         <Route path="/admin" element={<HomeAdmin />} />

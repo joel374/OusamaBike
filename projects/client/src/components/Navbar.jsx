@@ -12,29 +12,29 @@ import {
   PopoverTrigger,
   Text,
   useToast,
-} from "@chakra-ui/react"
-import { Link } from "react-router-dom"
-import { TbSearch } from "react-icons/tb"
-import { BiLogOutCircle } from "react-icons/bi"
-import { useDispatch, useSelector } from "react-redux"
-import Logo, { heroColor } from "./reuseable/Logo"
-import { logout } from "../redux/features/authSlice"
+} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import { TbSearch } from "react-icons/tb";
+import { BiHeart, BiLogOutCircle } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import Logo, { heroColor } from "./reuseable/Logo";
+import { logout } from "../redux/features/authSlice";
 
 const Navbar = () => {
-  const authSelector = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
-  const toast = useToast()
+  const authSelector = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const toast = useToast();
 
   const logoutBtnHandler = () => {
-    localStorage.removeItem("auth_token")
-    dispatch(logout())
+    localStorage.removeItem("auth_token");
+    dispatch(logout());
 
     toast({
       status: "info",
       title: "Akun Logout",
       variant: "top-accent",
-    })
-  }
+    });
+  };
   return (
     <Box
       boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
@@ -89,7 +89,6 @@ const Navbar = () => {
             </form>
           </Box>
 
-          {/* Navbar user logged in */}
           <Box
             display={"flex"}
             gap="4"
@@ -97,6 +96,7 @@ const Navbar = () => {
             fontWeight={"semibold"}
             pl={"8px"}
           >
+            {/* Navbar sudah login */}
             {authSelector.username ? (
               <Box display={"flex"} mr="2" ml="1" cursor={"pointer"}>
                 <Popover trigger={"hover"}>
@@ -177,6 +177,24 @@ const Navbar = () => {
                               <BiLogOutCircle />
                             </Box>
                           </Box>
+                          <Link to={"/wishlist"}>
+                            <Box
+                              display={"flex"}
+                              _hover={{
+                                bgColor: "#CAD5E2",
+                                borderRadius: "7px",
+                                color: heroColor,
+                              }}
+                              p={"5px 4px"}
+                              b="0"
+                              // onClick={logoutBtnHandler}
+                            >
+                              <Text>Wishlist</Text>
+                              <Box my="auto" ml="1">
+                                <BiHeart />
+                              </Box>
+                            </Box>
+                          </Link>
                         </Box>
                       </Box>
                     </PopoverBody>
@@ -184,6 +202,7 @@ const Navbar = () => {
                 </Popover>
               </Box>
             ) : (
+              // User belum login
               <Box gap="2" display={"flex"} pl={"15px"} mr={"0px"}>
                 <Link to={"/login"}>
                   <Box width={"73px"}>
@@ -228,7 +247,7 @@ const Navbar = () => {
         </HStack>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

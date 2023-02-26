@@ -16,7 +16,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetchProduct().then((res) =>
+    fetchProduct("", true).then((res) =>
       doubleOnclick(setProduct(res), setIsLoading(true))
     );
     fetchCategory().then((res) => setCategory(res));
