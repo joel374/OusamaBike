@@ -65,6 +65,26 @@ const favoriteController = {
       });
     }
   },
+  get: async (req, res) => {
+    try {
+      const response = await db.Favorite.findAll({
+        where: {
+          UserId: req.user.id,
+        },
+        include: [{ model: db.Product, include: [{ model: db.Image_Url }] }],
+      });
+
+      return res.status(200).json({
+        message: "Get Wishlist",
+        data: response,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Server Error",
+      });
+    }
+  },
 };
 
 module.exports = favoriteController;

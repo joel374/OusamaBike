@@ -45,3 +45,13 @@ export const addToWishlistHandler = async (id) => {
     return error.response.data.message;
   }
 };
+
+export const fetchWishlist = async () => {
+  try {
+    const response = await axiosInstance.get(`/favorite/get`);
+
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,6 +1,7 @@
 import { Box, Grid, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useState } from "react";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import Card from "../components/Card";
 import { fetchCategory, fetchProduct } from "../components/reuseable/fetch";
 import { doubleOnclick } from "./admin/ManageProduct";
@@ -35,13 +36,30 @@ const Home = () => {
                 p="10px 8px 9px 12px"
                 onClick={() => seeMoreBtnHandler()}
                 cursor="pointer"
+                display={"flex"}
+                justifyContent="space-between"
+                alignItems={"center"}
               >
                 Kategori
-                <Box display={seeMore ? "block" : "none"}>
-                  {category.map((val) => (
-                    <Text>{val?.category_name}</Text>
-                  ))}
-                </Box>
+                {seeMore ? (
+                  <BiChevronUp fontSize={"24px"} />
+                ) : (
+                  <BiChevronDown fontSize={"24px"} />
+                )}
+              </Box>
+              <Box display={seeMore ? "block" : "none"}>
+                {category.map((val) => (
+                  <Box
+                    m="6px 0"
+                    fontSize={"11.9px"}
+                    fontWeight="normal"
+                    display={"flex"}
+                    alignItems="center"
+                    ml="16px"
+                  >
+                    {val?.category_name}
+                  </Box>
+                ))}
               </Box>
               <Box p="10px 8px 9px 12px">Merek</Box>
             </Box>
