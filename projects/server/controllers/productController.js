@@ -56,6 +56,8 @@ const productController = {
         description,
       } = req.body;
 
+      console.log(req.body);
+
       const findProduct = await db.Product.findOne({
         where: {
           id,
@@ -163,8 +165,32 @@ const productController = {
         });
       }
 
+      if (CategoryId) {
+        const response = await db.Product.findAndCountAll({
+          limit: Number(_limit),
+          offset: (_page - 1) * _limit,
+          where: {
+            CategoryId: CategoryId,
+            is_active: true,
+          },
+          include: [
+            { model: db.Category },
+            { model: db.Brand_Category },
+            { model: db.Image_Url },
+          ],
+        });
+
+        return res.status(200).json({
+          message: "Get Product By CategoryId",
+          data: response.rows,
+          dataCount: response.count,
+        });
+      }
+
       if (is_active) {
-        const response = await db.Product.findAll({
+        const response = await db.Product.findAndCountAll({
+          limit: Number(_limit),
+          offset: (_page - 1) * _limit,
           include: [
             { model: db.Category },
             { model: db.Brand_Category },
@@ -176,8 +202,9 @@ const productController = {
         });
 
         return res.status(200).json({
-          message: "Get Product By is_active",
-          data: response,
+          message: "Get Product By is_active ",
+          data: response.rows,
+          dataCount: response.count,
         });
       }
 

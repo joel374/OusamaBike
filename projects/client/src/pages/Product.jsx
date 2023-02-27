@@ -7,21 +7,33 @@ import {
   fetchProduct,
 } from "../components/reuseable/fetch";
 import { heroColor } from "../components/reuseable/Logo";
+import { doubleOnclick } from "./admin/ManageProduct";
 
 const Product = () => {
   const [product, setProduct] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isOver, setIsOver] = useState(false);
-  const [image, setImage] = useState(
-    isLoading && product?.Image_Urls[0]?.image_url
-  );
+  console.log(isLoading);
+  console.log({ product });
+
+  const firstImage =
+    isLoading && product
+      ? Array.from(product?.Image_Urls)?.map((val) => val.image_url)
+      : null;
+
+  const imagesss = firstImage[0];
+  const [image, setImage] = useState(isLoading && imagesss);
+  console.log(imagesss);
+
   const params = useParams();
   const toast = useToast();
 
   const setProductLoading = () => {};
 
   useEffect(() => {
-    fetchProduct(params.id).then((res) => setProduct(res));
+    fetchProduct(params.id).then((res) =>
+      doubleOnclick(setProduct(res), setIsLoading(true))
+    );
   }, []);
   return (
     <Box p="19px 0 0 " mx="auto" w="1188px">

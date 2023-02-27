@@ -115,7 +115,7 @@ const EditProduct = () => {
         formik.setFieldValue("image_url", "");
 
         toast({
-          title: "Produk ditambahkan",
+          title: "Produk diedit",
           status: "success",
           description: response.data.message,
           variant: "top-accent",
@@ -123,9 +123,9 @@ const EditProduct = () => {
 
         navigate("/admin/manage-product");
       } catch (error) {
-        console.log(error);
+        console.log(error.response);
         toast({
-          title: "Produk gagal ditambahkan",
+          title: "Produk gagal diedit",
           status: "warning",
           description: error.response.data.message,
           variant: "top-accent",
@@ -524,6 +524,7 @@ const EditProduct = () => {
               !formik.values.stock ||
               !formik.values.image_url
             }
+            onClick={formik.handleSubmit}
           >
             Simpan
           </Button>

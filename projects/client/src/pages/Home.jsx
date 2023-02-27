@@ -56,6 +56,12 @@ const Home = () => {
                     display={"flex"}
                     alignItems="center"
                     ml="16px"
+                    onClick={() =>
+                      fetchProduct("", "", val.id).then((res) =>
+                        setProduct(res)
+                      )
+                    }
+                    cursor="pointer"
                   >
                     {val?.category_name}
                   </Box>

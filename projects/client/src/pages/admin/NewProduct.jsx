@@ -477,6 +477,7 @@ const NewProduct = () => {
               !formik.values.stock ||
               !formik.values.image_url
             }
+            type="submit"
           >
             Simpan
           </Button>
