@@ -14,7 +14,7 @@ const favoriteController = {
 
       if (findProduct) {
         return res.status(400).json({
-          message: "Product already exists in favorit",
+          message: "Product already exists in wishlist",
         });
       }
 
@@ -24,7 +24,7 @@ const favoriteController = {
       });
 
       return res.status(200).json({
-        message: "Added product to favorit",
+        message: "Product added to wishlist",
       });
     } catch (error) {
       console.log(error);
@@ -36,27 +36,27 @@ const favoriteController = {
   delete: async (req, res) => {
     try {
       const { ProductId } = req.params;
+      console.log(ProductId);
 
       const findProduct = await db.Favorite.findOne({
         where: {
-          ProductId,
+          ProductId: ProductId,
           UserId: req.user.id,
         },
       });
 
       if (!findProduct) {
         return res.status(400).json({
-          message: "Favorit not found",
+          message: "Product not found",
         });
       }
 
       await db.Favorite.destroy({
-        ProductId,
-        UserId: req.user.id,
+        where: { ProductId, UserId: req.user.id },
       });
 
       return res.status(200).json({
-        message: "Product deleted from favorit",
+        message: "Product deleted from wishlist",
       });
     } catch (error) {
       console.log(error);

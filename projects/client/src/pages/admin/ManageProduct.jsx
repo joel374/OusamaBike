@@ -34,8 +34,6 @@ const ManageProduct = () => {
   const toast = useToast();
   const cancelRef = React.useRef();
 
-  console.log(productActive);
-
   const deleteHandler = async (id) => {
     try {
       const response = await axiosInstance.delete(`/product/delete/${id}`);

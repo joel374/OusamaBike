@@ -11,28 +11,15 @@ import { doubleOnclick } from "./admin/ManageProduct";
 
 const Product = () => {
   const [product, setProduct] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const [isOver, setIsOver] = useState(false);
-  console.log(isLoading);
-  console.log({ product });
-
-  const firstImage =
-    isLoading && product
-      ? Array.from(product?.Image_Urls)?.map((val) => val.image_url)
-      : null;
-
-  const imagesss = firstImage[0];
-  const [image, setImage] = useState(isLoading && imagesss);
-  console.log(imagesss);
+  const [image, setImage] = useState({});
 
   const params = useParams();
   const toast = useToast();
 
-  const setProductLoading = () => {};
-
   useEffect(() => {
     fetchProduct(params.id).then((res) =>
-      doubleOnclick(setProduct(res), setIsLoading(true))
+      doubleOnclick(setProduct(res), setImage(res.Image_Urls[0].image_url))
     );
   }, []);
   return (
@@ -77,13 +64,15 @@ const Product = () => {
       </Box>
       <Grid templateColumns={"348px 468px auto"} gap="52px">
         <Box w="348px">
-          <Box>
+          <Box overflow={"hidden"} h="348px">
             <Image
-              w="348px"
-              h="348px"
-              src={isOver ? isOver : image}
-              onMouseOver={{ innerHeight: "200px" }}
+              w={isOver}
+              h={isOver}
+              src={image}
+              onMouseOver={() => setIsOver("600px")}
+              onMouseOut={() => setIsOver("348px")}
               objectFit="cover"
+              cursor={"pointer"}
             />
           </Box>
           <Box h="64px" display={"flex"} mt="8px">

@@ -41,7 +41,7 @@ const App = () => {
       localStorage.setItem("auth_token", response.data.token);
       setAuthCheck(true);
     } catch (err) {
-      console.log(err);
+      console.log(err.response);
       setAuthCheck(true);
     } finally {
       setAuthCheck(true);

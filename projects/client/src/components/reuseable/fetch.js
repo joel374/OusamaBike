@@ -6,17 +6,17 @@ export const fetchCategory = async () => {
 
     return response.data.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response);
   }
 };
 
 export const fetchBrandCategory = async () => {
   try {
     const response = await axiosInstance.get("/category/getBrand");
-    console.log(response);
+
     return response.data.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response);
   }
 };
 
@@ -33,11 +33,10 @@ export const fetchProduct = async (id, is_active, CategoryId) => {
           : ""
       }`
     );
-    console.log(response);
 
     return response.data.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response);
   }
 };
 
@@ -47,8 +46,19 @@ export const addToWishlistHandler = async (id) => {
 
     return response.data.message;
   } catch (error) {
-    console.log(error);
+    console.log(error.response);
     return error.response.data.message;
+  }
+};
+
+export const deleteWishlist = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/favorite/delete/${id}`);
+
+    return response.data.message;
+  } catch (error) {
+    console.log(error);
+    return error.message;
   }
 };
 
@@ -58,6 +68,6 @@ export const fetchWishlist = async () => {
 
     return response.data.data;
   } catch (error) {
-    console.log(error);
+    console.log(error.response);
   }
 };

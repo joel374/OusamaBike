@@ -1,4 +1,4 @@
-import { Box, Grid, Text } from "@chakra-ui/react";
+import { Box, Grid, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AiOutlineRight, AiOutlineUp } from "react-icons/ai";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
@@ -6,12 +6,15 @@ import { Link } from "react-router-dom";
 import Card from "../components/Card";
 import CardWishlist from "../components/CardWishlist";
 import {
+  deleteWishlist,
   fetchBrandCategory,
   fetchCategory,
   fetchWishlist,
 } from "../components/reuseable/fetch";
 import { heroColor } from "../components/reuseable/Logo";
 import { doubleOnclick } from "./admin/ManageProduct";
+
+const tripleOnclick = (a, b, c) => {};
 
 const Wishlist = () => {
   const [seeMore, setSeeMore] = useState(false);
@@ -20,6 +23,9 @@ const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
   const [category, setCategory] = useState([]);
   const [brand, setBrand] = useState([]);
+  console.log(wishlist);
+
+  const toast = useToast();
 
   const seeMoreBtnHandler = () => {
     seeMore ? setSeeMore(false) : setSeeMore(true);
@@ -65,63 +71,76 @@ const Wishlist = () => {
               boxShadow={"rgb(49 53 59 / 12%) 0px 1px 6px 0px"}
               borderRadius="12px"
             >
-              <Box p="10px 8px 9px 12px">
-                <Box
-                  display={"flex"}
-                  justifyContent="space-between"
-                  alignItems={"center"}
-                  onClick={() => seeMoreBtnHandler()}
-                  cursor="pointer"
-                >
-                  Kategori
-                  {seeMore ? (
-                    <BiChevronUp fontSize={"24px"} />
-                  ) : (
-                    <BiChevronDown fontSize={"24px"} />
-                  )}
-                </Box>
-                <Box display={seeMore ? "block" : "none"}>
-                  {category.map((val) => (
-                    <Box
-                      m="6px 0"
-                      fontSize={"11.9px"}
-                      fontWeight="normal"
-                      display={"flex"}
-                      alignItems="center"
-                      ml="16px"
-                    >
-                      {val?.category_name}
-                    </Box>
-                  ))}
-                </Box>
-                <Box
-                  display={"flex"}
-                  justifyContent="space-between"
-                  alignItems={"center"}
-                  onClick={() => seeMoreBtnHandler2()}
-                  cursor="pointer"
-                >
-                  Merek
-                  {seeMore2 ? (
-                    <BiChevronUp fontSize={"24px"} />
-                  ) : (
-                    <BiChevronDown fontSize={"24px"} />
-                  )}
-                </Box>
-                <Box display={seeMore2 ? "block" : "none"}>
-                  {brand.map((val) => (
-                    <Box
-                      m="6px 0"
-                      fontSize={"11.9px"}
-                      fontWeight="normal"
-                      display={"flex"}
-                      alignItems="center"
-                      ml="16px"
-                    >
-                      {val?.brand_name}
-                    </Box>
-                  ))}
-                </Box>
+              <Box
+                p="10px 8px 9px 12px"
+                onClick={() => seeMoreBtnHandler()}
+                cursor="pointer"
+                display={"flex"}
+                justifyContent="space-between"
+                alignItems={"center"}
+              >
+                Kategori
+                {seeMore ? (
+                  <BiChevronUp fontSize={"24px"} />
+                ) : (
+                  <BiChevronDown fontSize={"24px"} />
+                )}
+              </Box>
+              <Box display={seeMore ? "block" : "none"}>
+                {category?.map((val) => (
+                  <Box
+                    m="6px 0"
+                    fontSize={"11.9px"}
+                    fontWeight="normal"
+                    display={"flex"}
+                    alignItems="center"
+                    ml="16px"
+                    // onClick={() =>
+                    //   fetchProduct("", "", val.id).then((res) =>
+                    //     setProduct(res)
+                    //   )
+                    // }
+                    cursor="pointer"
+                  >
+                    {val?.category_name}
+                  </Box>
+                ))}
+              </Box>
+              <Box
+                p="10px 8px 9px 12px"
+                onClick={() => seeMoreBtnHandler2()}
+                cursor="pointer"
+                display={"flex"}
+                justifyContent="space-between"
+                alignItems={"center"}
+                borderTop="1px solid #edf2f7"
+              >
+                Merek
+                {seeMore2 ? (
+                  <BiChevronUp fontSize={"24px"} />
+                ) : (
+                  <BiChevronDown fontSize={"24px"} />
+                )}
+              </Box>
+              <Box display={seeMore2 ? "block" : "none"} pb="9px">
+                {brand?.map((val) => (
+                  <Box
+                    m="6px 0"
+                    fontSize={"11.9px"}
+                    fontWeight="normal"
+                    display={"flex"}
+                    alignItems="center"
+                    ml="16px"
+                    // onClick={() =>
+                    //   fetchProduct("", "", val.id).then((res) =>
+                    //     setProduct(res)
+                    //   )
+                    // }
+                    cursor="pointer"
+                  >
+                    {val?.brand_name}
+                  </Box>
+                ))}
               </Box>
             </Box>
           </Box>
@@ -137,6 +156,34 @@ const Wishlist = () => {
                       product_name={val.Product.product_name}
                       id={val.Product.id}
                       key={val.id}
+                      deleteHandler={() =>
+                        doubleOnclick(
+                          deleteWishlist(val.ProductId).then((res) =>
+                            tripleOnclick(
+                              res.error
+                                ? toast({
+                                    title: "Produk gagal dihapus dari wishlist",
+                                    description: res,
+                                    status: "error",
+                                    variant: "top-accent",
+                                  })
+                                : toast({
+                                    title: "Produk dihapus dari wishlist",
+                                    description: res,
+                                    status: "success",
+                                    variant: "top-accent",
+                                  }),
+                              setIsLoading(false),
+                              fetchWishlist().then((res) =>
+                                doubleOnclick(
+                                  setWishlist(res),
+                                  setIsLoading(true)
+                                )
+                              )
+                            )
+                          )
+                        )
+                      }
                     />
                   ))
                 : "Loading Broo"}
