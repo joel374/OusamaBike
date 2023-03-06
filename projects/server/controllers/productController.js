@@ -27,7 +27,7 @@ const productController = {
       }
 
       const response = await db.Product.create(req.body);
-      const image_url = `http://localhost:8000/public/${req.file.filename}`;
+      const image_url = req.file.filename;
 
       await db.Image_Url.create({ image_url, ProductId: response.id });
 
@@ -55,8 +55,6 @@ const productController = {
         price,
         description,
       } = req.body;
-
-      console.log(req.body);
 
       const findProduct = await db.Product.findOne({
         where: {
@@ -118,6 +116,12 @@ const productController = {
         });
       }
 
+      await db.Image_Url.destroy({
+        where: {
+          ProductId: id,
+        },
+      });
+
       await db.Product.destroy({
         where: req.params,
       });
@@ -141,9 +145,9 @@ const productController = {
         CategoryId = "",
         BrandCategoryId = "",
         is_active = "",
-        _sortBy = "id",
+        _sortBy = "product_name",
         _sortDir = "ASC",
-        _limit = 20,
+        _limit = 6,
         _page = 1,
       } = req.query;
 
@@ -228,6 +232,8 @@ const productController = {
           ["price", "DESC"],
         ],
       });
+
+      console.log(response);
 
       return res.status(200).json({
         message: "Get All Product",

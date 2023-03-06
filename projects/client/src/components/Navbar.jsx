@@ -19,6 +19,7 @@ import { BiHeart, BiLogOutCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import Logo, { heroColor } from "./reuseable/Logo";
 import { logout } from "../redux/features/authSlice";
+import { RiAdminLine } from "react-icons/ri";
 
 const Navbar = () => {
   const authSelector = useSelector((state) => state.auth);
@@ -109,7 +110,7 @@ const Navbar = () => {
                       paddingLeft="5px"
                       paddingRight={"5px"}
                       _hover={{
-                        bgColor: "#CAD5E2",
+                        bgColor: "var(--N50,#F3F4F5)",
                         color: heroColor,
                         borderRadius: "3px",
                       }}
@@ -129,16 +130,16 @@ const Navbar = () => {
                       </Text>
                     </Box>
                   </PopoverTrigger>
-                  <PopoverContent w={"300px"} mr="4" bgColor={"#ecf0f1"}>
+                  <PopoverContent w={"300px"} mr="4" bgColor={"white"}>
                     <PopoverBody>
-                      <Box p="2 4" bgColor={"#ecf0f1"}>
+                      <Box p="2 4" bgColor={"white"}>
                         <Box
                           boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
                           display={"flex"}
                           my="auto"
                           padding="6px 12px"
                           borderRadius={"5px"}
-                          bgColor={"#ecf0f1"}
+                          bgColor={"white"}
                           cursor={"pointer"}
                         >
                           <Avatar
@@ -161,10 +162,46 @@ const Navbar = () => {
                         </Box>
 
                         <Box fontSize={"14px"} p="10px 0">
+                          <Link to={"/admin"}>
+                            <Box
+                              display={
+                                authSelector.is_admin === true ? "flex" : "none"
+                              }
+                              _hover={{
+                                bgColor: "var(--N50,#F3F4F5)",
+                                borderRadius: "7px",
+                                color: heroColor,
+                              }}
+                              p={"5px 4px"}
+                              b="0"
+                            >
+                              <Text>Admin</Text>
+                              <Box my="auto" ml="1">
+                                <RiAdminLine />
+                              </Box>
+                            </Box>
+                          </Link>
+                          <Link to={"/wishlist"}>
+                            <Box
+                              display={"flex"}
+                              _hover={{
+                                bgColor: "var(--N50,#F3F4F5)",
+                                borderRadius: "7px",
+                                color: heroColor,
+                              }}
+                              p={"5px 4px"}
+                              b="0"
+                            >
+                              <Text>Wishlist</Text>
+                              <Box my="auto" ml="1">
+                                <BiHeart />
+                              </Box>
+                            </Box>
+                          </Link>
                           <Box
                             display={"flex"}
                             _hover={{
-                              bgColor: "#CAD5E2",
+                              bgColor: "var(--N50,#F3F4F5)",
                               borderRadius: "7px",
                               color: heroColor,
                             }}
@@ -177,24 +214,6 @@ const Navbar = () => {
                               <BiLogOutCircle />
                             </Box>
                           </Box>
-                          <Link to={"/wishlist"}>
-                            <Box
-                              display={"flex"}
-                              _hover={{
-                                bgColor: "#CAD5E2",
-                                borderRadius: "7px",
-                                color: heroColor,
-                              }}
-                              p={"5px 4px"}
-                              b="0"
-                              // onClick={logoutBtnHandler}
-                            >
-                              <Text>Wishlist</Text>
-                              <Box my="auto" ml="1">
-                                <BiHeart />
-                              </Box>
-                            </Box>
-                          </Link>
                         </Box>
                       </Box>
                     </PopoverBody>

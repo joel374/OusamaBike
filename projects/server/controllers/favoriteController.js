@@ -36,7 +36,6 @@ const favoriteController = {
   delete: async (req, res) => {
     try {
       const { ProductId } = req.params;
-      console.log(ProductId);
 
       const findProduct = await db.Favorite.findOne({
         where: {
@@ -67,7 +66,24 @@ const favoriteController = {
   },
   get: async (req, res) => {
     try {
-      const response = await db.Favorite.findAll({
+      const {
+        id = "",
+        product_name = "",
+        CategoryId = "",
+        BrandCategoryId = "",
+        _sortBy = "product_name",
+        _sortDir = "ASC",
+        _limit = 6,
+        _page = 1,
+      } = req.query;
+
+      const response = await db.Favorite.findAndCountAll({
+        limit: Number(_limit),
+        offset: (_page - 1) * _limit,
+        order: [
+          [_sortBy, _sortDir],
+          ["price", "DESC"],
+        ],
         where: {
           UserId: req.user.id,
         },
@@ -76,7 +92,8 @@ const favoriteController = {
 
       return res.status(200).json({
         message: "Get Wishlist",
-        data: response,
+        data: response.rows,
+        dataCount: response.count,
       });
     } catch (error) {
       console.log(error);

@@ -5,6 +5,7 @@ const initialState = {
   username: "",
   email: "",
   is_verify: false,
+  is_admin: false,
 };
 
 const authSlice = createSlice({
@@ -16,12 +17,14 @@ const authSlice = createSlice({
       state.username = action.payload.username;
       state.email = action.payload.email;
       state.is_verify = action.payload.is_verify;
+      state.is_admin = action.payload.is_admin;
     },
     logout: (state) => {
       state.id = 0;
       state.username = "";
       state.email = "";
       state.is_verify = false;
+      state.is_admin = false;
     },
   },
 });

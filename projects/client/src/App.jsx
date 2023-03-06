@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { axiosInstance } from "./api";
+import AdminRoute from "./components/admin/AdminRoute";
 import Sidebar from "./components/admin/Sidebar";
 import Navbar from "./components/Navbar";
 import Logo from "./components/reuseable/Logo";
@@ -74,7 +75,7 @@ const App = () => {
   useEffect(() => {
     keepUserLoggedIn();
     userResetData();
-  }, []);
+  });
   if (!authCheck) {
     return (
       <Box textAlign={"center"}>
@@ -105,12 +106,37 @@ const App = () => {
         <Route path="/wishlist" element={<Wishlist />} />
 
         {/* Admin */}
-        <Route path="/admin" element={<HomeAdmin />} />
-        <Route path="/admin/manage-product" element={<ManageProduct />} />
-        <Route path="/admin/add-product" element={<NewProduct />} />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <HomeAdmin />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/manage-product"
+          element={
+            <AdminRoute>
+              <ManageProduct />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/add-product"
+          element={
+            <AdminRoute>
+              <NewProduct />
+            </AdminRoute>
+          }
+        />
         <Route
           path="/admin/edit-product/:product_name/:id"
-          element={<EditProduct />}
+          element={
+            <AdminRoute>
+              <EditProduct />
+            </AdminRoute>
+          }
         />
       </Routes>
     </>

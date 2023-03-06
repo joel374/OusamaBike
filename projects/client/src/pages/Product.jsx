@@ -21,7 +21,7 @@ const Product = () => {
     fetchProduct(params.id).then((res) =>
       doubleOnclick(setProduct(res), setImage(res.Image_Urls[0].image_url))
     );
-  }, []);
+  });
   return (
     <Box p="19px 0 0 " mx="auto" w="1188px">
       <Box mb="19px">
@@ -68,7 +68,7 @@ const Product = () => {
             <Image
               w={isOver}
               h={isOver}
-              src={image}
+              src={`${process.env.REACT_APP_API_IMAGE_URL}${image}`}
               onMouseOver={() => setIsOver("600px")}
               onMouseOut={() => setIsOver("348px")}
               objectFit="cover"
@@ -84,9 +84,8 @@ const Product = () => {
               >
                 <Image
                   key={val.id}
-                  src={val.image_url}
+                  src={`${process.env.REACT_APP_API_IMAGE_URL}${val.image_url}`}
                   border="2px solid white"
-                  // onMouseOver={overHandler}
                   borderRadius={"8px"}
                   w="60px"
                   h="60px"
@@ -118,7 +117,7 @@ const Product = () => {
               </Text>
             </Text>
           </Box>
-          <Box mt="12px" fontSize={"14px"} whiteSpace="nowrap">
+          <Box mt="12px" fontSize={"14px"} whiteSpace="pre-line">
             {product?.description}
           </Box>
         </Box>

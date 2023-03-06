@@ -18,7 +18,6 @@ const categoryController = {
       }
 
       const response = await db.Category.create(req.body);
-      console.log(response);
 
       return res.status(200).json({
         message: "Category added",

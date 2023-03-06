@@ -54,25 +54,44 @@ const Home = () => {
               >
                 Kategori
                 {seeMore ? (
-                  <BiChevronUp fontSize={"24px"} />
+                  <Box
+                    _hover={{
+                      borderRadius: "50%",
+                      bgColor: "var(--N50,#F3F4F5)",
+                    }}
+                  >
+                    <BiChevronUp fontSize={"24px"} />
+                  </Box>
                 ) : (
-                  <BiChevronDown fontSize={"24px"} />
+                  <Box
+                    _hover={{
+                      borderRadius: "50%",
+                      bgColor: "var(--N50,#F3F4F5)",
+                    }}
+                  >
+                    <BiChevronDown fontSize={"24px"} />
+                  </Box>
                 )}
               </Box>
               <Box display={seeMore ? "block" : "none"}>
                 {category?.map((val) => (
                   <Box
-                    m="6px 0"
+                    p="6px 0"
                     fontSize={"11.9px"}
                     fontWeight="normal"
                     display={"flex"}
                     alignItems="center"
                     ml="16px"
+                    pl="12px"
                     onClick={() =>
                       fetchProduct("", "", val.id).then((res) =>
                         setProduct(res)
                       )
                     }
+                    _hover={{
+                      bgColor: "var(--N50,#F3F4F5)",
+                    }}
+                    borderLeftRadius="8px"
                     cursor="pointer"
                   >
                     {val?.category_name}
@@ -90,20 +109,39 @@ const Home = () => {
               >
                 Merek
                 {seeMore2 ? (
-                  <BiChevronUp fontSize={"24px"} />
+                  <Box
+                    _hover={{
+                      borderRadius: "50%",
+                      bgColor: "var(--N50,#F3F4F5)",
+                    }}
+                  >
+                    <BiChevronUp fontSize={"24px"} />
+                  </Box>
                 ) : (
-                  <BiChevronDown fontSize={"24px"} />
+                  <Box
+                    _hover={{
+                      borderRadius: "50%",
+                      bgColor: "var(--N50,#F3F4F5)",
+                    }}
+                  >
+                    <BiChevronDown fontSize={"24px"} />
+                  </Box>
                 )}
               </Box>
               <Box display={seeMore2 ? "block" : "none"} pb="9px">
                 {brand?.map((val) => (
                   <Box
-                    m="6px 0"
+                    p="6px 0"
                     fontSize={"11.9px"}
                     fontWeight="normal"
                     display={"flex"}
                     alignItems="center"
                     ml="16px"
+                    pl="12px"
+                    borderRadius={"8px"}
+                    _hover={{
+                      bgColor: "var(--N50,#F3F4F5)",
+                    }}
                     onClick={() =>
                       fetchProduct("", "", val.id).then((res) =>
                         setProduct(res)

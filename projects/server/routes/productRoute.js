@@ -9,8 +9,7 @@ router.post(
   verifyToken,
   upload({
     acceptedFileTypes: ["jpg", "jpeg", "png"],
-    filePrefix: "Product_Image",
-    fileName: Date.now(),
+    filePrefix: "PRODUCT",
   }).single("image_url"),
   productController.add
 );

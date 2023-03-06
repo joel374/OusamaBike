@@ -69,7 +69,12 @@ const ManageProduct = () => {
             Daftar Produk
           </Text>
           <Link to={"/admin/add-product"}>
-            <Button bgColor={heroColor} color="white">
+            <Button
+              bgColor={heroColor}
+              color="white"
+              _active={false}
+              _hover={false}
+            >
               + Tambah Produk
             </Button>
           </Link>
@@ -139,7 +144,7 @@ const ManageProduct = () => {
                         <Box display={"flex"}>
                           <Box>
                             <Image
-                              src={val.Image_Urls[0]?.image_url}
+                              src={`${process.env.REACT_APP_API_IMAGE_URL}${val.Image_Urls[0]?.image_url}`}
                               w="56px"
                               h="56px"
                             />

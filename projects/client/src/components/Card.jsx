@@ -11,7 +11,7 @@ const Card = ({ image_url, product_name, price, id }) => {
           borderRadius="9px"
         >
           <Image
-            src={image_url}
+            src={`${process.env.REACT_APP_API_IMAGE_URL}${image_url}`}
             h="175.55px"
             objectFit={"cover"}
             objectPosition={"center center"}
