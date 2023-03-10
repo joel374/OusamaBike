@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Logo from "./components/reuseable/Logo";
 import EditProduct from "./pages/admin/EditProduct";
 import HomeAdmin from "./pages/admin/HomeAdmin";
+import ManageCategory from "./pages/admin/ManageCategory";
 import ManageProduct from "./pages/admin/ManageProduct";
 import NewProduct from "./pages/admin/NewProduct";
 import Home from "./pages/Home";
@@ -93,7 +94,8 @@ const App = () => {
         <Navbar />
       )}
       {location.pathname === "/admin" ||
-      location.pathname === "/admin/manage-product" ? (
+      location.pathname === "/admin/manage-product" ||
+      location.pathname === "/admin/manage-category" ? (
         <Sidebar />
       ) : null}
       <Routes>
@@ -101,8 +103,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verification" element={<Verification />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/:product_name/:id" element={<Product />} />
+        <Route path="/product" element={<Home />} />
+        <Route path="/product/:product_name/:id" element={<Product />} />
         <Route path="/wishlist" element={<Wishlist />} />
 
         {/* Admin */}
@@ -135,6 +137,14 @@ const App = () => {
           element={
             <AdminRoute>
               <EditProduct />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/manage-category"
+          element={
+            <AdminRoute>
+              <ManageCategory />
             </AdminRoute>
           }
         />

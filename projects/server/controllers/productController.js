@@ -27,7 +27,8 @@ const productController = {
       }
 
       const response = await db.Product.create(req.body);
-      const image_url = req.file.filename;
+      const [image_url] = req.file.filename;
+      console.log(req.file.filename);
 
       await db.Image_Url.create({ image_url, ProductId: response.id });
 
@@ -233,7 +234,7 @@ const productController = {
         ],
       });
 
-      console.log(response);
+      // console.log(response);
 
       return res.status(200).json({
         message: "Get All Product",

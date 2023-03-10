@@ -10,7 +10,13 @@ router.post(
   upload({
     acceptedFileTypes: ["jpg", "jpeg", "png"],
     filePrefix: "PRODUCT",
-  }).single("image_url"),
+  }).fields([
+    { name: "image_url1" },
+    { name: "image_url2" },
+    { name: "image_url3" },
+    { name: "image_url4" },
+    { name: "image_url5" },
+  ]),
   productController.add
 );
 router.patch("/update/:id", verifyToken, productController.update);

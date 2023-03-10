@@ -133,7 +133,7 @@ const Sidebar = () => {
         fontWeight="normal"
         bgColor={"white"}
       >
-        <Link to="/admin/">
+        <Link to="/admin/manage-category">
           <Box m="2px 0" pl="29px">
             <Box
               p="4px 0"

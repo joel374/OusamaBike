@@ -14,7 +14,7 @@ import {
 import { heroColor } from "../components/reuseable/Logo";
 import { doubleOnclick } from "./admin/ManageProduct";
 
-const tripleOnclick = (a, b, c) => {};
+export const tripleOnclick = (a, b, c) => {};
 
 const Wishlist = () => {
   const [seeMore, setSeeMore] = useState(false);

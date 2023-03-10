@@ -1,8 +1,9 @@
-import { Box, Grid, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { IoIosAlert } from "react-icons/io";
+import { useParams, useSearchParams } from "react-router-dom";
 import Card from "../components/Card";
 import {
   fetchBrandCategory,
@@ -18,6 +19,7 @@ const Home = () => {
   const [category, setCategory] = useState([]);
   const [brand, setBrand] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const seeMoreBtnHandler = () => {
     seeMore ? setSeeMore(false) : setSeeMore(true);
@@ -25,6 +27,15 @@ const Home = () => {
 
   const seeMoreBtnHandler2 = () => {
     seeMore2 ? setSeeMore2(false) : setSeeMore2(true);
+  };
+
+  const categoryHandler = ({ target }) => {
+    const { value } = target;
+    console.log(value);
+    const params = {};
+    params["kategori"] = value;
+    setSearchParams(params);
+    fetchProduct("", "", value).then((res) => setProduct(res));
   };
 
   useEffect(() => {
@@ -75,7 +86,7 @@ const Home = () => {
               </Box>
               <Box display={seeMore ? "block" : "none"}>
                 {category?.map((val) => (
-                  <Box
+                  <Button
                     p="6px 0"
                     fontSize={"11.9px"}
                     fontWeight="normal"
@@ -83,19 +94,16 @@ const Home = () => {
                     alignItems="center"
                     ml="16px"
                     pl="12px"
-                    onClick={() =>
-                      fetchProduct("", "", val.id).then((res) =>
-                        setProduct(res)
-                      )
-                    }
+                    onClick={categoryHandler}
                     _hover={{
                       bgColor: "var(--N50,#F3F4F5)",
                     }}
+                    value={val.id}
                     borderLeftRadius="8px"
                     cursor="pointer"
                   >
                     {val?.category_name}
-                  </Box>
+                  </Button>
                 ))}
               </Box>
               <Box

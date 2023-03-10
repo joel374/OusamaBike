@@ -1,61 +1,45 @@
+import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import React, { useEffect, useState } from "react";
+import { BsPencil, BsTrash } from "react-icons/bs";
+import { TbSearch } from "react-icons/tb";
+import Alert from "../../components/reuseable/Alert";
+import {
+  deleteCategory,
+  fetchCategory,
+} from "../../components/reuseable/fetch";
+import { heroColor } from "../../components/reuseable/Logo";
+import { doubleOnclick } from "./ManageProduct";
 import {
   Box,
-  Button,
-  Image,
-  Input,
   InputGroup,
+  Input,
+  Button,
+  Text,
   Menu,
   MenuButton,
-  MenuItem,
   MenuList,
-  Text,
+  MenuItem,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { TbSearch } from "react-icons/tb";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { BsPencil, BsTrash } from "react-icons/bs";
-import { fetchProduct } from "../../components/reuseable/fetch";
-import { axiosInstance } from "../../api";
-import Alert from "../../components/reuseable/Alert";
-import { heroColor } from "../../components/reuseable/Logo";
-import { Link } from "react-router-dom";
+import CategoryForm from "../../components/admin/CategoryForm";
 
-export const doubleOnclick = (function1, function2) => {};
-
-const ManageProduct = () => {
-  const [product, setProduct] = useState([]);
-  const [productActive, setProductActive] = useState([]);
+const ManageCategory = () => {
+  const [category, setCategory] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState(null);
   const [icon, setIcon] = useState(false);
+  const toast = useToast();
+  const cancelRef = React.useRef();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const iconHandler = () => {
     icon ? setIcon(false) : setIcon(true);
   };
-  const toast = useToast();
-  const cancelRef = React.useRef();
-
-  const deleteHandler = async (id) => {
-    try {
-      const response = await axiosInstance.delete(`/product/delete/${id}`);
-
-      toast({
-        title: "Produk dihapus",
-        status: "success",
-        variant: "top-accent",
-        description: response.data.message,
-      });
-      fetchProduct().then((res) => setProduct(res));
-    } catch (error) {
-      console.log(error.response);
-    }
-  };
 
   useEffect(() => {
-    fetchProduct().then((res) => setProduct(res));
-    fetchProduct("", 1).then((res) => setProductActive(res));
+    fetchCategory().then((res) => setCategory(res));
   }, []);
   return (
-    <Box pl="237px" bgColor={"var(--N50,#F3F4F5)"} fontSize="14px" h="100%">
+    <Box Box pl="237px" bgColor={"var(--N50,#F3F4F5)"} fontSize="14px" h="100%">
       <Box p="24px">
         {/* Header */}
         <Box
@@ -66,18 +50,18 @@ const ManageProduct = () => {
           justifyContent={"space-between"}
         >
           <Text fontSize={"24px"} fontWeight="bold">
-            Daftar Produk
+            Daftar Kategori
           </Text>
-          <Link to={"/admin/add-product"}>
-            <Button
-              bgColor={heroColor}
-              color="white"
-              _active={false}
-              _hover={false}
-            >
-              + Tambah Produk
-            </Button>
-          </Link>
+
+          <Button
+            bgColor={heroColor}
+            color="white"
+            _active={false}
+            _hover={false}
+            onClick={onOpen}
+          >
+            + Tambah Kategori
+          </Button>
         </Box>
 
         {/* Content */}
@@ -87,7 +71,7 @@ const ManageProduct = () => {
               <Box>
                 <InputGroup>
                   <Input
-                    placeholder="Cari nama produk atau SKU"
+                    placeholder="Cari kategori"
                     _placeholder={{ fontSize: "14px" }}
                     w="234px"
                     borderRightRadius={"0"}
@@ -119,16 +103,13 @@ const ManageProduct = () => {
                   fontSize="12px"
                 >
                   <Box pl="7px" pr="32px" w="45%">
-                    INFO PRODUK
+                    Nama Kategori
                   </Box>
-                  <Box w="30%">HARGA</Box>
-                  <Box w="25%">STOK</Box>
-                  <Box w="16%">STATUS</Box>
-                  <Box w="6%"> </Box>
+                  <Box w="30%">Action</Box>
                 </Box>
               </Box>
 
-              {product.map((val) => {
+              {category.map((val) => {
                 return (
                   <Box
                     borderBottom={"1px solid var(--N75,#E5E7E9)"}
@@ -141,35 +122,8 @@ const ManageProduct = () => {
                       fontSize="14px"
                     >
                       <Box pl="7px" pr="32px" w="45%">
-                        <Box display={"flex"}>
-                          <Box>
-                            <Image
-                              src={`${process.env.REACT_APP_API_IMAGE_URL}${val.Image_Urls[0]?.image_url}`}
-                              w="56px"
-                              h="56px"
-                            />
-                          </Box>
-                          <Box pl="12px" pr="32px" h="82px">
-                            <Text
-                              maxH={"66px"}
-                              overflow="hidden"
-                              textOverflow={"ellipsis"}
-                            >
-                              {val?.product_name}
-                            </Text>
-                            <Text fontWeight={"normal"}>
-                              SKU:{val?.SKU ? val.SKU : "-"}
-                            </Text>
-                          </Box>
-                        </Box>
+                        {val?.category_name}
                       </Box>
-                      <Box w="30%">
-                        <Box w="180px" mb="8px">
-                          Rp{val?.price?.toLocaleString("id-ID")}
-                        </Box>
-                      </Box>
-                      <Box w="25%">{val?.stock}</Box>
-                      <Box w="16%">{val?.is_active ? "AKTIF" : "NONAKTIF"}</Box>
                       <Box>
                         <Menu>
                           <MenuButton
@@ -188,22 +142,17 @@ const ManageProduct = () => {
                             Atur
                           </MenuButton>
                           <MenuList fontSize={"12px"}>
-                            <Link
-                              to={`/admin/edit-product/${val.product_name
-                                .replace(/\s+/g, "-")
-                                .toLowerCase()}/${val.id}`}
+                            <MenuItem
+                              p="6px 12px"
+                              h="36px"
+                              // onClick={() => setAlert(val)}
                             >
-                              <MenuItem
-                                p="6px 12px"
-                                h="36px"
-                                // onClick={() => setAlert(val)}
-                              >
-                                <Box mr="8px">
-                                  <BsPencil fontSize={"18px"} />
-                                </Box>
-                                Edit
-                              </MenuItem>
-                            </Link>
+                              <Box mr="8px">
+                                <BsPencil fontSize={"18px"} />
+                              </Box>
+                              Edit
+                            </MenuItem>
+
                             <MenuItem
                               p="6px 12px"
                               h="36px"
@@ -229,9 +178,9 @@ const ManageProduct = () => {
 
       <Alert
         // key={deleteAlert?.id.toString()}
-        body={deleteAlert?.product_name}
-        header="Hapus Produk?"
-        responsive="Hapus Produk?"
+        body={deleteAlert?.category_name}
+        header="Hapus Kategori?"
+        responsive="Hapus Kategori?"
         isOpen={deleteAlert}
         cancelRef={cancelRef}
         color={heroColor}
@@ -239,11 +188,43 @@ const ManageProduct = () => {
         rightButton={"Hapus"}
         onClose={() => setDeleteAlert(null)}
         onSubmit={() =>
-          doubleOnclick(deleteHandler(deleteAlert?.id), setDeleteAlert(null))
+          doubleOnclick(
+            deleteCategory(deleteAlert?.id).then((res) =>
+              doubleOnclick(
+                res.error
+                  ? toast({
+                      title: "Kategori gagal dihapus",
+                      description: res,
+                      status: "error",
+                      variant: "top-accent",
+                    })
+                  : // console.log(res),
+                    toast({
+                      title: "Kategori dihapus",
+                      description: res,
+                      status: "success",
+                      variant: "top-accent",
+                    }),
+                fetchCategory().then((res) => setCategory(res))
+              )
+            ),
+            setDeleteAlert(null)
+          )
         }
+      />
+
+      <CategoryForm
+        isOpen={isOpen}
+        onClose={onClose}
+        header={"Kategori Baru"}
+        input1={"Nama Kategori"}
+        input1Name={"category_name"}
+        input1Type={"text"}
+        apiUrl="/category/add"
+        fetch={() => setCategory()}
       />
     </Box>
   );
 };
 
-export default ManageProduct;
+export default ManageCategory;

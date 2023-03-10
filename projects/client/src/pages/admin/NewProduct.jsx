@@ -28,6 +28,9 @@ const NewProduct = () => {
   const [active, setActive] = useState(0);
   const toast = useToast();
   const navigate = useNavigate();
+  const [imageArr, setImageArr] = useState([]);
+  const array = [];
+  console.log("ImageArr", { array });
 
   const activeHandler = () => {
     active ? setActive(0) : setActive(1);
@@ -113,7 +116,7 @@ const NewProduct = () => {
         .min(1000, "Harga tidak boleh kurang dari Rp1.000"),
       stock: Yup.number()
         .required("Stok harus diisi")
-        .min(1, "Tidak boleh kurang dari 1"),
+        .min(1, "Stok tidak boleh kurang dari 1"),
       image_url: Yup.string().required("Silahkan pilih Foto Produk"),
       CategoryId: Yup.string().required("Silahkan pilih Kategori"),
       BrandCategoryId: Yup.string().required("Silahkan pilih Merek"),
@@ -173,11 +176,21 @@ const NewProduct = () => {
             <Box>
               <FormControl isInvalid={formik.errors.image_url}>
                 <Box ml="70px" display={"flex"}>
-                  <ImageBox desc={"Foto Utama"} formik={formik} />
-                  <ImageBox desc={"Foto 2"} formik={formik} />
-                  <ImageBox desc={"Foto 3"} formik={formik} />
+                  <ImageBox
+                    selectedImages={(res) => array.push(res)}
+                    desc={"Foto Utama"}
+                    name={"image_url1"}
+                    formik={formik}
+                  />
+                  <ImageBox
+                    selectedImages={(res) => array.push(res)}
+                    desc={"Foto 2"}
+                    name={"image_url2"}
+                    formik={formik}
+                  />
+                  {/* <ImageBox desc={"Foto 3"} formik={formik} />
                   <ImageBox desc={"Foto 4"} formik={formik} />
-                  <ImageBox desc={"Foto 5"} formik={formik} />
+                  <ImageBox desc={"Foto 5"} formik={formik} /> */}
                 </Box>
                 <FormErrorMessage ml="70px" mt="-20px">
                   {formik.errors.image_url}

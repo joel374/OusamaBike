@@ -10,6 +10,18 @@ export const fetchCategory = async () => {
   }
 };
 
+export const deleteCategory = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/category/delete/${id}`);
+    // console.log(response.data.message);
+
+    return response.data.message;
+  } catch (error) {
+    console.log(error);
+    return error.response.data.message;
+  }
+};
+
 export const fetchBrandCategory = async () => {
   try {
     const response = await axiosInstance.get("/category/getBrand");

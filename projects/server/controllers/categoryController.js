@@ -72,7 +72,11 @@ const categoryController = {
     try {
       const { id } = req.params;
 
-      const findCategory = await db.Category.findOne({ where: id });
+      const findCategory = await db.Category.findOne({
+        where: {
+          id: id,
+        },
+      });
 
       if (!findCategory) {
         return res.status(400).json({
@@ -81,7 +85,7 @@ const categoryController = {
       }
 
       await db.Category.destroy({
-        where: id,
+        where: { id: id },
       });
 
       return res.status(200).json({
