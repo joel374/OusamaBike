@@ -148,7 +148,7 @@ const Sidebar = () => {
             </Box>
           </Box>
         </Link>
-        <Link to="/admin/">
+        <Link to="/admin/manage-brand">
           <Box m="2px 0" pl="29px">
             <Box
               p="4px 0"

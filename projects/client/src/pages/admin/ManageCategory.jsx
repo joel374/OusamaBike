@@ -1,18 +1,12 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { BsPencil, BsTrash } from "react-icons/bs";
-import { TbSearch } from "react-icons/tb";
 import Alert from "../../components/reuseable/Alert";
-import {
-  deleteCategory,
-  fetchCategory,
-} from "../../components/reuseable/fetch";
+import { deleteCategory } from "../../components/reuseable/fetch";
 import { heroColor } from "../../components/reuseable/Logo";
 import { doubleOnclick } from "./ManageProduct";
 import {
   Box,
-  InputGroup,
-  Input,
   Button,
   Text,
   Menu,
@@ -21,13 +15,25 @@ import {
   MenuItem,
   useToast,
   useDisclosure,
+  Select,
 } from "@chakra-ui/react";
 import CategoryForm from "../../components/admin/CategoryForm";
+import { axiosInstance } from "../../api";
+import Pagination from "../../components/reuseable/Pagination";
+import moment from "moment";
+import { useFormik } from "formik";
+import Search from "../../components/reuseable/Search";
 
 const ManageCategory = () => {
   const [category, setCategory] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState(null);
   const [icon, setIcon] = useState(false);
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState("category_name");
+  const [sortDir, setSortDir] = useState("ASC");
+  const [currentSearch, setCurrentSearch] = useState("");
   const toast = useToast();
   const cancelRef = React.useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,9 +41,62 @@ const ManageCategory = () => {
     icon ? setIcon(false) : setIcon(true);
   };
 
+  const fetchCategory = async () => {
+    const maxItemsPerPage = 11;
+    try {
+      const response = await axiosInstance.get("/category/get", {
+        params: {
+          _page: page,
+          _limit: maxItemsPerPage,
+          category_name: currentSearch,
+          _sortBy: sortBy,
+          _sortDir: sortDir,
+        },
+      });
+      setMaxPage(Math.ceil(response.data.dataCount / maxItemsPerPage));
+      setCategory(response.data.data);
+      setIsLoading(true);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
+  const sortCategoryHandler = ({ target }) => {
+    const { value } = target;
+    setSortBy(value.split(" ")[0]);
+    setSortDir(value.split(" ")[1]);
+    setIsLoading(false);
+  };
+
+  const nextPage = () => {
+    setPage(page + 1);
+    setIsLoading(false);
+  };
+
+  const previousPage = () => {
+    setPage(page - 1);
+    setIsLoading(false);
+  };
+
+  const formikSearch = useFormik({
+    initialValues: {
+      search: "",
+    },
+    onSubmit: ({ search }) => {
+      setCurrentSearch(search);
+      setPage(1);
+      setIsLoading(false);
+    },
+  });
+
+  const searchHandler = ({ target }) => {
+    const { name, value } = target;
+    formikSearch.setFieldValue(name, value);
+  };
+
   useEffect(() => {
-    fetchCategory().then((res) => setCategory(res));
-  }, []);
+    fetchCategory();
+  }, [page, sortDir, sortBy, currentSearch]);
   return (
     <Box Box pl="237px" bgColor={"var(--N50,#F3F4F5)"} fontSize="14px" h="100%">
       <Box p="24px">
@@ -67,26 +126,29 @@ const ManageCategory = () => {
         {/* Content */}
         <Box borderRadius={"8px"} bgColor="white">
           <Box pt="16px" minH={"584px"}>
-            <Box pl="24px" pr="32px" pb="12px">
+            <Box
+              pl="24px"
+              pr="32px"
+              pb="12px"
+              display={"flex"}
+              justifyContent="space-between"
+            >
+              {/* Search bar */}
+              <Search
+                formikSearch={formikSearch}
+                searchHandler={searchHandler}
+                placeholder="Search by category name"
+                width={"100%"}
+              />
+
+              {/* Sort bar */}
               <Box>
-                <InputGroup>
-                  <Input
-                    placeholder="Cari kategori"
-                    _placeholder={{ fontSize: "14px" }}
-                    w="234px"
-                    borderRightRadius={"0"}
-                  />
-                  <Button
-                    borderLeftRadius={"0"}
-                    type="submit"
-                    bgColor={"white"}
-                    _hover={false}
-                    border="1px solid #e2e8f0"
-                    borderLeft={"0px"}
-                  >
-                    <TbSearch />
-                  </Button>
-                </InputGroup>
+                <Select onChange={sortCategoryHandler} fontSize="13px">
+                  <option value="category_name ASC">Nama A-Z</option>
+                  <option value="category_name DESC">Nama Z-A</option>
+                  <option value="createdAt DESC">Paling Baru</option>
+                  <option value="createdAt ASC">Paling Lama</option>
+                </Select>
               </Box>
             </Box>
 
@@ -102,82 +164,86 @@ const ManageCategory = () => {
                   fontWeight={"semibold"}
                   fontSize="12px"
                 >
-                  <Box pl="7px" pr="32px" w="45%">
+                  <Box pl="7px" pr="32px" w="33%">
                     Nama Kategori
                   </Box>
-                  <Box w="30%">Action</Box>
+                  <Box w="33%">Tanggal dibuat</Box>
+                  <Box w="33%">Action</Box>
                 </Box>
               </Box>
 
-              {category.map((val) => {
-                return (
-                  <Box
-                    borderBottom={"1px solid var(--N75,#E5E7E9)"}
-                    p="7px 16px"
-                  >
+              {isLoading &&
+                category?.map((val) => {
+                  return (
                     <Box
-                      display={"flex"}
-                      alignItems="center"
-                      fontWeight={"bold"}
-                      fontSize="14px"
+                      borderBottom={"1px solid var(--N75,#E5E7E9)"}
+                      p="7px 16px"
                     >
-                      <Box pl="7px" pr="32px" w="45%">
-                        {val?.category_name}
-                      </Box>
-                      <Box>
-                        <Menu>
-                          <MenuButton
-                            as={Button}
-                            onClick={iconHandler}
-                            _hover={false}
-                            _active={false}
-                            rightIcon={
-                              icon ? <ChevronUpIcon /> : <ChevronDownIcon />
-                            }
-                            fontSize="12px"
-                            h="30px"
-                            bgColor={"transparent"}
-                            border="1px solid var(--color-border,#E5E7E9)"
-                          >
-                            Atur
-                          </MenuButton>
-                          <MenuList fontSize={"12px"}>
-                            <MenuItem
-                              p="6px 12px"
-                              h="36px"
-                              // onClick={() => setAlert(val)}
+                      <Box
+                        display={"flex"}
+                        alignItems="center"
+                        fontWeight={"bold"}
+                        fontSize="14px"
+                      >
+                        <Box pl="7px" pr="32px" w="33%">
+                          {val?.category_name}
+                        </Box>
+                        <Box w="33%">
+                          {moment(val?.createdAt).format("LLLL")}
+                        </Box>
+                        <Box>
+                          <Menu>
+                            <MenuButton
+                              as={Button}
+                              onClick={iconHandler}
+                              _hover={false}
+                              _active={false}
+                              rightIcon={
+                                icon ? <ChevronUpIcon /> : <ChevronDownIcon />
+                              }
+                              fontSize="12px"
+                              h="30px"
+                              bgColor={"transparent"}
+                              border="1px solid var(--color-border,#E5E7E9)"
                             >
-                              <Box mr="8px">
-                                <BsPencil fontSize={"18px"} />
-                              </Box>
-                              Edit
-                            </MenuItem>
+                              Atur
+                            </MenuButton>
+                            <MenuList fontSize={"12px"}>
+                              <MenuItem
+                                p="6px 12px"
+                                h="36px"
+                                // onClick={() => setAlert(val)}
+                              >
+                                <Box mr="8px">
+                                  <BsPencil fontSize={"18px"} />
+                                </Box>
+                                Edit
+                              </MenuItem>
 
-                            <MenuItem
-                              p="6px 12px"
-                              h="36px"
-                              onClick={() => setDeleteAlert(val)}
-                              value={val.id}
-                            >
-                              <Box mr="8px">
-                                <BsTrash fontSize={"18px"} />
-                              </Box>
-                              Delete
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
+                              <MenuItem
+                                p="6px 12px"
+                                h="36px"
+                                onClick={() => setDeleteAlert(val)}
+                                value={val.id}
+                              >
+                                <Box mr="8px">
+                                  <BsTrash fontSize={"18px"} />
+                                </Box>
+                                Delete
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </Box>
                       </Box>
                     </Box>
-                  </Box>
-                );
-              })}
+                  );
+                })}
             </Box>
           </Box>
         </Box>
       </Box>
 
       <Alert
-        // key={deleteAlert?.id.toString()}
         body={deleteAlert?.category_name}
         header="Hapus Kategori?"
         responsive="Hapus Kategori?"
@@ -198,8 +264,7 @@ const ManageCategory = () => {
                       status: "error",
                       variant: "top-accent",
                     })
-                  : // console.log(res),
-                    toast({
+                  : toast({
                       title: "Kategori dihapus",
                       description: res,
                       status: "success",
@@ -213,15 +278,13 @@ const ManageCategory = () => {
         }
       />
 
-      <CategoryForm
-        isOpen={isOpen}
-        onClose={onClose}
-        header={"Kategori Baru"}
-        input1={"Nama Kategori"}
-        input1Name={"category_name"}
-        input1Type={"text"}
-        apiUrl="/category/add"
-        fetch={() => setCategory()}
+      <CategoryForm isOpen={isOpen} onClose={onClose} />
+
+      <Pagination
+        maxPage={maxPage}
+        nextPage={nextPage}
+        page={page}
+        previousPage={previousPage}
       />
     </Box>
   );

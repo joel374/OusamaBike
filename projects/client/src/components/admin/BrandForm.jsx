@@ -22,19 +22,19 @@ import Alert from "../reuseable/Alert";
 import { doubleOnclick } from "../../pages/admin/ManageProduct";
 import * as Yup from "yup";
 
-const CategoryForm = ({ isOpen, onClose }) => {
+const BrandForm = ({ isOpen, onClose }) => {
   const cancelRef = React.useRef();
   const [alert, setAlert] = useState(null);
   const toast = useToast();
 
   const formik = useFormik({
     initialValues: {
-      category_name: "",
+      brand_name: "",
     },
-    onSubmit: async ({ category_name }) => {
+    onSubmit: async ({ brand_name }) => {
       try {
-        const response = await axiosInstance.post("/category/add", {
-          category_name,
+        const response = await axiosInstance.post("/category/addBrand", {
+          brand_name,
         });
 
         toast({
@@ -44,7 +44,7 @@ const CategoryForm = ({ isOpen, onClose }) => {
           description: response.data.message,
         });
 
-        formik.setFieldValue("category_name", "");
+        formik.setFieldValue("brand_name", "");
       } catch (error) {
         console.log(error);
         toast({
@@ -56,7 +56,7 @@ const CategoryForm = ({ isOpen, onClose }) => {
       }
     },
     validationSchema: Yup.object({
-      category_name: Yup.string()
+      brand_name: Yup.string()
         .required("Nama kategori harus diisi")
         .min(3, "Nama kategori tidak boleh kurang dari 3 huruf"),
     }),
@@ -86,23 +86,21 @@ const CategoryForm = ({ isOpen, onClose }) => {
             p="0"
             h="36px"
           >
-            <Text m="24px 0 16px">Kategori Baru</Text>
+            <Text m="24px 0 16px">Merek Baru</Text>
           </ModalHeader>
           <ModalCloseButton _hover={false} _active={false} mt="10px" />
 
           <ModalBody p="24px 40px" fontSize={"14px"}>
             <Box mt="12px">
-              <FormLabel mb="8px">Nama Kategori</FormLabel>
-              <FormControl isInvalid={formik.errors.category_name}>
+              <FormLabel mb="8px">Nama Merek</FormLabel>
+              <FormControl isInvalid={formik.errors.brand_name}>
                 <Input
-                  value={formik.values.category_name}
-                  name={`category_name`}
+                  value={formik.values.brand_name}
+                  name={`brand_name`}
                   type={"text"}
                   onChange={formChangeHandler}
                 />
-                <FormErrorMessage>
-                  {formik.errors.category_name}
-                </FormErrorMessage>
+                <FormErrorMessage>{formik.errors.brand_name}</FormErrorMessage>
               </FormControl>
             </Box>
 
@@ -116,11 +114,11 @@ const CategoryForm = ({ isOpen, onClose }) => {
                 _hover={false}
                 bgColor={heroColor}
                 onClick={() =>
-                  formik.errors.category_name
-                    ? formik.errors.category_name
-                    : setAlert(formik.values?.category_name)
+                  formik.errors.brand_name
+                    ? formik.errors.brand_name
+                    : setAlert(formik.values?.brand_name)
                 }
-                disabled={!formik.values.category_name}
+                disabled={!formik.values.brand_name}
               >
                 Simpan
               </Button>
@@ -150,4 +148,4 @@ const CategoryForm = ({ isOpen, onClose }) => {
   );
 };
 
-export default CategoryForm;
+export default BrandForm;

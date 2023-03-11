@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models");
 
 const categoryController = {
@@ -100,11 +101,43 @@ const categoryController = {
   },
   get: async (req, res) => {
     try {
-      const response = await db.Category.findAll();
+      const {
+        category_name = "",
+        _sortBy = "category_name",
+        _sortDir = "ASC",
+        _limit = 10,
+        _page = 1,
+      } = req.query;
+
+      if (category_name) {
+        const response = await db.Category.findAndCountAll({
+          limit: Number(_limit),
+          order: [[_sortBy, _sortDir]],
+          offset: (_page - 1) * _limit,
+          where: {
+            category_name: {
+              [Op.like]: `%${category_name}%`,
+            },
+          },
+        });
+
+        return res.status(200).json({
+          message: "Get Category By Category Name",
+          data: response.rows,
+          dataCount: response.count,
+        });
+      }
+
+      const response = await db.Category.findAndCountAll({
+        limit: Number(_limit),
+        order: [[_sortBy, _sortDir]],
+        offset: (_page - 1) * _limit,
+      });
 
       return res.status(200).json({
         message: "Get Category",
-        data: response,
+        data: response.rows,
+        dataCount: response.count,
       });
     } catch (error) {
       console.log(error);
@@ -115,9 +148,11 @@ const categoryController = {
     try {
       const { brand_name } = req.body;
 
-      const findBrand = await db.Brand_Category.findOne({ where: brand_name });
+      const findBrand = await db.Brand_Category.findOne({
+        where: { brand_name: brand_name },
+      });
 
-      if (findBrand.brand_name === brand_name) {
+      if (findBrand) {
         return res.status(400).json({
           message: "Brand already exists",
         });
@@ -157,7 +192,7 @@ const categoryController = {
     try {
       const { id } = req.params;
 
-      const findBrand = await db.Brand_Category.findOne({ where: id });
+      const findBrand = await db.Brand_Category.findOne({ where: { id } });
 
       if (!findBrand) {
         return res.status(400).json({
@@ -183,11 +218,43 @@ const categoryController = {
   },
   getBrand: async (req, res) => {
     try {
-      const response = await db.Brand_Category.findAll();
+      const {
+        brand_name = "",
+        _sortBy = "brand_name",
+        _sortDir = "ASC",
+        _limit = 10,
+        _page = 1,
+      } = req.query;
+
+      if (brand_name) {
+        const response = await db.Brand_Category.findAndCountAll({
+          limit: Number(_limit),
+          order: [[_sortBy, _sortDir]],
+          offset: (_page - 1) * _limit,
+          where: {
+            brand_name: {
+              [Op.like]: `%${brand_name}%`,
+            },
+          },
+        });
+
+        return res.status(200).json({
+          message: "Get Brand Category By Brand Name",
+          data: response.rows,
+          dataCount: response.count,
+        });
+      }
+
+      const response = await db.Brand_Category.findAndCountAll({
+        limit: Number(_limit),
+        order: [[_sortBy, _sortDir]],
+        offset: (_page - 1) * _limit,
+      });
 
       return res.status(200).json({
         message: "Get Brand Category",
-        data: response,
+        data: response.rows,
+        dataCount: response.count,
       });
     } catch (error) {
       console.log(error);

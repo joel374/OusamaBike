@@ -8,10 +8,10 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
+import React from "react";
 
 const Alert = ({
   isOpen,
-  cancelRef,
   onClose,
   onSubmit,
   body,
@@ -21,6 +21,7 @@ const Alert = ({
   color,
   responsive,
 }) => {
+  const cancelRef = React.useRef();
   return (
     <AlertDialog
       isOpen={isOpen}

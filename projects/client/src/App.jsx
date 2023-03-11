@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Logo from "./components/reuseable/Logo";
 import EditProduct from "./pages/admin/EditProduct";
 import HomeAdmin from "./pages/admin/HomeAdmin";
+import ManageBrand from "./pages/admin/ManageBrand";
 import ManageCategory from "./pages/admin/ManageCategory";
 import ManageProduct from "./pages/admin/ManageProduct";
 import NewProduct from "./pages/admin/NewProduct";
@@ -95,6 +96,7 @@ const App = () => {
       )}
       {location.pathname === "/admin" ||
       location.pathname === "/admin/manage-product" ||
+      location.pathname === "/admin/manage-brand" ||
       location.pathname === "/admin/manage-category" ? (
         <Sidebar />
       ) : null}
@@ -145,6 +147,14 @@ const App = () => {
           element={
             <AdminRoute>
               <ManageCategory />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/manage-brand"
+          element={
+            <AdminRoute>
+              <ManageBrand />
             </AdminRoute>
           }
         />
