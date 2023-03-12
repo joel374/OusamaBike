@@ -13,18 +13,21 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import { TbSearch } from "react-icons/tb";
 import { BiHeart, BiLogOutCircle } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import Logo, { heroColor } from "./reuseable/Logo";
 import { logout } from "../redux/features/authSlice";
 import { RiAdminLine } from "react-icons/ri";
+import { useState } from "react";
 
 const Navbar = () => {
+  const [searchValue, setSearchValue] = useState("");
   const authSelector = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const toast = useToast();
+  const navigate = useNavigate();
 
   const logoutBtnHandler = () => {
     localStorage.removeItem("auth_token");
@@ -36,6 +39,24 @@ const Navbar = () => {
       variant: "top-accent",
     });
   };
+
+  const changeBtnHandler = (e) => {
+    setSearchValue(e.target.value);
+    // onChange(e);
+  };
+
+  const keyDownBtnHandler = (e) => {
+    if (e.key === "Enter") {
+      navigate({
+        pathname: "/product",
+        search: createSearchParams({
+          name: searchValue,
+        }).toString(),
+      });
+      // onKeyDown(e);
+    }
+  };
+
   return (
     <Box
       boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
@@ -68,7 +89,10 @@ const Navbar = () => {
                     }}
                     name="search"
                     //   w={width}
-                    //   onChange={searchHandler}
+                    // onChange={searchHandler}
+                    onChange={changeBtnHandler}
+                    onKeyDown={keyDownBtnHandler}
+                    value={searchValue}
                     borderRightRadius="0"
                     //   value={formikSearch.values.search}
                     bgColor={"white"}

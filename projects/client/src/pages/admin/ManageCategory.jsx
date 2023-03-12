@@ -1,18 +1,10 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import { BsPencil, BsTrash } from "react-icons/bs";
 import Alert from "../../components/reuseable/Alert";
-import { deleteCategory } from "../../components/reuseable/fetch";
 import { heroColor } from "../../components/reuseable/Logo";
-import { doubleOnclick } from "./ManageProduct";
 import {
   Box,
   Button,
   Text,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
   useToast,
   useDisclosure,
   Select,
@@ -20,14 +12,13 @@ import {
 import CategoryForm from "../../components/admin/CategoryForm";
 import { axiosInstance } from "../../api";
 import Pagination from "../../components/reuseable/Pagination";
-import moment from "moment";
 import { useFormik } from "formik";
 import Search from "../../components/reuseable/Search";
+import RowCategoryAndBrand from "../../components/reuseable/admin/RowCategoryAndBrand";
 
 const ManageCategory = () => {
   const [category, setCategory] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState(null);
-  const [icon, setIcon] = useState(false);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,9 +28,6 @@ const ManageCategory = () => {
   const toast = useToast();
   const cancelRef = React.useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const iconHandler = () => {
-    icon ? setIcon(false) : setIcon(true);
-  };
 
   const fetchCategory = async () => {
     const maxItemsPerPage = 11;
@@ -92,6 +80,28 @@ const ManageCategory = () => {
   const searchHandler = ({ target }) => {
     const { name, value } = target;
     formikSearch.setFieldValue(name, value);
+  };
+
+  const deleteBtnHandler = async (id) => {
+    try {
+      const response = await axiosInstance.delete(`/category/delete/${id}`);
+      toast({
+        title: "Kategori dihapus",
+        description: response.data.message,
+        status: "success",
+        variant: "top-accent",
+      });
+      setDeleteAlert(null);
+      fetchCategory();
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Kategori gagal dihapus",
+        description: error.response.da.message,
+        status: "error",
+        variant: "top-accent",
+      });
+    }
   };
 
   useEffect(() => {
@@ -175,67 +185,13 @@ const ManageCategory = () => {
               {isLoading &&
                 category?.map((val) => {
                   return (
-                    <Box
-                      borderBottom={"1px solid var(--N75,#E5E7E9)"}
-                      p="7px 16px"
-                    >
-                      <Box
-                        display={"flex"}
-                        alignItems="center"
-                        fontWeight={"bold"}
-                        fontSize="14px"
-                      >
-                        <Box pl="7px" pr="32px" w="33%">
-                          {val?.category_name}
-                        </Box>
-                        <Box w="33%">
-                          {moment(val?.createdAt).format("LLLL")}
-                        </Box>
-                        <Box>
-                          <Menu>
-                            <MenuButton
-                              as={Button}
-                              onClick={iconHandler}
-                              _hover={false}
-                              _active={false}
-                              rightIcon={
-                                icon ? <ChevronUpIcon /> : <ChevronDownIcon />
-                              }
-                              fontSize="12px"
-                              h="30px"
-                              bgColor={"transparent"}
-                              border="1px solid var(--color-border,#E5E7E9)"
-                            >
-                              Atur
-                            </MenuButton>
-                            <MenuList fontSize={"12px"}>
-                              <MenuItem
-                                p="6px 12px"
-                                h="36px"
-                                // onClick={() => setAlert(val)}
-                              >
-                                <Box mr="8px">
-                                  <BsPencil fontSize={"18px"} />
-                                </Box>
-                                Edit
-                              </MenuItem>
-
-                              <MenuItem
-                                p="6px 12px"
-                                h="36px"
-                                onClick={() => setDeleteAlert(val)}
-                                value={val.id}
-                              >
-                                <Box mr="8px">
-                                  <BsTrash fontSize={"18px"} />
-                                </Box>
-                                Delete
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
-                        </Box>
-                      </Box>
-                    </Box>
+                    <RowCategoryAndBrand
+                      brand_name={val.category_name}
+                      createdAt={val.createdAt}
+                      deleteHandler={() => setDeleteAlert(val)}
+                      id={val.id}
+                      key={val.id.toString()}
+                    />
                   );
                 })}
             </Box>
@@ -253,29 +209,7 @@ const ManageCategory = () => {
         leftButton="Batalkan"
         rightButton={"Hapus"}
         onClose={() => setDeleteAlert(null)}
-        onSubmit={() =>
-          doubleOnclick(
-            deleteCategory(deleteAlert?.id).then((res) =>
-              doubleOnclick(
-                res.error
-                  ? toast({
-                      title: "Kategori gagal dihapus",
-                      description: res,
-                      status: "error",
-                      variant: "top-accent",
-                    })
-                  : toast({
-                      title: "Kategori dihapus",
-                      description: res,
-                      status: "success",
-                      variant: "top-accent",
-                    }),
-                fetchCategory().then((res) => setCategory(res))
-              )
-            ),
-            setDeleteAlert(null)
-          )
-        }
+        onSubmit={() => deleteBtnHandler(deleteAlert?.id)}
       />
 
       <CategoryForm isOpen={isOpen} onClose={onClose} />

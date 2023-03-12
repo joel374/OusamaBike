@@ -145,7 +145,7 @@ const productController = {
         product_name = "",
         CategoryId = "",
         BrandCategoryId = "",
-        is_active = "",
+        is_active,
         _sortBy = "product_name",
         _sortDir = "ASC",
         _limit = 6,
@@ -215,6 +215,7 @@ const productController = {
 
       const response = await db.Product.findAndCountAll({
         limit: Number(_limit),
+        order: [[_sortBy, _sortDir]],
         offset: (_page - 1) * _limit,
         include: [
           { model: db.Category },
@@ -228,13 +229,7 @@ const productController = {
             },
           },
         },
-        order: [
-          [_sortBy, _sortDir],
-          ["price", "DESC"],
-        ],
       });
-
-      // console.log(response);
 
       return res.status(200).json({
         message: "Get All Product",

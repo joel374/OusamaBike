@@ -18,7 +18,6 @@ import RowCategoryAndBrand from "../../components/reuseable/admin/RowCategoryAnd
 
 const ManageBrand = () => {
   const [brand, setBrand] = useState([]);
-  console.log(brand);
   const [deleteAlert, setDeleteAlert] = useState(null);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
@@ -93,6 +92,7 @@ const ManageBrand = () => {
         status: "success",
         variant: "top-accent",
       });
+      setDeleteAlert(null);
       fetchBrandCategory();
     } catch (error) {
       console.log(error);
@@ -182,19 +182,18 @@ const ManageBrand = () => {
                   <Box w="33%">Action</Box>
                 </Box>
               </Box>
-
-              {/* {isLoading &&
+              {isLoading &&
                 brand?.map((val) => {
                   return (
-                      );
-                    })} */}
-              <RowCategoryAndBrand
-              // brand_name={val.brand_name}
-              // createdAt={val.createdAt}
-              //   deleteHandler={() => setDeleteAlert(val)}
-              // id={val.id}
-              // key={val.id.toString()}
-              />
+                    <RowCategoryAndBrand
+                      brand_name={val.brand_name}
+                      createdAt={val.createdAt}
+                      deleteHandler={() => setDeleteAlert(val)}
+                      id={val.id}
+                      key={val.id.toString()}
+                    />
+                  );
+                })}
             </Box>
           </Box>
         </Box>

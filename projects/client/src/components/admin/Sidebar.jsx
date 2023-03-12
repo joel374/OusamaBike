@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { ImHome2 } from "react-icons/im";
 import { CgBox } from "react-icons/cg";
 import { GrFormDown, GrFormUp } from "react-icons/gr";
 import { useState } from "react";
 import { BiCategory } from "react-icons/bi";
+import { AiOutlineHome } from "react-icons/ai";
 
 const Sidebar = () => {
   const [openSelect, setOpenSelect] = useState(false);
@@ -29,7 +29,7 @@ const Sidebar = () => {
           <Box my="auto" h="36px" pl="3px" pr="12px">
             <Box p="8px 10px" display={"flex"} alignItems="center">
               <Box display={"inline"} mr="8px">
-                <ImHome2 fontSize={"21px"} />
+                <AiOutlineHome fontSize={"21px"} />
               </Box>
               Home
             </Box>
