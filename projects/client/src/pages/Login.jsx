@@ -3,6 +3,7 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Input,
   InputGroup,
   InputRightElement,
@@ -12,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import { BiArrowBack } from "react-icons/bi";
 import { useFormik } from "formik";
 import { axiosInstance } from "../api";
 import { useDispatch } from "react-redux";
@@ -99,14 +101,21 @@ const Login = () => {
   };
   return (
     <Box>
-      <Box justifyContent={"center"} display="flex">
+      <Box
+        justifyContent={"center"}
+        display={{ lg: "flex", md: "none", base: "none" }}
+      >
         <Logo />
       </Box>
-      <Box m="14% 0">
+      <Box m={{ lg: "14% 0", md: "0", base: "0" }}>
         <Box
-          boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
-          borderRadius="8px"
-          w="500px"
+          boxShadow={{
+            lg: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+            md: "none",
+            base: "none",
+          }}
+          borderRadius={{ lg: "8px", md: "none", base: "none" }}
+          w={{ lg: "500px", base: "auto", md: "auto" }}
           h="auto"
           mx="auto"
           mb="30px"
@@ -154,69 +163,131 @@ const Login = () => {
               </Box>
             </Box>
           ) : (
-            <Box p="20px">
-              <Text fontSize={"32px"} fontWeight="semibold">
-                Masuk
-              </Text>
-
-              <form onSubmit={formik.handleSubmit}>
-                <FormControl m="20px 0" isInvalid={formik.errors.email}>
-                  <Input
-                    name="email"
-                    type={"email"}
-                    placeholder="Email"
-                    onChange={formChangeHandler}
-                    value={formik.values.email}
-                  />
-                  <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-                </FormControl>
-                <FormControl m="15px 0" isInvalid={formik.errors.password}>
-                  <InputGroup>
-                    <Input
-                      name="password"
-                      placeholder="Kata Sandi"
-                      onChange={formChangeHandler}
-                      type={showPassword ? "text" : "password"}
-                      value={formik.values.password}
-                    />
-                    <InputRightElement>
-                      <Button
-                        bgColor={"transparent"}
-                        _hover={false}
-                        _active={false}
-                        onClick={togglePassword}
-                        fontSize={"20px"}
-                      >
-                        <Box>
-                          {showPassword ? <VscEye /> : <VscEyeClosed />}
-                        </Box>
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                  <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
-                </FormControl>
-
-                <Box fontSize={"12px"} textAlign="right">
-                  Belum punya akun?{" "}
-                  <Link to="/register">
+            <Box p={{ lg: "20px", md: "none", base: "none" }}>
+              <Box
+                display={{ lg: "block", md: "flex", base: "flex" }}
+                h="52px"
+                alignItems={"center"}
+              >
+                <Box
+                  display={{ lg: "none", md: "block", base: "block" }}
+                  fontSize="24px"
+                  p="1px 6px"
+                  w="52px"
+                >
+                  <Box m="0 10px">
+                    <BiArrowBack />
+                  </Box>
+                </Box>
+                <Box w={{ lg: "auto", md: "90%", base: "90%" }}>
+                  <Text
+                    fontSize={{ lg: "32px", md: "16px", base: "16px" }}
+                    fontWeight="semibold"
+                  >
+                    Masuk
+                  </Text>
+                </Box>
+                <Link to="/register">
+                  <Box
+                    fontSize={"14px"}
+                    textAlign="right"
+                    display={{ lg: "none", md: "block", base: "block" }}
+                    mr="16px"
+                  >
                     <Text display={"inline"} color={heroColor}>
                       Daftar
                     </Text>
-                  </Link>
-                </Box>
+                  </Box>
+                </Link>
+              </Box>
 
-                <Box textAlign={"center"} mt="2">
-                  <ButtonMod
-                    isDisabled={
-                      formik.values.email.includes("@") &&
-                      formik.values.email.includes(".co")
-                        ? false
-                        : true
-                    }
-                    text={"Masuk"}
-                  />
-                </Box>
-              </form>
+              <Box p={{ lg: "0", md: "8px 16px 32px", base: "8px 16px 32px" }}>
+                <form onSubmit={formik.handleSubmit}>
+                  <FormControl
+                    m={{ lg: "20px 0", md: "0", base: "0" }}
+                    isInvalid={formik.errors.email}
+                  >
+                    <FormLabel
+                      fontSize={"12px"}
+                      color="var(--color-text-low,rgba(49,53,59,0.68))"
+                      display={{ lg: "none", md: "block", base: "block" }}
+                      m="0"
+                    >
+                      Email
+                    </FormLabel>
+                    <Input
+                      name="email"
+                      type={"email"}
+                      h={{ lg: "40px", md: "26px", base: "26px" }}
+                      p={{ lg: "0 16px", md: "3px 0", base: "3px 0" }}
+                      borderRadius={{
+                        lg: "var(--chakra-radii-md)",
+                        md: "0",
+                        base: "0",
+                      }}
+                      border={{
+                        lg: "1px solid var(--chakra-colors-gray-200)",
+                        md: "0",
+                        base: "0",
+                      }}
+                      outline="0px"
+                      borderBottom="1px solid black"
+                      placeholder="Email"
+                      onChange={formChangeHandler}
+                      value={formik.values.email}
+                    />
+                    <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                  </FormControl>
+                  <FormControl m="15px 0" isInvalid={formik.errors.password}>
+                    <InputGroup>
+                      <Input
+                        name="password"
+                        placeholder="Kata Sandi"
+                        onChange={formChangeHandler}
+                        type={showPassword ? "text" : "password"}
+                        value={formik.values.password}
+                      />
+                      <InputRightElement>
+                        <Button
+                          bgColor={"transparent"}
+                          _hover={false}
+                          _active={false}
+                          onClick={togglePassword}
+                          fontSize={"20px"}
+                        >
+                          <Box>
+                            {showPassword ? <VscEye /> : <VscEyeClosed />}
+                          </Box>
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                    <FormErrorMessage>
+                      {formik.errors.password}
+                    </FormErrorMessage>
+                  </FormControl>
+
+                  <Box fontSize={"12px"} textAlign="right">
+                    Belum punya akun?{" "}
+                    <Link to="/register">
+                      <Text display={"inline"} color={heroColor}>
+                        Daftar
+                      </Text>
+                    </Link>
+                  </Box>
+
+                  <Box textAlign={"center"} mt="2">
+                    <ButtonMod
+                      isDisabled={
+                        formik.values.email.includes("@") &&
+                        formik.values.email.includes(".co")
+                          ? false
+                          : true
+                      }
+                      text={"Masuk"}
+                    />
+                  </Box>
+                </form>
+              </Box>
             </Box>
           )}
         </Box>
