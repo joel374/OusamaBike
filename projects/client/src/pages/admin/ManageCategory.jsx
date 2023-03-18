@@ -25,12 +25,14 @@ const ManageCategory = () => {
   const [sortBy, setSortBy] = useState("category_name");
   const [sortDir, setSortDir] = useState("ASC");
   const [currentSearch, setCurrentSearch] = useState("");
+  const [maxItemsPerPage, setMaxItemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+
   const toast = useToast();
   const cancelRef = React.useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const fetchCategory = async () => {
-    const maxItemsPerPage = 11;
     try {
       const response = await axiosInstance.get("/category/get", {
         params: {
@@ -43,6 +45,7 @@ const ManageCategory = () => {
       });
       setMaxPage(Math.ceil(response.data.dataCount / maxItemsPerPage));
       setCategory(response.data.data);
+      setTotalItems(response.data.dataCount);
       setIsLoading(true);
     } catch (error) {
       console.log(error.response);
@@ -218,6 +221,10 @@ const ManageCategory = () => {
         maxPage={maxPage}
         nextPage={nextPage}
         page={page}
+        maxItemsPerPage={maxItemsPerPage}
+        totalItem={totalItems}
+        // page={(num) => setPage(num)}
+        setPage={(numbers) => setPage(numbers)}
         previousPage={previousPage}
       />
     </Box>

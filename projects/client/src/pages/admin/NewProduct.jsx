@@ -30,7 +30,7 @@ const NewProduct = () => {
   const navigate = useNavigate();
   const [imageArr, setImageArr] = useState([]);
   const array = [];
-  console.log("ImageArr", { array });
+  // console.log("ImageArr", { array });
 
   const activeHandler = () => {
     active ? setActive(0) : setActive(1);

@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 const Card = ({ image_url, product_name, price, id }) => {
   return (
     <Link to={`${product_name.replace(/\s+/g, "-").toLowerCase()}/${id}`}>
-      <Box p="0px 8px 16px">
+      <Box
+        pr={{ lg: "16px", md: "8px", base: "8px" }}
+        pb={{ lg: "16px", md: "8px", base: "8px" }}
+      >
         <Box
           w="175.5px"
           boxShadow={"rgb(0 0 0 / 12%) 0px 1px 6px 0px"}

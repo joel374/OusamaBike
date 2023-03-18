@@ -5,6 +5,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { axiosInstance } from "./api";
 import AdminRoute from "./components/admin/AdminRoute";
 import Sidebar from "./components/admin/Sidebar";
+import BottomBar from "./components/BottomBar";
 import Navbar from "./components/Navbar";
 import Logo from "./components/reuseable/Logo";
 import EditProduct from "./pages/admin/EditProduct";
@@ -94,6 +95,7 @@ const App = () => {
       location.pathname === "/verification" ? null : (
         <Navbar />
       )}
+      <BottomBar />
       {location.pathname === "/admin" ||
       location.pathname === "/admin/manage-product" ||
       location.pathname === "/admin/manage-brand" ||

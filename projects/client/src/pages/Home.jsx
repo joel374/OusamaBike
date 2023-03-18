@@ -47,10 +47,20 @@ const Home = () => {
   }, []);
   return (
     <Box>
-      <Box mx="auto" w="1190px" mt="36px" mb="50px">
+      <Box
+        mx="auto"
+        w={{ lg: "1190px", md: "auto", base: "auto" }}
+        mt={{ lg: "36px", md: "0px", base: "0" }}
+        mb="50px"
+      >
         <Box display={"flex"}>
-          <Box w="214px" fontSize={"14px"} fontWeight="bold">
-            <Text m="16px 0">Filter</Text>
+          <Box
+            w="214px"
+            fontSize={"14px"}
+            fontWeight="bold"
+            display={{ lg: "block", md: "none", base: "none" }}
+          >
+            <Text m={"16px 0"}>Filter</Text>
             <Box
               boxShadow={"rgb(49 53 59 / 12%) 0px 1px 6px 0px"}
               borderRadius="12px"
@@ -163,8 +173,14 @@ const Home = () => {
               </Box>
             </Box>
           </Box>
-          <Box p="0px 4px 0px 30px" w="100%">
-            <Box mb="16px" />
+          <Box
+            p={{ lg: "0px 4px 0px 30px", md: "none", base: "none" }}
+            w="100%"
+          >
+            <Box
+              mb="16px"
+              display={{ lg: "block", md: "none", base: "none" }}
+            />
             {!product && isLoading ? (
               <Box p="10px" bgColor={"#E5F9F6"}>
                 <Box mx="auto">
@@ -178,7 +194,16 @@ const Home = () => {
               </Box>
             ) : null}
             {/* Card */}
-            <Grid templateColumns={"repeat(5,1fr)"}>
+            <Grid
+              templateColumns={{
+                lg: "repeat(5,1fr)",
+                md: "repeat(3,1fr)",
+                base: "repeat(2,.1fr)",
+              }}
+              w="375px"
+              mt="10px"
+              pl="8px"
+            >
               {isLoading &&
                 product?.map((val) => (
                   <Card

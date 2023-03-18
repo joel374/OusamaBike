@@ -16,6 +16,7 @@ import {
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import { TbSearch } from "react-icons/tb";
 import { BiHeart, BiLogOutCircle } from "react-icons/bi";
+import { RxHamburgerMenu } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import Logo, { heroColor } from "./reuseable/Logo";
 import { logout } from "../redux/features/authSlice";
@@ -68,54 +69,74 @@ const Navbar = () => {
       backgroundColor={"white"}
     >
       <Box>
-        <HStack height={"65px"} width="96%" mx={"auto"}>
+        <HStack
+          height={{ lg: "65px", md: "52px", base: "52px" }}
+          width="96%"
+          mx={{ lg: "auto", md: "0", base: "0" }}
+          p={{ lg: "0", md: "8px 10px 4px 16px", base: "8px 10px 4px 16px" }}
+        >
           {/* Brand */}
           <Link to={"/"}>
-            <Logo />
+            <Box display={{ lg: "flex", md: "none", base: "none" }}>
+              <Logo />
+            </Box>
           </Link>
 
-          {/* Search Input */}
-          <Box w={"100%"}>
-            <form
-            //   onSubmit={formikSearch.handleSubmit}
-            >
-              <FormControl ml="16px">
-                <InputGroup textAlign={"right"}>
-                  <Input
-                    type={"text"}
-                    placeholder={"Find in OusamaBike"}
-                    _placeholder={{
-                      fontSize: "14px",
-                    }}
-                    name="search"
-                    //   w={width}
-                    // onChange={searchHandler}
-                    onChange={changeBtnHandler}
-                    onKeyDown={keyDownBtnHandler}
-                    value={searchValue}
-                    borderRightRadius="0"
-                    //   value={formikSearch.values.search}
-                    bgColor={"white"}
-                    _hover={false}
-                  />
+          <Box
+            display={{ lg: "block", md: "flex", base: "flex" }}
+            w={"100%"}
+            alignItems="center"
+          >
+            {/* Search Input */}
+            <Box>
+              <form
+              //   onSubmit={formikSearch.handleSubmit}
+              >
+                <FormControl ml={{ lg: "16px", md: "0", base: "0" }}>
+                  <InputGroup textAlign={"right"}>
+                    <Input
+                      type={"text"}
+                      placeholder={"Find in OusamaBike"}
+                      _placeholder={{
+                        fontSize: "14px",
+                      }}
+                      name="search"
+                      h={{ lg: "40px", md: "32px", base: "32px" }}
+                      pb={{ lg: "0", md: "2px", base: "2px" }}
+                      //   w={width}
+                      // onChange={searchHandler}
+                      onChange={changeBtnHandler}
+                      onKeyDown={keyDownBtnHandler}
+                      value={searchValue}
+                      borderRightRadius="0"
+                      //   value={formikSearch.values.search}
+                      bgColor={"white"}
+                      _hover={false}
+                    />
 
-                  <Button
-                    borderLeftRadius={"0"}
-                    type="submit"
-                    bgColor={"white"}
-                    _hover={false}
-                    border={`1px solid #e6e6e6`}
-                    borderLeft={"0px"}
-                  >
-                    <TbSearch />
-                  </Button>
-                </InputGroup>
-              </FormControl>
-            </form>
+                    <Button
+                      borderLeftRadius={"0"}
+                      type="submit"
+                      bgColor={"white"}
+                      h={{ lg: "40px", md: "32px", base: "32px" }}
+                      pb={{ lg: "0", md: "2px", base: "2px" }}
+                      _hover={false}
+                      border={`1px solid #e6e6e6`}
+                      borderLeft={"0px"}
+                    >
+                      <TbSearch />
+                    </Button>
+                  </InputGroup>
+                </FormControl>
+              </form>
+            </Box>
+            <Box display={{ lg: "none", md: "block", base: "block" }} ml="16px">
+              <RxHamburgerMenu fontSize={"24px"} />
+            </Box>
           </Box>
 
           <Box
-            display={"flex"}
+            display={{ lg: "flex", md: "none", base: "none" }}
             gap="4"
             fontSize="14px"
             fontWeight={"semibold"}

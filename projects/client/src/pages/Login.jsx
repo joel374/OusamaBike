@@ -174,6 +174,7 @@ const Login = () => {
                   fontSize="24px"
                   p="1px 6px"
                   w="52px"
+                  onClick={() => navigate("/")}
                 >
                   <Box m="0 10px">
                     <BiArrowBack />
@@ -231,29 +232,52 @@ const Login = () => {
                         base: "0",
                       }}
                       outline="0px"
-                      borderBottom="1px solid black"
-                      placeholder="Email"
+                      borderBottom={"1px solid" + `${heroColor}`}
                       onChange={formChangeHandler}
                       value={formik.values.email}
                     />
                     <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
                   </FormControl>
                   <FormControl m="15px 0" isInvalid={formik.errors.password}>
+                    <FormLabel
+                      fontSize={"12px"}
+                      color="var(--color-text-low,rgba(49,53,59,0.68))"
+                      display={{ lg: "none", md: "block", base: "block" }}
+                      m="0"
+                    >
+                      Password
+                    </FormLabel>
                     <InputGroup>
                       <Input
+                        h={{ lg: "40px", md: "26px", base: "26px" }}
+                        p={{ lg: "0 16px", md: "3px 0", base: "3px 0" }}
+                        borderRadius={{
+                          lg: "var(--chakra-radii-md)",
+                          md: "0",
+                          base: "0",
+                        }}
+                        border={{
+                          lg: "1px solid var(--chakra-colors-gray-200)",
+                          md: "0",
+                          base: "0",
+                        }}
+                        outline="0px"
+                        borderBottom={"1px solid" + `${heroColor}`}
                         name="password"
-                        placeholder="Kata Sandi"
                         onChange={formChangeHandler}
                         type={showPassword ? "text" : "password"}
                         value={formik.values.password}
                       />
-                      <InputRightElement>
+                      <InputRightElement
+                        h={{ lg: "40px", md: "26px", base: "26px" }}
+                      >
                         <Button
                           bgColor={"transparent"}
+                          color={heroColor}
                           _hover={false}
                           _active={false}
                           onClick={togglePassword}
-                          fontSize={"20px"}
+                          fontSize={{ lg: "20px", md: "16px", base: "16px" }}
                         >
                           <Box>
                             {showPassword ? <VscEye /> : <VscEyeClosed />}
@@ -275,7 +299,7 @@ const Login = () => {
                     </Link>
                   </Box>
 
-                  <Box textAlign={"center"} mt="2">
+                  <Box textAlign={"center"} mt="16px">
                     <ButtonMod
                       isDisabled={
                         formik.values.email.includes("@") &&
