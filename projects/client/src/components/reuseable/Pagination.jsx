@@ -1,5 +1,4 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useState } from "react";
 import { AiOutlineLeftCircle, AiOutlineRightCircle } from "react-icons/ai";
 import { heroColor } from "./Logo";
 
@@ -42,6 +41,7 @@ const Pagination = ({
               onClick={() => setPage(number)}
               cursor="pointer"
               bgColor={page === number ? heroColor : "white"}
+              color={page === number ? "white" : "black"}
             >
               {number}
             </Box>
@@ -51,7 +51,6 @@ const Pagination = ({
         <Box w="51.9px">
           <Button
             onClick={nextPage}
-            // display={noLength}
             disabled={page >= maxPage ? true : null}
             display={page >= maxPage ? "none" : "block"}
             _hover={false}

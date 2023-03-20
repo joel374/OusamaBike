@@ -15,10 +15,12 @@ import Pagination from "../../components/reuseable/Pagination";
 import { useFormik } from "formik";
 import Search from "../../components/reuseable/Search";
 import RowCategoryAndBrand from "../../components/reuseable/admin/RowCategoryAndBrand";
+import EditBrandForm from "../../components/admin/EditBrandForm";
 
 const ManageBrand = () => {
   const [brand, setBrand] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState(null);
+  const [editForm, setEditForm] = useState(null);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,10 +28,11 @@ const ManageBrand = () => {
   const [sortDir, setSortDir] = useState("ASC");
   const [currentSearch, setCurrentSearch] = useState("");
   const toast = useToast();
+  const [maxItemsPerPage] = useState(11);
+  const [totalItems, setTotalItems] = useState(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const fetchBrandCategory = async () => {
-    const maxItemsPerPage = 11;
     try {
       const response = await axiosInstance.get("/category/getBrand", {
         params: {
@@ -42,6 +45,7 @@ const ManageBrand = () => {
       });
       setMaxPage(Math.ceil(response.data.dataCount / maxItemsPerPage));
       setBrand(response.data.data);
+      setTotalItems(response.data.dataCount);
       setIsLoading(true);
     } catch (error) {
       console.log(error.response);
@@ -189,6 +193,7 @@ const ManageBrand = () => {
                       brand_name={val.brand_name}
                       createdAt={val.createdAt}
                       deleteHandler={() => setDeleteAlert(val)}
+                      editHandler={() => setEditForm(val)}
                       id={val.id}
                       key={val.id.toString()}
                     />
@@ -212,11 +217,20 @@ const ManageBrand = () => {
       />
 
       <BrandForm isOpen={isOpen} onClose={onClose} />
+      <EditBrandForm
+        isOpen={editForm}
+        onClose={() => setEditForm(null)}
+        fieldValue={editForm}
+        render={fetchBrandCategory()}
+      />
 
       <Pagination
         maxPage={maxPage}
         nextPage={nextPage}
         page={page}
+        maxItemsPerPage={maxItemsPerPage}
+        totalItem={totalItems}
+        setPage={(numbers) => setPage(numbers)}
         previousPage={previousPage}
       />
     </Box>

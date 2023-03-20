@@ -21,6 +21,8 @@ const ManageProduct = () => {
   const [sortDir, setSortDir] = useState("ASC");
   const [currentSearch, setCurrentSearch] = useState("");
   const toast = useToast();
+  const [maxItemsPerPage] = useState(11);
+  const [totalItems, setTotalItems] = useState(0);
   const cancelRef = React.useRef();
 
   const fetchProduct = async () => {
@@ -37,6 +39,7 @@ const ManageProduct = () => {
       });
       setMaxPage(Math.ceil((response.data.dataCount - 1) / maxItemsPerPage));
       setProduct(response.data.data);
+      setTotalItems(response.data.dataCount);
       setIsLoading(true);
     } catch (error) {
       console.log(error.response);
@@ -212,6 +215,9 @@ const ManageProduct = () => {
         maxPage={maxPage}
         nextPage={nextPage}
         page={page}
+        maxItemsPerPage={maxItemsPerPage}
+        totalItem={totalItems}
+        setPage={(numbers) => setPage(numbers)}
         previousPage={previousPage}
       />
     </Box>

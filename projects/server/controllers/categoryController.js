@@ -36,7 +36,7 @@ const categoryController = {
 
       const { category_name } = req.body;
 
-      const findCategory = await db.Category.findOne({ where: id });
+      const findCategory = await db.Category.findOne({ where: { id: id } });
 
       if (!findCategory) {
         return res.status(400).json({
@@ -55,7 +55,9 @@ const categoryController = {
           category_name,
         },
         {
-          id,
+          where: {
+            id,
+          },
         }
       );
 
@@ -173,14 +175,36 @@ const categoryController = {
   updateBrand: async (req, res) => {
     try {
       const { id } = req.params;
+      const { brand_name } = req.body;
 
-      const findBrand = await db.Brand_Category.findOne({ where: id });
+      const findBrand = await db.Brand_Category.findOne({ where: { id: id } });
 
       if (!findBrand) {
         return res.status(400).json({
           message: "Brand not found",
         });
       }
+
+      if (findBrand.brand_name === brand_name) {
+        return res.status(400).json({
+          message: "Category already exists",
+        });
+      }
+
+      await db.Brand_Category.update(
+        {
+          brand_name,
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+
+      return res.status(200).json({
+        message: "Brand updated",
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({

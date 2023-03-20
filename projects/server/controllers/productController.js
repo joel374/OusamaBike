@@ -27,10 +27,13 @@ const productController = {
       }
 
       const response = await db.Product.create(req.body);
-      const [image_url] = req.file.filename;
-      console.log(req.file.filename);
+      console.log(req.file);
+      const image_url1 = req.file.filename;
 
-      await db.Image_Url.create({ image_url, ProductId: response.id });
+      await db.Image_Url.create({
+        image_url: image_url1,
+        ProductId: response.id,
+      });
 
       return res.status(200).json({
         message: "Product added",

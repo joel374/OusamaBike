@@ -11,11 +11,11 @@ router.post(
     acceptedFileTypes: ["jpg", "jpeg", "png"],
     filePrefix: "PRODUCT",
   }).fields([
-    { name: "image_url1" },
-    { name: "image_url2" },
-    { name: "image_url3" },
-    { name: "image_url4" },
-    { name: "image_url5" },
+    { name: "image_url1", maxCount: 1 },
+    { name: "image_url2", maxCount: 1 },
+    { name: "image_url3", maxCount: 1 },
+    { name: "image_url4", maxCount: 1 },
+    { name: "image_url5", maxCount: 1 },
   ]),
   productController.add
 );

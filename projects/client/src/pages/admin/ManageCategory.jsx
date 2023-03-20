@@ -15,17 +15,19 @@ import Pagination from "../../components/reuseable/Pagination";
 import { useFormik } from "formik";
 import Search from "../../components/reuseable/Search";
 import RowCategoryAndBrand from "../../components/reuseable/admin/RowCategoryAndBrand";
+import EditCategoryForm from "../../components/admin/EditCategoryForm";
 
 const ManageCategory = () => {
   const [category, setCategory] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState(null);
+  const [editForm, setEditForm] = useState(null);
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [sortBy, setSortBy] = useState("category_name");
   const [sortDir, setSortDir] = useState("ASC");
   const [currentSearch, setCurrentSearch] = useState("");
-  const [maxItemsPerPage, setMaxItemsPerPage] = useState(10);
+  const [maxItemsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
 
   const toast = useToast();
@@ -192,6 +194,7 @@ const ManageCategory = () => {
                       brand_name={val.category_name}
                       createdAt={val.createdAt}
                       deleteHandler={() => setDeleteAlert(val)}
+                      editHandler={() => setEditForm(val)}
                       id={val.id}
                       key={val.id.toString()}
                     />
@@ -216,6 +219,12 @@ const ManageCategory = () => {
       />
 
       <CategoryForm isOpen={isOpen} onClose={onClose} />
+      <EditCategoryForm
+        isOpen={editForm}
+        onClose={() => setEditForm(null)}
+        fieldValue={editForm}
+        render={fetchCategory()}
+      />
 
       <Pagination
         maxPage={maxPage}
@@ -223,7 +232,6 @@ const ManageCategory = () => {
         page={page}
         maxItemsPerPage={maxItemsPerPage}
         totalItem={totalItems}
-        // page={(num) => setPage(num)}
         setPage={(numbers) => setPage(numbers)}
         previousPage={previousPage}
       />

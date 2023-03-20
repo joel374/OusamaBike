@@ -11,7 +11,13 @@ import moment from "moment";
 import { useState } from "react";
 import { BsPencil, BsTrash } from "react-icons/bs";
 
-const RowCategoryAndBrand = ({ brand_name, createdAt, id, deleteHandler }) => {
+const RowCategoryAndBrand = ({
+  brand_name,
+  createdAt,
+  id,
+  deleteHandler,
+  editHandler,
+}) => {
   const [icon, setIcon] = useState(false);
   const iconHandler = () => {
     icon ? setIcon(false) : setIcon(true);
@@ -44,7 +50,7 @@ const RowCategoryAndBrand = ({ brand_name, createdAt, id, deleteHandler }) => {
               Atur
             </MenuButton>
             <MenuList fontSize={"12px"}>
-              <MenuItem p="6px 12px" h="36px">
+              <MenuItem p="6px 12px" h="36px" onClick={editHandler} value={id}>
                 <Box mr="8px">
                   <BsPencil fontSize={"18px"} />
                 </Box>
