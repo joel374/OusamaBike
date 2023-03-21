@@ -3,16 +3,17 @@ import React, { useRef, useState } from "react";
 import { RiImageAddLine } from "react-icons/ri";
 import { IoMdTrash } from "react-icons/io";
 
-const ImageBox = ({ desc, formik, selectedImages, name }) => {
+const ImageBox = ({ desc, formik, name }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedImagess, setSelectedImagess] = useState(null);
-  selectedImages(selectedImagess);
+  // const [selectedImagess, setSelectedImagess] = useState(null);
+  // selectedImages(selectedImagess);
+  // setSelectedImage(images);
 
   const inputFileRef = useRef();
-  // console.log(value);
+
   const cancel = () => {
     setSelectedImage(null);
-    formik.setFieldValue("image_url", null);
+    formik.setFieldValue(`${name}`, null);
   };
   return (
     <Box>
@@ -51,9 +52,9 @@ const ImageBox = ({ desc, formik, selectedImages, name }) => {
                   </Box>
                   <Input
                     onChange={(e) => {
-                      formik.setFieldValue("image_url", e.target.files[0]);
+                      formik.setFieldValue(`${name}`, e.target.files[0]);
                       setSelectedImage(URL.createObjectURL(e.target.files[0]));
-                      setSelectedImagess(e.target.files[0]);
+                      // setSelectedImagess(e.target.files[0]);
                     }}
                     accept="image/*"
                     name={name}

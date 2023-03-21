@@ -19,7 +19,21 @@ router.post(
   ]),
   productController.add
 );
-router.patch("/update/:id", verifyToken, productController.update);
+router.patch(
+  "/update/:id",
+  verifyToken,
+  upload({
+    acceptedFileTypes: ["jpg", "jpeg", "png"],
+    filePrefix: "PRODUCT",
+  }).fields([
+    { name: "image_url1", maxCount: 1 },
+    { name: "image_url2", maxCount: 1 },
+    { name: "image_url3", maxCount: 1 },
+    { name: "image_url4", maxCount: 1 },
+    { name: "image_url5", maxCount: 1 },
+  ]),
+  productController.update
+);
 router.delete("/delete/:id", verifyToken, productController.delete);
 router.get("/get", productController.get);
 

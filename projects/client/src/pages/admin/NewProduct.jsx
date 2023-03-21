@@ -28,9 +28,6 @@ const NewProduct = () => {
   const [active, setActive] = useState(0);
   const toast = useToast();
   const navigate = useNavigate();
-  const [imageArr, setImageArr] = useState([]);
-  const array = [];
-  // console.log("ImageArr", { array });
 
   const activeHandler = () => {
     active ? setActive(0) : setActive(1);
@@ -44,7 +41,9 @@ const NewProduct = () => {
       description: "",
       price: "",
       stock: "",
-      image_url: "",
+      image_url1: "",
+      image_url2: "",
+      // image_url3: "",
       SKU: "",
       is_active: "",
     },
@@ -57,7 +56,8 @@ const NewProduct = () => {
       stock,
       SKU,
       is_active,
-      image_url,
+      image_url1,
+      image_url2,
     }) => {
       try {
         const productData = new FormData();
@@ -74,8 +74,9 @@ const NewProduct = () => {
           productData.append("SKU", SKU);
         }
         productData.append("is_active", active);
-        productData.append("image_url", image_url);
-
+        productData.append("image_url1", image_url1);
+        productData.append("image_url2", image_url2);
+        console.log(image_url1);
         const response = await axiosInstance.post("/product/add", productData);
 
         formik.setFieldValue("product_name", "");
@@ -86,7 +87,8 @@ const NewProduct = () => {
         formik.setFieldValue("price", "");
         formik.setFieldValue("stock", "");
         formik.setFieldValue("SKU", "");
-        formik.setFieldValue("image_url", "");
+        formik.setFieldValue("image_url1", "");
+        formik.setFieldValue("image_url2", "");
 
         toast({
           title: "Produk ditambahkan",
@@ -106,22 +108,23 @@ const NewProduct = () => {
         });
       }
     },
-    validationSchema: Yup.object({
-      product_name: Yup.string()
-        .required("Nama produk harus diisi")
-        .min(15, "Tidak boleh kurang dari 15 huruf"),
-      description: Yup.string(),
-      price: Yup.number()
-        .required("Harga harus diisi")
-        .min(1000, "Harga tidak boleh kurang dari Rp1.000"),
-      stock: Yup.number()
-        .required("Stok harus diisi")
-        .min(1, "Stok tidak boleh kurang dari 1"),
-      image_url: Yup.string().required("Silahkan pilih Foto Produk"),
-      CategoryId: Yup.string().required("Silahkan pilih Kategori"),
-      BrandCategoryId: Yup.string().required("Silahkan pilih Merek"),
-      SKU: Yup.number(),
-    }),
+    // validationSchema: Yup.object({
+    //   product_name: Yup.string()
+    //     .required("Nama produk harus diisi")
+    //     .min(15, "Tidak boleh kurang dari 15 huruf"),
+    //   description: Yup.string(),
+    //   price: Yup.number()
+    //     .required("Harga harus diisi")
+    //     .min(1000, "Harga tidak boleh kurang dari Rp1.000"),
+    //   stock: Yup.number()
+    //     .required("Stok harus diisi")
+    //     .min(1, "Stok tidak boleh kurang dari 1"),
+    //   image_url1: Yup.string().required("Silahkan pilih Foto Produk"),
+    //   image_url2: Yup.string().required("Silahkan pilih Foto Produk"),
+    //   CategoryId: Yup.string().required("Silahkan pilih Kategori"),
+    //   BrandCategoryId: Yup.string().required("Silahkan pilih Merek"),
+    //   SKU: Yup.number(),
+    // }),
     validateOnChange: false,
   });
 
@@ -177,20 +180,30 @@ const NewProduct = () => {
               <FormControl isInvalid={formik.errors.image_url}>
                 <Box ml="70px" display={"flex"}>
                   <ImageBox
-                    selectedImages={(res) => array.push(res)}
                     desc={"Foto Utama"}
                     name={"image_url1"}
                     formik={formik}
                   />
                   <ImageBox
-                    selectedImages={(res) => array.push(res)}
                     desc={"Foto 2"}
                     name={"image_url2"}
                     formik={formik}
                   />
-                  {/* <ImageBox desc={"Foto 3"} formik={formik} />
-                  <ImageBox desc={"Foto 4"} formik={formik} />
-                  <ImageBox desc={"Foto 5"} formik={formik} /> */}
+                  <ImageBox
+                    desc={"Foto 3"}
+                    name={"image_url3"}
+                    formik={formik}
+                  />
+                  <ImageBox
+                    desc={"Foto 4"}
+                    name={"image_url4"}
+                    formik={formik}
+                  />
+                  <ImageBox
+                    desc={"Foto 5"}
+                    name={"image_url5"}
+                    formik={formik}
+                  />
                 </Box>
                 <FormErrorMessage ml="70px" mt="-20px">
                   {formik.errors.image_url}
@@ -487,8 +500,9 @@ const NewProduct = () => {
               !formik.values.BrandCategoryId ||
               !formik.values.price ||
               !formik.values.product_name ||
-              !formik.values.stock ||
-              !formik.values.image_url
+              !formik.values.stock
+              // ||
+              // !formik.values.image_url
             }
             type="submit"
           >

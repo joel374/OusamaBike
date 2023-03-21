@@ -27,13 +27,16 @@ const productController = {
       }
 
       const response = await db.Product.create(req.body);
-      console.log(req.file);
-      const image_url1 = req.file.filename;
 
-      await db.Image_Url.create({
-        image_url: image_url1,
-        ProductId: response.id,
-      });
+      const image_url = req.files;
+      console.log(image_url);
+
+      for (const property in image_url) {
+        await db.Image_Url.create({
+          image_url: image_url[property][0].filename,
+          ProductId: response.id,
+        });
+      }
 
       return res.status(200).json({
         message: "Product added",
@@ -48,8 +51,6 @@ const productController = {
   update: async (req, res) => {
     try {
       const { id } = req.params;
-
-      const image_url = req.file.filename;
 
       const {
         product_name,
@@ -72,11 +73,11 @@ const productController = {
         });
       }
 
-      if (findProduct.product_name === product_name) {
-        return res.status(400).json({
-          message: "Product already exists ",
-        });
-      }
+      // if (findProduct.product_name === product_name) {
+      //   return res.status(400).json({
+      //     message: "Product already exists ",
+      //   });
+      // }
 
       const response = await db.Product.update(req.body, {
         where: {
@@ -84,19 +85,25 @@ const productController = {
         },
       });
 
-      await db.Image_Url.update(
-        {
-          image_url,
+      const image_url = req.files;
+      console.log(image_url);
+      console.log(id);
+
+      await db.Image_Url.destroy({
+        where: {
+          ProductId: id,
         },
-        {
-          where: {
-            ProductId: response.id,
-          },
-        }
-      );
+      });
+
+      for (const property in image_url) {
+        await db.Image_Url.create({
+          image_url: image_url[property][0].filename,
+          ProductId: id,
+        });
+      }
 
       return res.status(200).json({
-        message: "Product edited",
+        message: "Product updated",
       });
     } catch (error) {
       console.log(error);

@@ -81,6 +81,7 @@ const ManageProduct = () => {
 
   const deleteHandler = async (id) => {
     try {
+      console.log(id);
       const response = await axiosInstance.delete(`/product/delete/${id}`);
 
       toast({
@@ -93,6 +94,12 @@ const ManageProduct = () => {
       setDeleteAlert(null);
     } catch (error) {
       console.log(error.response);
+      toast({
+        title: "Produk gagal dihapus",
+        status: "error",
+        variant: "top-accent",
+        description: error.response.data.message,
+      });
     }
   };
 
@@ -184,7 +191,7 @@ const ManageProduct = () => {
                     <RowProduct
                       image_url={val.Image_Urls[0]?.image_url}
                       SKU={val.SKU}
-                      deleteHandler={() => setDeleteAlert(val.id)}
+                      deleteHandler={() => setDeleteAlert(val)}
                       id={val.id}
                       is_active={val.is_active}
                       price={val.price}

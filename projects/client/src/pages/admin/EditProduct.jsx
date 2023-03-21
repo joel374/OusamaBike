@@ -29,6 +29,7 @@ const EditProduct = () => {
   const [category, setCategory] = useState([]);
   const [brand, setBrand] = useState([]);
   const [active, setActive] = useState(0);
+  const [images, setImages] = useState(null);
   const toast = useToast();
   const navigate = useNavigate();
   const params = useParams();
@@ -45,7 +46,11 @@ const EditProduct = () => {
       description: "",
       price: "",
       stock: "",
-      image_url: "",
+      image_url1: "",
+      image_url2: "",
+      image_url3: "",
+      image_url4: "",
+      image_url5: "",
       SKU: "",
       is_active: "",
     },
@@ -58,7 +63,11 @@ const EditProduct = () => {
       stock,
       SKU,
       is_active,
-      image_url,
+      image_url1,
+      image_url2,
+      image_url3,
+      image_url4,
+      image_url5,
     }) => {
       try {
         const productData = new FormData();
@@ -95,11 +104,23 @@ const EditProduct = () => {
           productData.append("is_active", active);
         }
 
-        if (image_url) {
-          productData.append("image_url", image_url);
+        if (image_url1) {
+          productData.append("image_url1", image_url1);
+        }
+        if (image_url2) {
+          productData.append("image_url2", image_url2);
+        }
+        if (image_url3) {
+          productData.append("image_url3", image_url3);
+        }
+        if (image_url4) {
+          productData.append("image_url4", image_url4);
+        }
+        if (image_url5) {
+          productData.append("image_url5", image_url5);
         }
 
-        const response = await axiosInstance.post(
+        const response = await axiosInstance.patch(
           `/product/update/${params.id}`,
           productData
         );
@@ -112,7 +133,11 @@ const EditProduct = () => {
         formik.setFieldValue("price", "");
         formik.setFieldValue("stock", "");
         formik.setFieldValue("SKU", "");
-        formik.setFieldValue("image_url", "");
+        formik.setFieldValue("image_url1", "");
+        formik.setFieldValue("image_url2", "");
+        formik.setFieldValue("image_url3", "");
+        formik.setFieldValue("image_url4", "");
+        formik.setFieldValue("image_url5", "");
 
         toast({
           title: "Produk diedit",
@@ -132,22 +157,22 @@ const EditProduct = () => {
         });
       }
     },
-    validationSchema: Yup.object({
-      product_name: Yup.string()
-        .required("Nama produk harus diisi")
-        .min(15, "Tidak boleh kurang dari 15 huruf"),
-      description: Yup.string(),
-      price: Yup.number()
-        .required("Harga harus diisi")
-        .min(1000, "Harga tidak boleh kurang dari Rp1.000"),
-      stock: Yup.number()
-        .required("Stok harus diisi")
-        .min(1, "Tidak boleh kurang dari 1"),
-      image_url: Yup.string().required("Silahkan pilih Foto Produk"),
-      CategoryId: Yup.string().required("Silahkan pilih Kategori"),
-      BrandCategoryId: Yup.string().required("Silahkan pilih Merek"),
-      SKU: Yup.number(),
-    }),
+    // validationSchema: Yup.object({
+    //   product_name: Yup.string()
+    //     .required("Nama produk harus diisi")
+    //     .min(10, "Tidak boleh kurang dari 10 huruf"),
+    //   description: Yup.string(),
+    //   price: Yup.number()
+    //     .required("Harga harus diisi")
+    //     .min(1000, "Harga tidak boleh kurang dari Rp1.000"),
+    //   stock: Yup.number()
+    //     .required("Stok harus diisi")
+    //     .min(1, "Tidak boleh kurang dari 1"),
+    //   // image_url: Yup.string().required("Silahkan pilih Foto Produk"),
+    //   CategoryId: Yup.string().required("Silahkan pilih Kategori"),
+    //   BrandCategoryId: Yup.string().required("Silahkan pilih Merek"),
+    //   SKU: Yup.number(),
+    // }),
     validateOnChange: false,
   });
 
@@ -172,9 +197,11 @@ const EditProduct = () => {
       formik.setFieldValue("stock", product.stock);
       formik.setFieldValue("SKU", product.SKU);
       formik.setFieldValue(
-        "image_url"
-        // Array.from(product.Image_Urls).map((val) => val.image_url)
+        "image_url1"
+        // setImages(product?.Image_Urls[0]?.image_url)
       );
+
+      // console.log(product?.Image_Urls[0]?.image_url);
     }
   }, [product]);
   return (
@@ -220,11 +247,32 @@ const EditProduct = () => {
             <Box>
               <FormControl isInvalid={formik.errors.image_url}>
                 <Box ml="70px" display={"flex"}>
-                  <ImageBox desc={"Foto Utama"} formik={formik} />
-                  <ImageBox desc={"Foto 2"} formik={formik} />
-                  <ImageBox desc={"Foto 3"} formik={formik} />
-                  <ImageBox desc={"Foto 4"} formik={formik} />
-                  <ImageBox desc={"Foto 5"} formik={formik} />
+                  <ImageBox
+                    name={"image_url1"}
+                    desc={"Foto Utama"}
+                    formik={formik}
+                    // images={images}
+                  />
+                  <ImageBox
+                    name={"image_url2"}
+                    desc={"Foto 2"}
+                    formik={formik}
+                  />
+                  <ImageBox
+                    name={"image_url3"}
+                    desc={"Foto 3"}
+                    formik={formik}
+                  />
+                  <ImageBox
+                    name={"image_url4"}
+                    desc={"Foto 4"}
+                    formik={formik}
+                  />
+                  <ImageBox
+                    name={"image_url5"}
+                    desc={"Foto 5"}
+                    formik={formik}
+                  />
                 </Box>
                 <FormErrorMessage ml="70px" mt="-20px">
                   {formik.errors.image_url}
@@ -521,8 +569,9 @@ const EditProduct = () => {
               !formik.values.BrandCategoryId ||
               !formik.values.price ||
               !formik.values.product_name ||
-              !formik.values.stock ||
-              !formik.values.image_url
+              !formik.values.stock
+              // ||
+              // !formik.values.image_url
             }
             onClick={formik.handleSubmit}
           >
