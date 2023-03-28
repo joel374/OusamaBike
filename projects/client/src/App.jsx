@@ -14,6 +14,7 @@ import ManageBrand from "./pages/admin/ManageBrand";
 import ManageCategory from "./pages/admin/ManageCategory";
 import ManageProduct from "./pages/admin/ManageProduct";
 import NewProduct from "./pages/admin/NewProduct";
+import Chat from "./pages/Chat";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Product from "./pages/Product";
@@ -22,6 +23,7 @@ import Verification from "./pages/Verification";
 import Wishlist from "./pages/Wishlist";
 import { login } from "./redux/features/authSlice";
 import { attach } from "./redux/features/resetSlice";
+import MessageAdmin from "./pages/admin/MessageAdmin";
 
 const App = () => {
   const location = useLocation();
@@ -99,9 +101,11 @@ const App = () => {
       {location.pathname === "/admin" ||
       location.pathname === "/admin/manage-product" ||
       location.pathname === "/admin/manage-brand" ||
+      location.pathname === "/admin/chat" ||
       location.pathname === "/admin/manage-category" ? (
         <Sidebar />
       ) : null}
+
       <Routes>
         {/* User */}
         <Route path="/login" element={<Login />} />
@@ -110,6 +114,7 @@ const App = () => {
         <Route path="/product" element={<Home />} />
         <Route path="/product/:product_name/:id" element={<Product />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/chat" element={<Chat />} />
 
         {/* Admin */}
         <Route
@@ -157,6 +162,14 @@ const App = () => {
           element={
             <AdminRoute>
               <ManageBrand />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/chat"
+          element={
+            <AdminRoute>
+              <MessageAdmin />
             </AdminRoute>
           }
         />

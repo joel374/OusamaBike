@@ -163,18 +163,20 @@ const Product = () => {
               >
                 Wishlist
               </Button>
-              <Button
-                w="100%"
-                mb="12px"
-                border={`1px solid ${heroColor}`}
-                bgColor="white"
-                color={heroColor}
-                _hover={false}
-                _active={false}
-                fontSize={"14px"}
-              >
-                Chat
-              </Button>
+              <Link to="/chat">
+                <Button
+                  w="100%"
+                  mb="12px"
+                  border={`1px solid ${heroColor}`}
+                  bgColor="white"
+                  color={heroColor}
+                  _hover={false}
+                  _active={false}
+                  fontSize={"14px"}
+                >
+                  Chat
+                </Button>
+              </Link>
             </Box>
           </Box>
         </Box>

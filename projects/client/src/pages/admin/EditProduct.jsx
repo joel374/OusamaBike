@@ -196,12 +196,9 @@ const EditProduct = () => {
       formik.setFieldValue("is_active", product.is_active);
       formik.setFieldValue("stock", product.stock);
       formik.setFieldValue("SKU", product.SKU);
-      formik.setFieldValue(
-        "image_url1"
-        // setImages(product?.Image_Urls[0]?.image_url)
-      );
+      formik.setFieldValue("image_url2", product?.Image_Urls.shift().image_url);
 
-      // console.log(product?.Image_Urls[0]?.image_url);
+      // console.log(product?.Image_Urls?.shift()?.image_url  );
     }
   }, [product]);
   return (
@@ -245,15 +242,16 @@ const EditProduct = () => {
               </Box>
             </Box>
             <Box>
-              <FormControl isInvalid={formik.errors.image_url}>
+              <FormControl isInvalid={formik.errors.image_url1}>
                 <Box ml="70px" display={"flex"}>
                   <ImageBox
                     name={"image_url1"}
                     desc={"Foto Utama"}
                     formik={formik}
+                    setFieldImage={product?.Image_Urls}
                     // images={images}
                   />
-                  <ImageBox
+                  {/* <ImageBox
                     name={"image_url2"}
                     desc={"Foto 2"}
                     formik={formik}
@@ -272,7 +270,7 @@ const EditProduct = () => {
                     name={"image_url5"}
                     desc={"Foto 5"}
                     formik={formik}
-                  />
+                  /> */}
                 </Box>
                 <FormErrorMessage ml="70px" mt="-20px">
                   {formik.errors.image_url}
@@ -345,6 +343,7 @@ const EditProduct = () => {
                   placeholder="Pilih Kategori"
                   onChange={formChangeHandler}
                   name={"CategoryId"}
+                  value={formik.values.CategoryId}
                 >
                   {category.map((val) => (
                     <option value={val.id}>{val.category_name}</option>
@@ -377,6 +376,7 @@ const EditProduct = () => {
                   placeholder="Pilih Merek"
                   name="BrandCategoryId"
                   onChange={formChangeHandler}
+                  value={formik.values.BrandCategoryId}
                 >
                   {brand?.map((val) => (
                     <option value={val.id}>{val.brand_name}</option>

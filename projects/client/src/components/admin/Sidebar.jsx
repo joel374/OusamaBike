@@ -5,6 +5,7 @@ import { GrFormDown, GrFormUp } from "react-icons/gr";
 import { useState } from "react";
 import { BiCategory } from "react-icons/bi";
 import { AiOutlineHome } from "react-icons/ai";
+import { BsChatLeftDots } from "react-icons/bs";
 
 const Sidebar = () => {
   const [openSelect, setOpenSelect] = useState(false);
@@ -32,6 +33,18 @@ const Sidebar = () => {
                 <AiOutlineHome fontSize={"21px"} />
               </Box>
               Home
+            </Box>
+          </Box>
+        </Link>
+      </Box>
+      <Box _hover={{ backgroundColor: "var(--N50,#F3F4F5)" }}>
+        <Link to="/admin/chat">
+          <Box my="auto" h="36px" pl="3px" pr="12px">
+            <Box p="8px 10px" display={"flex"} alignItems="center">
+              <Box display={"inline"} mr="8px">
+                <BsChatLeftDots fontSize={"21px"} />
+              </Box>
+              Chat
             </Box>
           </Box>
         </Link>

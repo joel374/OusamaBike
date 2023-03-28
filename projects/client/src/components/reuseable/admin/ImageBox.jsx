@@ -3,12 +3,9 @@ import React, { useRef, useState } from "react";
 import { RiImageAddLine } from "react-icons/ri";
 import { IoMdTrash } from "react-icons/io";
 
-const ImageBox = ({ desc, formik, name }) => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  // const [selectedImagess, setSelectedImagess] = useState(null);
-  // selectedImages(selectedImagess);
-  // setSelectedImage(images);
-
+const ImageBox = ({ desc, formik, name, setFieldImage }) => {
+  const [selectedImage, setSelectedImage] = useState(formik.values.image_url);
+  console.log(selectedImage);
   const inputFileRef = useRef();
 
   const cancel = () => {
@@ -70,8 +67,8 @@ const ImageBox = ({ desc, formik, name }) => {
                     h="99.9%"
                     src={
                       selectedImage
-                        ? selectedImage
-                        : "Input Your Profile Picture"
+                        ? `${process.env.REACT_APP_API_IMAGE_URL}${selectedImage}`
+                        : null
                     }
                     objectFit={"contain"}
                   />

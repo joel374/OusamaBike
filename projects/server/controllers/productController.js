@@ -29,7 +29,6 @@ const productController = {
       const response = await db.Product.create(req.body);
 
       const image_url = req.files;
-      console.log(image_url);
 
       for (const property in image_url) {
         await db.Image_Url.create({
@@ -73,12 +72,6 @@ const productController = {
         });
       }
 
-      // if (findProduct.product_name === product_name) {
-      //   return res.status(400).json({
-      //     message: "Product already exists ",
-      //   });
-      // }
-
       const response = await db.Product.update(req.body, {
         where: {
           id,
@@ -86,8 +79,6 @@ const productController = {
       });
 
       const image_url = req.files;
-      console.log(image_url);
-      console.log(id);
 
       await db.Image_Url.destroy({
         where: {
