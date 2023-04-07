@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "lerna": "^6.4.1"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.22"
   }
 }

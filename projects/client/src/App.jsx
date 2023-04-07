@@ -15,7 +15,7 @@ import ManageCategory from "./pages/admin/ManageCategory";
 import ManageProduct from "./pages/admin/ManageProduct";
 import NewProduct from "./pages/admin/NewProduct";
 import Chat from "./pages/Chat";
-import Home from "./pages/Home";
+import ProductList from "./pages/ProductList";
 import Login from "./pages/Login";
 import Product from "./pages/Product";
 import Register from "./pages/Register";
@@ -24,6 +24,7 @@ import Wishlist from "./pages/Wishlist";
 import { login } from "./redux/features/authSlice";
 import { attach } from "./redux/features/resetSlice";
 import MessageAdmin from "./pages/admin/MessageAdmin";
+import Home from "./pages/Home";
 
 const App = () => {
   const location = useLocation();
@@ -108,10 +109,11 @@ const App = () => {
 
       <Routes>
         {/* User */}
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verification" element={<Verification />} />
-        <Route path="/product" element={<Home />} />
+        <Route path="/product" element={<ProductList />} />
         <Route path="/product/:product_name/:id" element={<Product />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/chat" element={<Chat />} />
