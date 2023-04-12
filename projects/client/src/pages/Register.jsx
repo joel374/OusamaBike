@@ -97,13 +97,12 @@ const Register = () => {
     formik.setFieldValue(name, value);
   };
   return (
-    <Box>
-      <Box
-        justifyContent={"center"}
-        display={{ lg: "flex", md: "none", base: "none" }}
-      >
-        <Logo />
-      </Box>
+    <Box
+      display={"flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      h="100vh"
+    >
       <Box m={{ lg: "14% 0", md: "0", base: "0" }}>
         <Box
           boxShadow={{
@@ -168,54 +167,21 @@ const Register = () => {
             </Box>
           ) : (
             <Box p={{ lg: "20px", md: "none", base: "none" }}>
-              <Box
-                display={{ lg: "block", md: "flex", base: "flex" }}
-                h="52px"
-                alignItems={"center"}
-              >
-                <Box
-                  display={{ lg: "none", md: "block", base: "block" }}
-                  fontSize="24px"
-                  p="1px 6px"
-                  w="52px"
-                  onClick={() => navigate("/")}
-                >
-                  <Box m="0 10px">
-                    <BiArrowBack />
-                  </Box>
+              <Box alignItems={"center"}>
+                <Box justifyContent={"center"} display={"flex"}>
+                  <Logo />
                 </Box>
-                <Box w={{ lg: "auto", md: "90%", base: "90%" }}>
-                  <Text
-                    fontSize={{ lg: "32px", md: "16px", base: "16px" }}
-                    fontWeight="semibold"
-                  >
-                    Daftar
-                  </Text>
-                </Box>
-                <Link to="/login">
-                  <Box
-                    fontSize={"14px"}
-                    textAlign="right"
-                    display={{ lg: "none", md: "block", base: "block" }}
-                    mr="16px"
-                  >
-                    <Text display={"inline"} color={heroColor}>
-                      Masuk
-                    </Text>
-                  </Box>
-                </Link>
+                <Text fontSize={"x-large"} fontWeight="medium">
+                  Daftar
+                </Text>
               </Box>
 
-              <Box p={{ lg: "0", md: "8px 16px 32px", base: "8px 16px 32px" }}>
+              <Box>
                 <form onSubmit={formik.handleSubmit}>
-                  <FormControl
-                    m={{ lg: "20px 0", md: "0", base: "0" }}
-                    isInvalid={formik.errors.username}
-                  >
+                  <FormControl m={"20px 0"} isInvalid={formik.errors.username}>
                     <FormLabel
-                      fontSize={"12px"}
+                      fontSize={"14px"}
                       color="var(--color-text-low,rgba(49,53,59,0.68))"
-                      display={{ lg: "none", md: "block", base: "block" }}
                       m="0"
                     >
                       Nama Pengguna
@@ -224,11 +190,7 @@ const Register = () => {
                       name="username"
                       h={{ lg: "40px", md: "26px", base: "26px" }}
                       p={{ lg: "0 16px", md: "3px 0", base: "3px 0" }}
-                      borderRadius={{
-                        lg: "var(--chakra-radii-md)",
-                        md: "0",
-                        base: "0",
-                      }}
+                      borderRadius={"var(--chakra-radii-md)"}
                       border={{
                         lg: "1px solid var(--chakra-colors-gray-200)",
                         md: "0",
@@ -246,9 +208,8 @@ const Register = () => {
                   </FormControl>
                   <FormControl m={"15px 0"} isInvalid={formik.errors.email}>
                     <FormLabel
-                      fontSize={"12px"}
+                      fontSize={"14px"}
                       color="var(--color-text-low,rgba(49,53,59,0.68))"
-                      display={{ lg: "none", md: "block", base: "block" }}
                       m="0"
                     >
                       Email
@@ -277,9 +238,8 @@ const Register = () => {
                   </FormControl>
                   <FormControl m={"15px 0"} isInvalid={formik.errors.password}>
                     <FormLabel
-                      fontSize={"12px"}
+                      fontSize={"14px"}
                       color="var(--color-text-low,rgba(49,53,59,0.68))"
-                      display={{ lg: "none", md: "block", base: "block" }}
                       m="0"
                     >
                       Password

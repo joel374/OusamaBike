@@ -100,221 +100,160 @@ const Login = () => {
     formik.setFieldValue(name, value);
   };
   return (
-    <Box>
+    <Box
+      display={"flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      h="100vh"
+    >
       <Box
-        justifyContent={"center"}
-        display={{ lg: "flex", md: "none", base: "none" }}
+        boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
+        borderRadius={"8px"}
+        w={"500px"}
+        h="auto"
+        mx="auto"
+        mb="30px"
       >
-        <Logo />
-      </Box>
-      <Box m={{ lg: "14% 0", md: "0", base: "0" }}>
-        <Box
-          boxShadow={{
-            lg: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
-            md: "none",
-            base: "none",
-          }}
-          borderRadius={{ lg: "8px", md: "none", base: "none" }}
-          w={{ lg: "500px", base: "auto", md: "auto" }}
-          h="auto"
-          mx="auto"
-          mb="30px"
-        >
-          {isLoading === false ? (
-            <Box p="20px">
+        {isLoading === false ? (
+          <Box p="20px">
+            <Skeleton
+              height={"48px"}
+              startColor="#bab8b8"
+              endColor="#d4d2d2"
+              w="140px"
+              borderRadius="8px"
+            />
+            <Skeleton
+              m={"20px 0"}
+              height={"40px"}
+              startColor="#bab8b8"
+              endColor="#d4d2d2"
+              borderRadius="8px"
+            />
+            <Skeleton
+              m={"20px 0"}
+              height={"40px"}
+              startColor="#bab8b8"
+              endColor="#d4d2d2"
+              borderRadius="8px"
+            />
+            <Box display={"flex"} justifyContent="right">
               <Skeleton
-                height={"48px"}
-                startColor="#bab8b8"
-                endColor="#d4d2d2"
-                w="140px"
-                borderRadius="8px"
-              />
-              <Skeleton
-                m={"20px 0"}
-                height={"40px"}
-                startColor="#bab8b8"
-                endColor="#d4d2d2"
-                borderRadius="8px"
-              />
-              <Skeleton
-                m={"20px 0"}
-                height={"40px"}
+                height={"18px"}
                 startColor="#bab8b8"
                 endColor="#d4d2d2"
                 borderRadius="8px"
+                w="160px"
               />
-              <Box display={"flex"} justifyContent="right">
-                <Skeleton
-                  height={"18px"}
-                  startColor="#bab8b8"
-                  endColor="#d4d2d2"
-                  borderRadius="8px"
-                  w="160px"
-                />
-              </Box>
-              <Box mt="2" display={"flex"} justifyContent="center">
-                <Skeleton
-                  height={"40px"}
-                  startColor="#bab8b8"
-                  endColor="#d4d2d2"
-                  borderRadius="8px"
-                  w="80px"
-                />
-              </Box>
             </Box>
-          ) : (
-            <Box p={{ lg: "20px", md: "none", base: "none" }}>
-              <Box
-                display={{ lg: "block", md: "flex", base: "flex" }}
-                h="52px"
-                alignItems={"center"}
-              >
-                <Box
-                  display={{ lg: "none", md: "block", base: "block" }}
-                  fontSize="24px"
-                  p="1px 6px"
-                  w="52px"
-                  onClick={() => navigate("/")}
-                >
-                  <Box m="0 10px">
-                    <BiArrowBack />
-                  </Box>
-                </Box>
-                <Box w={{ lg: "auto", md: "90%", base: "90%" }}>
-                  <Text
-                    fontSize={{ lg: "32px", md: "16px", base: "16px" }}
-                    fontWeight="semibold"
-                  >
-                    Masuk
-                  </Text>
-                </Box>
-                <Link to="/register">
-                  <Box
+            <Box mt="2" display={"flex"} justifyContent="center">
+              <Skeleton
+                height={"40px"}
+                startColor="#bab8b8"
+                endColor="#d4d2d2"
+                borderRadius="8px"
+                w="80px"
+              />
+            </Box>
+          </Box>
+        ) : (
+          <Box p={{ lg: "20px", md: "none", base: "none" }}>
+            <Box alignItems={"center"}>
+              <Box justifyContent={"center"} display={"flex"}>
+                <Logo />
+              </Box>
+              <Text fontSize={"x-large"} fontWeight="medium">
+                Masuk
+              </Text>
+            </Box>
+
+            <Box>
+              <form onSubmit={formik.handleSubmit}>
+                <FormControl m={"20px 0"} isInvalid={formik.errors.email}>
+                  <FormLabel
                     fontSize={"14px"}
-                    textAlign="right"
-                    display={{ lg: "none", md: "block", base: "block" }}
-                    mr="16px"
+                    color="var(--color-text-low,rgba(49,53,59,0.68))"
+                    m="0"
                   >
+                    Email
+                  </FormLabel>
+                  <Input
+                    name="email"
+                    type={"email"}
+                    h={"40px"}
+                    p={"0 16px"}
+                    placeholder="Email"
+                    // borderRadius={"var(--chakra-radii-md)"}
+                    // border={"1px solid var(--chakra-colors-gray-200)"}
+                    onChange={formChangeHandler}
+                    value={formik.values.email}
+                  />
+                  <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+                </FormControl>
+                <FormControl m="15px 0" isInvalid={formik.errors.password}>
+                  <FormLabel
+                    fontSize={"14px"}
+                    color="var(--color-text-low,rgba(49,53,59,0.68))"
+                    m="0"
+                  >
+                    Kata Sandi
+                  </FormLabel>
+                  <InputGroup>
+                    <Input
+                      h={"40px"}
+                      p={"0 16px"}
+                      name="password"
+                      // borderRadius={"var(--chakra-radii-md)"}
+                      // border={"1px solid var(--chakra-colors-gray-200)"}
+                      placeholder="Kata sandi"
+                      onChange={formChangeHandler}
+                      type={showPassword ? "text" : "password"}
+                      value={formik.values.password}
+                    />
+                    <InputRightElement
+                      h={{ lg: "40px", md: "26px", base: "26px" }}
+                    >
+                      <Button
+                        bgColor={"transparent"}
+                        color={heroColor}
+                        _hover={false}
+                        _active={false}
+                        onClick={togglePassword}
+                        fontSize={{ lg: "20px", md: "16px", base: "16px" }}
+                      >
+                        <Box>
+                          {showPassword ? <VscEye /> : <VscEyeClosed />}
+                        </Box>
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                  <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+                </FormControl>
+
+                <Box fontSize={"12px"} textAlign="right">
+                  Belum punya akun?{" "}
+                  <Link to="/register">
                     <Text display={"inline"} color={heroColor}>
                       Daftar
                     </Text>
-                  </Box>
-                </Link>
-              </Box>
+                  </Link>
+                </Box>
 
-              <Box p={{ lg: "0", md: "8px 16px 32px", base: "8px 16px 32px" }}>
-                <form onSubmit={formik.handleSubmit}>
-                  <FormControl
-                    m={{ lg: "20px 0", md: "0", base: "0" }}
-                    isInvalid={formik.errors.email}
-                  >
-                    <FormLabel
-                      fontSize={"12px"}
-                      color="var(--color-text-low,rgba(49,53,59,0.68))"
-                      display={{ lg: "none", md: "block", base: "block" }}
-                      m="0"
-                    >
-                      Email
-                    </FormLabel>
-                    <Input
-                      name="email"
-                      type={"email"}
-                      h={{ lg: "40px", md: "26px", base: "26px" }}
-                      p={{ lg: "0 16px", md: "3px 0", base: "3px 0" }}
-                      borderRadius={{
-                        lg: "var(--chakra-radii-md)",
-                        md: "0",
-                        base: "0",
-                      }}
-                      border={{
-                        lg: "1px solid var(--chakra-colors-gray-200)",
-                        md: "0",
-                        base: "0",
-                      }}
-                      outline="0px"
-                      borderBottom={"1px solid" + `${heroColor}`}
-                      onChange={formChangeHandler}
-                      value={formik.values.email}
-                    />
-                    <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-                  </FormControl>
-                  <FormControl m="15px 0" isInvalid={formik.errors.password}>
-                    <FormLabel
-                      fontSize={"12px"}
-                      color="var(--color-text-low,rgba(49,53,59,0.68))"
-                      display={{ lg: "none", md: "block", base: "block" }}
-                      m="0"
-                    >
-                      Password
-                    </FormLabel>
-                    <InputGroup>
-                      <Input
-                        h={{ lg: "40px", md: "26px", base: "26px" }}
-                        p={{ lg: "0 16px", md: "3px 0", base: "3px 0" }}
-                        borderRadius={{
-                          lg: "var(--chakra-radii-md)",
-                          md: "0",
-                          base: "0",
-                        }}
-                        border={{
-                          lg: "1px solid var(--chakra-colors-gray-200)",
-                          md: "0",
-                          base: "0",
-                        }}
-                        outline="0px"
-                        borderBottom={"1px solid" + `${heroColor}`}
-                        name="password"
-                        onChange={formChangeHandler}
-                        type={showPassword ? "text" : "password"}
-                        value={formik.values.password}
-                      />
-                      <InputRightElement
-                        h={{ lg: "40px", md: "26px", base: "26px" }}
-                      >
-                        <Button
-                          bgColor={"transparent"}
-                          color={heroColor}
-                          _hover={false}
-                          _active={false}
-                          onClick={togglePassword}
-                          fontSize={{ lg: "20px", md: "16px", base: "16px" }}
-                        >
-                          <Box>
-                            {showPassword ? <VscEye /> : <VscEyeClosed />}
-                          </Box>
-                        </Button>
-                      </InputRightElement>
-                    </InputGroup>
-                    <FormErrorMessage>
-                      {formik.errors.password}
-                    </FormErrorMessage>
-                  </FormControl>
-
-                  <Box fontSize={"12px"} textAlign="right">
-                    Belum punya akun?{" "}
-                    <Link to="/register">
-                      <Text display={"inline"} color={heroColor}>
-                        Daftar
-                      </Text>
-                    </Link>
-                  </Box>
-
-                  <Box textAlign={"center"} mt="16px">
-                    <ButtonMod
-                      isDisabled={
-                        formik.values.email.includes("@") &&
-                        formik.values.email.includes(".co")
-                          ? false
-                          : true
-                      }
-                      text={"Masuk"}
-                    />
-                  </Box>
-                </form>
-              </Box>
+                <Box textAlign={"center"} mt="16px">
+                  <ButtonMod
+                    isDisabled={
+                      formik.values.email.includes("@") &&
+                      formik.values.email.includes(".co")
+                        ? false
+                        : true
+                    }
+                    text={"Masuk"}
+                  />
+                </Box>
+              </form>
             </Box>
-          )}
-        </Box>
+          </Box>
+        )}
       </Box>
     </Box>
   );
