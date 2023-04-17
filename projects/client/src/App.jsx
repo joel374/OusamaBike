@@ -25,6 +25,7 @@ import { login } from "./redux/features/authSlice";
 import { attach } from "./redux/features/resetSlice";
 import MessageAdmin from "./pages/admin/MessageAdmin";
 import Home from "./pages/Home";
+import Footer from "./components/Footer";
 
 const App = () => {
   const location = useLocation();
@@ -181,6 +182,12 @@ const App = () => {
           }
         />
       </Routes>
+
+      {location.pathname === "/login" ||
+      location.pathname === "/register" ||
+      location.pathname === "/verification" ? null : (
+        <Footer />
+      )}
     </>
   );
 };

@@ -1,165 +1,116 @@
+import React from "react";
+import {
+  Box,
+  IconButton,
+  SlideFade,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { Box, Button, Image, UnorderedList } from "@chakra-ui/react";
-import slider1 from "../assets/ImageSlider/Banner-Slider-1.jpg";
-import slider2 from "../assets/ImageSlider/Banner-Slider-2.jpg";
-import slider3 from "../assets/ImageSlider/Banner-Slider-3.jpg";
-import slider4 from "../assets/ImageSlider/Banner-Slider-4.jpg";
-import slider5 from "../assets/ImageSlider/Banner-Slider-5.jpg";
+import { heroColor } from "./reuseable/Logo";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-import React, { useState } from "react";
+// Settings for the slider
+const settings = {
+  dots: true,
+  arrows: false,
+  fade: true,
+  infinite: true,
+  autoplay: true,
+  speed: 500,
+  autoplaySpeed: 5000,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
 
-const CarouselSlider = () => {
-  const [display, setDisplay] = useState("none");
-  const settings = {
-    dots: true,
-    autoplay: true,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    speed: 1200,
-    swipeToSlide: true,
-    lazyLoad: true,
-    initialSlide: 0,
-    appendDots: (dots) => (
-      <Box p={"30px"}>
-        <UnorderedList margin={"1px"} color={"white"}>
-          {" "}
-          {dots}{" "}
-        </UnorderedList>
-      </Box>
-    ),
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+export default function Carousel() {
+  // As we have used custom buttons, we need a reference variable to
+  // change the state
+  const [slider, setSlider] = React.useState(null);
+  const [display, setDisplay] = React.useState("none");
 
-  const myStyle = {
-    display: true,
-    width: 1200,
-    height: "375px",
-    borderRadius: "15px",
-  };
+  // These are the breakpoints which changes the position of the
+  // buttons as the screen size changes
+  const top = useBreakpointValue({ base: "90%", md: "50%" });
+  const side = useBreakpointValue({ base: "30%", md: "10px" });
 
-  const slider = React.useRef(null);
+  // These are the images used in the slide
+  const cards = [
+    "https://images.unsplash.com/photo-1612852098516-55d01c75769a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+    "https://images.unsplash.com/photo-1627875764093-315831ac12f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+    "https://images.unsplash.com/photo-1571432248690-7fd6980a1ae2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+  ];
+
   return (
-    <>
+    <Box display="flex" justifyContent={"center"}>
       <Box
-        mx={"auto"}
-        mt={"70px"}
-        style={myStyle}
-        cursor={"pointer"}
-        mb={"20px"}
+        position={"relative"}
+        width={"1208px"}
+        borderRadius={"12px"}
+        p="24px 0"
         onMouseEnter={() => setDisplay(true)}
         onMouseLeave={() => setDisplay(false)}
       >
-        <Slider ref={slider} {...settings}>
-          <Box>
-            <Image
-              src={slider1}
-              borderRadius={"15px"}
-              height={"375px"}
-              width={"1200px"}
-            />
-          </Box>
-          <Box>
-            <Image
-              src={slider2}
-              borderRadius={"15px"}
-              height={"375px"}
-              width={"1200px"}
-            />
-          </Box>
-          <Box>
-            <Image
-              src={slider3}
-              borderRadius={"15px"}
-              height={"375px"}
-              width={"1200px"}
-            />
-          </Box>
-          <Box>
-            <Image
-              src={slider4}
-              borderRadius={"15px"}
-              height={"375px"}
-              width={"1200px"}
-            />
-          </Box>
-          <Box>
-            <Image
-              src={slider5}
-              borderRadius={"15px"}
-              height={"375px"}
-              width={"1200px"}
-            />
-          </Box>
-        </Slider>
-        <Box
-          display={"flex"}
-          width={"1240px"}
-          justifyContent={"space-between"}
-          ml={"-20px"}
-          mt={"-210px"}
-        >
-          {display && (
-            <>
-              <Button
-                onClick={() => slider?.current?.slickPrev()}
-                borderRadius={"50%"}
-                w="40px"
-                h="40px"
-                color={"#edbf69"}
-                _hover={{
-                  bgColor: "#edbf69",
-                  color: "white",
-                }}
-              >
-                ❮
-              </Button>
-              <Button
-                onClick={() => slider?.current?.slickNext()}
-                borderRadius={"50%"}
-                w="40px"
-                h="40px"
-                color={"#edbf69"}
-                _hover={{
-                  bgColor: "#edbf69",
-                  color: "white",
-                }}
-              >
-                ❯
-              </Button>
-            </>
-          )}
+        {/* CSS files for react-slick */}
+        <link
+          rel="stylesheet"
+          type="text/css"
+          charSet="UTF-8"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+        />
+        {display && (
+          <>
+            <IconButton
+              aria-label="left-arrow"
+              color={heroColor}
+              borderRadius="full"
+              position="absolute"
+              left={side}
+              top={top}
+              transform={"translate(-70%, -50%)"}
+              zIndex={2}
+              onClick={() => slider?.slickPrev()}
+            >
+              <FaChevronLeft />
+            </IconButton>
+
+            <IconButton
+              aria-label="right-arrow"
+              color={heroColor}
+              borderRadius="full"
+              position="absolute"
+              right={side}
+              top={top}
+              transform={"translate(70%, -50%)"}
+              zIndex={2}
+              onClick={() => slider?.slickNext()}
+            >
+              <FaChevronRight />
+            </IconButton>
+          </>
+        )}
+        <Box h="350px" overflow="hidden" borderRadius={"12px"}>
+          {/* Slider */}
+          <Slider {...settings} ref={(slider) => setSlider(slider)}>
+            {cards.map((url, index) => (
+              <Box
+                key={index}
+                height={"6xl"}
+                position="relative"
+                backgroundPosition="center"
+                backgroundRepeat="no-repeat"
+                backgroundSize="cover"
+                borderRadius={"12px"}
+                backgroundImage={`url(${url})`}
+              />
+            ))}
+          </Slider>
         </Box>
       </Box>
-    </>
+    </Box>
   );
-};
-
-export default CarouselSlider;
+}
