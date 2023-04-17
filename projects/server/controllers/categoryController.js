@@ -146,6 +146,24 @@ const categoryController = {
       return res.status(500);
     }
   },
+  getById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const response = await db.Category.findOne({
+        where: {
+          id,
+        },
+      });
+
+      return res.status(200).json({
+        message: "Get Category By Id",
+        data: response,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "Server error" });
+    }
+  },
   addBrand: async (req, res) => {
     try {
       const { brand_name } = req.body;

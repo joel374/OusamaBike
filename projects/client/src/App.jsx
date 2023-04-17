@@ -84,8 +84,13 @@ const App = () => {
   });
   if (!authCheck) {
     return (
-      <Box textAlign={"center"}>
-        <Box mt={"240px"}>
+      <Box
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        h="100vh"
+      >
+        <Box>
           <Logo />
         </Box>
       </Box>
