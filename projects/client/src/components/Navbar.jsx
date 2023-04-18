@@ -36,7 +36,8 @@ const Navbar = () => {
 
     toast({
       status: "info",
-      title: "Akun Logout",
+      title: "Logout Sukses",
+      description: "Akun Logout",
       variant: "top-accent",
     });
   };

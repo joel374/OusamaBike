@@ -299,10 +299,12 @@ const Register = () => {
                   <Box textAlign={"center"} mt="16px">
                     <ButtonMod
                       isDisabled={
-                        formik.values.email.includes("@") &&
-                        formik.values.email.includes(".co")
-                          ? false
-                          : true
+                        !formik.values.email.includes("@") ||
+                        !formik.values.email.includes(".co") ||
+                        formik.values.username.length < 3 ||
+                        formik.values.password.length < 8
+                          ? true
+                          : false
                       }
                       text={"Daftar"}
                     />

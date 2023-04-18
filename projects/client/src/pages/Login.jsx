@@ -183,8 +183,6 @@ const Login = () => {
                     h={"40px"}
                     p={"0 16px"}
                     placeholder="Email"
-                    // borderRadius={"var(--chakra-radii-md)"}
-                    // border={"1px solid var(--chakra-colors-gray-200)"}
                     onChange={formChangeHandler}
                     value={formik.values.email}
                   />
@@ -203,8 +201,6 @@ const Login = () => {
                       h={"40px"}
                       p={"0 16px"}
                       name="password"
-                      // borderRadius={"var(--chakra-radii-md)"}
-                      // border={"1px solid var(--chakra-colors-gray-200)"}
                       placeholder="Kata sandi"
                       onChange={formChangeHandler}
                       type={showPassword ? "text" : "password"}
@@ -242,10 +238,11 @@ const Login = () => {
                 <Box textAlign={"center"} mt="16px">
                   <ButtonMod
                     isDisabled={
-                      formik.values.email.includes("@") &&
-                      formik.values.email.includes(".co")
-                        ? false
-                        : true
+                      !formik.values.email.includes("@") ||
+                      !formik.values.email.includes(".co") ||
+                      formik.values.password.length < 8
+                        ? true
+                        : false
                     }
                     text={"Masuk"}
                   />

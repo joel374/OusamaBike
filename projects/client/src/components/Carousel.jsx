@@ -2,7 +2,9 @@ import React from "react";
 import {
   Box,
   IconButton,
+  Image,
   SlideFade,
+  UnorderedList,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import Slider from "react-slick";
@@ -16,10 +18,46 @@ const settings = {
   fade: true,
   infinite: true,
   autoplay: true,
-  speed: 500,
-  autoplaySpeed: 5000,
+  speed: 1000,
   slidesToShow: 1,
   slidesToScroll: 1,
+  swipeToScroll: true,
+  swipeToSlide: true,
+  lazyLoad: true,
+  initialSlide: 0,
+  appendDots: (dots) => (
+    <Box>
+      <UnorderedList marginBottom={"50px"} color={"white"}>
+        {dots}
+      </UnorderedList>
+    </Box>
+  ),
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        infinite: true,
+        dots: true,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        initialSlide: 1,
+      },
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+  ],
 };
 
 export default function Carousel() {
@@ -93,19 +131,16 @@ export default function Carousel() {
             </IconButton>
           </>
         )}
-        <Box h="350px" overflow="hidden" borderRadius={"12px"}>
+        <Box borderRadius={"12px"}>
           {/* Slider */}
           <Slider {...settings} ref={(slider) => setSlider(slider)}>
             {cards.map((url, index) => (
-              <Box
+              <Image
                 key={index}
-                height={"6xl"}
+                height="375px"
                 position="relative"
-                backgroundPosition="center"
-                backgroundRepeat="no-repeat"
-                backgroundSize="cover"
                 borderRadius={"12px"}
-                backgroundImage={`url(${url})`}
+                src={url}
               />
             ))}
           </Slider>
