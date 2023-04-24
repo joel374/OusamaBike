@@ -96,24 +96,31 @@ const ProductList = () => {
               </Box>
               <Box display={seeMore ? "block" : "none"}>
                 {category?.map((val) => (
-                  <Button
-                    p="6px 0"
-                    fontSize={"11.9px"}
-                    fontWeight="normal"
-                    display={"flex"}
-                    alignItems="center"
-                    ml="16px"
-                    pl="12px"
-                    onClick={categoryHandler}
+                  <Box
                     _hover={{
                       bgColor: "var(--N50,#F3F4F5)",
                     }}
-                    value={val.id}
-                    borderLeftRadius="8px"
+                    borderRadius="8px"
                     cursor="pointer"
+                    ml="16px"
+                    mr="12px"
+                    pl="12px"
                   >
-                    {val?.category_name}
-                  </Button>
+                    <Button
+                      w={"100%"}
+                      fontSize={"11.9px"}
+                      fontWeight="normal"
+                      onClick={categoryHandler}
+                      _hover={false}
+                      _active={false}
+                      value={val.id}
+                      bgColor={"transparent"}
+                      m="0"
+                      p="0"
+                    >
+                      {val?.category_name}
+                    </Button>
+                  </Box>
                 ))}
               </Box>
               <Box

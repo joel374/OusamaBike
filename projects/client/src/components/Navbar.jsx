@@ -22,6 +22,7 @@ import Logo, { heroColor } from "./reuseable/Logo";
 import { logout } from "../redux/features/authSlice";
 import { RiAdminLine } from "react-icons/ri";
 import { useState } from "react";
+import { BsCart3 } from "react-icons/bs";
 
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -76,24 +77,19 @@ const Navbar = () => {
           mx={{ lg: "auto", md: "0", base: "0" }}
           p={{ lg: "0", md: "8px 10px 4px 16px", base: "8px 10px 4px 16px" }}
         >
-          {/* Brand */}
           <Link to={"/"}>
             <Box display={{ lg: "flex", md: "none", base: "none" }}>
               <Logo />
             </Box>
           </Link>
 
-          <Box
-            display={{ lg: "block", md: "flex", base: "flex" }}
-            w={"100%"}
-            alignItems="center"
-          >
+          <Box display={"flex"} alignItems="center" w="100%">
             {/* Search Input */}
-            <Box>
+            <Box w="100%" ml={"16px"}>
               <form
               //   onSubmit={formikSearch.handleSubmit}
               >
-                <FormControl ml={{ lg: "16px", md: "0", base: "0" }}>
+                <FormControl>
                   <InputGroup textAlign={"right"}>
                     <Input
                       type={"text"}
@@ -102,8 +98,8 @@ const Navbar = () => {
                         fontSize: "14px",
                       }}
                       name="search"
-                      h={{ lg: "40px", md: "32px", base: "32px" }}
-                      pb={{ lg: "0", md: "2px", base: "2px" }}
+                      h={"40px"}
+                      pb={"0"}
                       //   w={width}
                       // onChange={searchHandler}
                       onChange={changeBtnHandler}
@@ -119,8 +115,7 @@ const Navbar = () => {
                       borderLeftRadius={"0"}
                       type="submit"
                       bgColor={"white"}
-                      h={{ lg: "40px", md: "32px", base: "32px" }}
-                      pb={{ lg: "0", md: "2px", base: "2px" }}
+                      h={"40px"}
                       _hover={false}
                       border={`1px solid #e6e6e6`}
                       borderLeft={"0px"}
@@ -131,8 +126,12 @@ const Navbar = () => {
                 </FormControl>
               </form>
             </Box>
-            <Box display={{ lg: "none", md: "block", base: "block" }} ml="16px">
-              <RxHamburgerMenu fontSize={"24px"} />
+
+            {/* Cart */}
+            <Box ml="20px" mr="4px">
+              <Box w="36px" h="30px" display={"flex"} alignItems={"center"}>
+                <BsCart3 />
+              </Box>
             </Box>
           </Box>
 

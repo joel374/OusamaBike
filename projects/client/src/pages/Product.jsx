@@ -1,18 +1,21 @@
 import { Box, Button, Grid, Image, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   addToWishlistHandler,
   fetchProduct,
 } from "../components/reuseable/fetch";
 import { heroColor } from "../components/reuseable/Logo";
 import { doubleOnclick } from "./admin/ManageProduct";
+import { BiHeart } from "react-icons/bi";
+import { BsChatLeftText } from "react-icons/bs";
 
 const Product = () => {
   const [product, setProduct] = useState({});
   const [isOver, setIsOver] = useState(false);
   const [image, setImage] = useState({});
+  const navigate = useNavigate();
 
   const params = useParams();
   const toast = useToast();
@@ -134,7 +137,7 @@ const Product = () => {
                 {product?.stock}
               </Text>
             </Text>
-            <Box>
+            <Box mt="12px" mb="16px">
               <Button
                 w="100%"
                 mb="8px"
@@ -143,27 +146,10 @@ const Product = () => {
                 bgColor={heroColor}
                 color="white"
                 fontSize={"14px"}
-                onClick={() =>
-                  addToWishlistHandler(params.id).then((res) =>
-                    res.error
-                      ? toast({
-                          title: "Produk gagal ditambahkan ke wishlist",
-                          description: res,
-                          status: "error",
-                          variant: "top-accent",
-                        })
-                      : toast({
-                          title: "Produk ditambahkan ke wishlist",
-                          description: res,
-                          status: "success",
-                          variant: "top-accent",
-                        })
-                  )
-                }
               >
-                Wishlist
+                + Keranjang
               </Button>
-              <Link to="/chat">
+              {/* <Link to="/chat">
                 <Button
                   w="100%"
                   mb="12px"
@@ -176,7 +162,58 @@ const Product = () => {
                 >
                   Chat
                 </Button>
-              </Link>
+              </Link> */}
+              <Box mt="16px" display={"flex"} alignItems={"center"}>
+                <Button
+                  w="50%"
+                  _hover={false}
+                  _active={false}
+                  bgColor={"transparent"}
+                  onClick={() =>
+                    addToWishlistHandler(params.id).then((res) =>
+                      res.error
+                        ? toast({
+                            title: "Produk gagal ditambahkan ke wishlist",
+                            description: res,
+                            status: "error",
+                            variant: "top-accent",
+                          })
+                        : toast({
+                            title: "Produk ditambahkan ke wishlist",
+                            description: res,
+                            status: "success",
+                            variant: "top-accent",
+                          })
+                    )
+                  }
+                  p="0 12px"
+                  h="auto"
+                  fontSize={"12px"}
+                  borderRight={"1px solid grey"}
+                  borderRadius={0}
+                >
+                  <Box display={"inline"} mr="6px">
+                    <BiHeart />
+                  </Box>
+                  Wishlist
+                </Button>
+
+                <Button
+                  w="50%"
+                  bgColor="transparent"
+                  _hover={false}
+                  _active={false}
+                  fontSize={"12px"}
+                  p="0 12px"
+                  h="auto"
+                  onClick={() => navigate("/chat")}
+                >
+                  <Box display={"inline"} mr="6px">
+                    <BsChatLeftText />
+                  </Box>
+                  Chat
+                </Button>
+              </Box>
             </Box>
           </Box>
         </Box>

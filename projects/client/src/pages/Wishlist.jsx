@@ -1,9 +1,8 @@
 import { Box, Grid, Text, useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { AiOutlineRight, AiOutlineUp } from "react-icons/ai";
+import { AiOutlineRight } from "react-icons/ai";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import { Link } from "react-router-dom";
-import Card from "../components/Card";
 import CardWishlist from "../components/CardWishlist";
 import {
   deleteWishlist,

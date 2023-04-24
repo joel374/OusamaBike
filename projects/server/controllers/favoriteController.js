@@ -71,7 +71,7 @@ const favoriteController = {
         product_name = "",
         CategoryId = "",
         BrandCategoryId = "",
-        _sortBy = "product_name",
+        _sortBy = "createdAt",
         _sortDir = "ASC",
         _limit = 6,
         _page = 1,
@@ -82,7 +82,7 @@ const favoriteController = {
         offset: (_page - 1) * _limit,
         order: [
           [_sortBy, _sortDir],
-          ["price", "DESC"],
+          ["createdAt", "DESC"],
         ],
         where: {
           UserId: req.user.id,

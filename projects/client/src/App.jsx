@@ -26,6 +26,7 @@ import { attach } from "./redux/features/resetSlice";
 import MessageAdmin from "./pages/admin/MessageAdmin";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
+import Cart from "./pages/Cart";
 
 const App = () => {
   const location = useLocation();
@@ -123,6 +124,7 @@ const App = () => {
         <Route path="/product/:product_name/:id" element={<Product />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/cart" element={<Cart />} />
 
         {/* Admin */}
         <Route
