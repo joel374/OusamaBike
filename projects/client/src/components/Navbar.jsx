@@ -16,7 +16,6 @@ import {
 import { createSearchParams, Link, useNavigate } from "react-router-dom";
 import { TbSearch } from "react-icons/tb";
 import { BiHeart, BiLogOutCircle } from "react-icons/bi";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import Logo, { heroColor } from "./reuseable/Logo";
 import { logout } from "../redux/features/authSlice";
@@ -129,7 +128,13 @@ const Navbar = () => {
 
             {/* Cart */}
             <Box ml="20px" mr="4px">
-              <Box w="36px" h="30px" display={"flex"} alignItems={"center"}>
+              <Box
+                w="36px"
+                h="30px"
+                onClick={() => navigate("/cart")}
+                display={"flex"}
+                alignItems={"center"}
+              >
                 <BsCart3 />
               </Box>
             </Box>

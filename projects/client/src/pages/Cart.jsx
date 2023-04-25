@@ -1,4 +1,5 @@
 import { Box, Checkbox, Image, Text } from "@chakra-ui/react";
+import CartItems from "../components/CartItems";
 const Cart = () => {
   return (
     <Box p="19px 0 0 " mx="auto" w="1188px">
@@ -14,19 +15,8 @@ const Cart = () => {
             </Checkbox>
           </Box>
           <Box h="5px" bgColor={"var(--N50,#F3F4F5)"} />
-          <Box>
-            <Box display={"flex"} alignItems={"center"} p="16px 0">
-              <Checkbox mr="14px"></Checkbox>
-              <Image
-                h="69px"
-                w="69px"
-                objectFit={"cover"}
-                src="https://images.unsplash.com/photo-1682276515739-a98a9650f8d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-              />
-              <Text pl="12px"> Testing</Text>
-            </Box>
-            <Box h="5px" bgColor={"var(--N50,#F3F4F5)"} />
-          </Box>
+          {/* Cart Items */}
+          <CartItems />
         </Box>
       </Box>
     </Box>
