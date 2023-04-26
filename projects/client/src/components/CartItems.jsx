@@ -11,11 +11,11 @@ const CartItems = ({ product_name, price, image_url, quantity }) => {
             h="69px"
             w="69px"
             objectFit={"cover"}
-            src="https://images.unsplash.com/photo-1682276515739-a98a9650f8d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+            src={`${process.env.REACT_APP_API_IMAGE_URL}${image_url}`}
           />
           <Box pl="12px">
-            <Text fontWeight={"normal"}>Testing</Text>
-            <Text mt="8px">Rp. 15.000</Text>
+            <Text fontWeight={"normal"}>{product_name}</Text>
+            <Text mt="8px">Rp. {price.toLocaleString("id-ID")}</Text>
           </Box>
         </Box>
         <Box mt="16px" display={"flex"} justifyContent={"end"}>
@@ -27,7 +27,7 @@ const CartItems = ({ product_name, price, image_url, quantity }) => {
               fontWeight={"normal"}
               textAlign={"center"}
             >
-              1
+              {quantity}
             </Box>
             <BiPlusCircle fontSize={"20px"} />
           </Box>

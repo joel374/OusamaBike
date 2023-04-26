@@ -20,15 +20,29 @@ import { useDispatch, useSelector } from "react-redux";
 import Logo, { heroColor } from "./reuseable/Logo";
 import { logout } from "../redux/features/authSlice";
 import { RiAdminLine } from "react-icons/ri";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsCart3 } from "react-icons/bs";
+import { setTotalCart, setMyCart } from "../redux/features/cartSlice";
+import { axiosInstance } from "../api";
 
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
   const authSelector = useSelector((state) => state.auth);
+  const cartSelector = useSelector((state) => state.cart);
+  // console.log(cartSelector);
   const dispatch = useDispatch();
   const toast = useToast();
   const navigate = useNavigate();
+
+  const fetchMyCart = async () => {
+    try {
+      const response = await axiosInstance.get("/cart");
+      dispatch(setTotalCart(response.data.data.length));
+      dispatch(setMyCart(response.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const logoutBtnHandler = () => {
     localStorage.removeItem("auth_token");
@@ -58,6 +72,10 @@ const Navbar = () => {
       // onKeyDown(e);
     }
   };
+
+  useEffect(() => {
+    fetchMyCart();
+  }, []);
 
   return (
     <Box
@@ -134,8 +152,39 @@ const Navbar = () => {
                 onClick={() => navigate("/cart")}
                 display={"flex"}
                 alignItems={"center"}
+                justifyContent={"center"}
+                _hover={{
+                  bgColor: "var(--N50,#F3F4F5)",
+                  color: heroColor,
+                  borderRadius: "3px",
+                }}
+                p="2px"
               >
                 <BsCart3 />
+                {cartSelector.totalCart > 0 ? (
+                  <Box
+                    ml="20px"
+                    mb="20px"
+                    display={"inline"}
+                    position={"absolute"}
+                  >
+                    <Box
+                      display={"flex"}
+                      color={"white"}
+                      bgColor={heroColor}
+                      borderRadius={"50%"}
+                      fontSize={"10px"}
+                      p="8px"
+                      fontWeight={"bold"}
+                      w={authSelector.totalCart > 9 ? "auto" : "12px"}
+                      h="12px"
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                    >
+                      {cartSelector.totalCart}
+                    </Box>
+                  </Box>
+                ) : null}
               </Box>
             </Box>
           </Box>

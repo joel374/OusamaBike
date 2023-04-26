@@ -10,15 +10,46 @@ import { heroColor } from "../components/reuseable/Logo";
 import { doubleOnclick } from "./admin/ManageProduct";
 import { BiHeart } from "react-icons/bi";
 import { BsChatLeftText } from "react-icons/bs";
+import { axiosInstance } from "../api";
+import { useDispatch, useSelector } from "react-redux";
+import { setMyCart, setTotalCart } from "../redux/features/cartSlice";
 
 const Product = () => {
   const [product, setProduct] = useState({});
   const [isOver, setIsOver] = useState(false);
   const [image, setImage] = useState({});
   const navigate = useNavigate();
-
   const params = useParams();
   const toast = useToast();
+  const dispatch = useDispatch();
+  const cartSelector = useSelector((state) => state.cart);
+
+  const addToCart = async (id) => {
+    try {
+      const response = await axiosInstance.post(`/cart/addToCart/${id}`, {
+        quantity: 1,
+      });
+      dispatch(setTotalCart(+1));
+      dispatch(setMyCart([response.data.data]));
+      console.log("redux", cartSelector.myCart);
+      console.log(response.data);
+
+      toast({
+        title: "Product ditambahkan ke keranjang",
+        status: "success",
+        variant: "top-accent",
+        description: response.data.message,
+      });
+    } catch (error) {
+      console.log(error.response);
+      toast({
+        title: "Product sudah ada di keranjang",
+        status: "info",
+        variant: "top-accent",
+        description: error.response.data.message,
+      });
+    }
+  };
 
   useEffect(() => {
     fetchProduct(params.id).then((res) =>
@@ -146,6 +177,7 @@ const Product = () => {
                 bgColor={heroColor}
                 color="white"
                 fontSize={"14px"}
+                onClick={() => addToCart(product.id)}
               >
                 + Keranjang
               </Button>
