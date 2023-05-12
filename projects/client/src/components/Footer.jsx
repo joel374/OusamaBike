@@ -10,7 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import { FaInstagram, FaTwitter, FaYoutube, FaWhatsapp } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import Logo, { heroColor } from "./reuseable/Logo";
 
 const SocialButton = ({ children, label, href }) => {

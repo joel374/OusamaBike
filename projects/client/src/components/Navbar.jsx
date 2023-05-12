@@ -4,6 +4,7 @@ import {
   Button,
   FormControl,
   HStack,
+  Image,
   Input,
   InputGroup,
   Popover,
@@ -22,11 +23,12 @@ import { logout } from "../redux/features/authSlice";
 import { RiAdminLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { BsCart3 } from "react-icons/bs";
-import { setTotalCart, setMyCart } from "../redux/features/cartSlice";
+import { setTotalCart } from "../redux/features/cartSlice";
 import { axiosInstance } from "../api";
 
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [cartItems, setCartItems] = useState([]);
   const authSelector = useSelector((state) => state.auth);
   const cartSelector = useSelector((state) => state.cart);
   // console.log(cartSelector);
@@ -37,11 +39,52 @@ const Navbar = () => {
   const fetchMyCart = async () => {
     try {
       const response = await axiosInstance.get("/cart");
+      setCartItems(response.data.data);
       dispatch(setTotalCart(response.data.data.length));
-      dispatch(setMyCart(response.data.data));
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const renderCart = () => {
+    return cartItems.map((val) => {
+      return (
+        <Box
+          display={"flex"}
+          p="8px 0"
+          fontSize={"14px"}
+          fontWeight={"bold"}
+          borderBottom={"1px solid #e6e6e6"}
+          onClick={() => navigate("/cart")}
+        >
+          <Image
+            src={
+              process.env.REACT_APP_API_IMAGE_URL +
+              val.Product.Image_Urls[0].image_url
+            }
+            w="40px"
+            h="40px"
+            mr="8px"
+          />
+          <Box w="100%">
+            <Box textOverflow={"ellipsis"} overflow={"hidden"} h="20px">
+              {val.Product.product_name}
+            </Box>
+            <Box fontWeight={"thin"} fontSize={"10px"} h="16px" mt="2px">
+              {val.quantity} barang
+            </Box>
+          </Box>
+          <Box
+            ml="8px"
+            display={"flex"}
+            alignItems={"center"}
+            color={"#fa591d"}
+          >
+            Rp.{val.Product.price.toLocaleString("id-ID")}
+          </Box>
+        </Box>
+      );
+    });
   };
 
   const logoutBtnHandler = () => {
@@ -85,7 +128,7 @@ const Navbar = () => {
       right={"0"}
       top="0"
       zIndex="9998"
-      backgroundColor={"white"}
+      backgroundColor={heroColor}
     >
       <Box>
         <HStack
@@ -96,7 +139,7 @@ const Navbar = () => {
         >
           <Link to={"/"}>
             <Box display={{ lg: "flex", md: "none", base: "none" }}>
-              <Logo />
+              <Logo color={"white"} />
             </Box>
           </Link>
 
@@ -110,7 +153,7 @@ const Navbar = () => {
                   <InputGroup textAlign={"right"}>
                     <Input
                       type={"text"}
-                      placeholder={"Find in OusamaBike"}
+                      placeholder={"Cari di OusamaBike"}
                       _placeholder={{
                         fontSize: "14px",
                       }}
@@ -134,7 +177,7 @@ const Navbar = () => {
                       bgColor={"white"}
                       h={"40px"}
                       _hover={false}
-                      border={`1px solid #e6e6e6`}
+                      border={`1px solid c`}
                       borderLeft={"0px"}
                     >
                       <TbSearch />
@@ -146,46 +189,78 @@ const Navbar = () => {
 
             {/* Cart */}
             <Box ml="20px" mr="4px">
-              <Box
-                w="36px"
-                h="30px"
-                onClick={() => navigate("/cart")}
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                _hover={{
-                  bgColor: "var(--N50,#F3F4F5)",
-                  color: heroColor,
-                  borderRadius: "3px",
-                }}
-                p="2px"
-              >
-                <BsCart3 />
-                {cartSelector.totalCart > 0 ? (
+              <Popover trigger={"hover"}>
+                <PopoverTrigger>
                   <Box
-                    ml="20px"
-                    mb="20px"
-                    display={"inline"}
-                    position={"absolute"}
+                    w="37px"
+                    h="37px"
+                    onClick={() => navigate("/cart")}
+                    display={"flex"}
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    color={"white"}
+                    _hover={{
+                      bgColor: "var(--N50,#F3F4F5)",
+                      color: heroColor,
+                      borderRadius: "3px",
+                    }}
+                    p="5px 0"
                   >
-                    <Box
-                      display={"flex"}
-                      color={"white"}
-                      bgColor={heroColor}
-                      borderRadius={"50%"}
-                      fontSize={"10px"}
-                      p="8px"
-                      fontWeight={"bold"}
-                      w={authSelector.totalCart > 9 ? "auto" : "12px"}
-                      h="12px"
-                      alignItems={"center"}
-                      justifyContent={"center"}
-                    >
-                      {cartSelector.totalCart}
-                    </Box>
+                    <BsCart3 />
+                    {cartSelector.totalCart > 0 ? (
+                      <Box
+                        ml="20px"
+                        mb="20px"
+                        display={"inline"}
+                        position={"absolute"}
+                      >
+                        <Box
+                          display={"flex"}
+                          color={"white"}
+                          bgColor={"red"}
+                          borderRadius={"50%"}
+                          fontSize={"10px"}
+                          p="8px"
+                          fontWeight={"800"}
+                          w={cartSelector.totalCart > 9 ? "auto" : "12px"}
+                          h="12px"
+                          alignItems={"center"}
+                          justifyContent={"center"}
+                        >
+                          {cartSelector.totalCart}
+                        </Box>
+                      </Box>
+                    ) : null}
                   </Box>
-                ) : null}
-              </Box>
+                </PopoverTrigger>
+                <PopoverContent w={"350px"} bgColor={"white"}>
+                  <PopoverBody p="0" cursor={"pointer"}>
+                    <Box m="0 16px" bgColor={"white"}>
+                      <Box
+                        p="16px 0 8px"
+                        borderBottom={"1px solid #e6e6e6"}
+                        display={"flex"}
+                        justifyContent={"space-between"}
+                        alignItems={"center"}
+                      >
+                        <Text fontWeight={"bold"} fontSize={"14px"}>
+                          Keranjang ({cartSelector.totalCart})
+                        </Text>
+                        <Text
+                          fontWeight={"bold"}
+                          fontSize={"14px"}
+                          color={heroColor}
+                          onClick={() => navigate("/cart")}
+                        >
+                          Lihat Sekarang
+                        </Text>
+                      </Box>
+                      {renderCart()}
+                    </Box>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+              {/*  */}
             </Box>
           </Box>
 
@@ -196,7 +271,7 @@ const Navbar = () => {
             fontWeight={"semibold"}
             pl={"8px"}
           >
-            {/* Navbar sudah login */}
+            {/* LoggedIn */}
             {authSelector.username ? (
               <Box display={"flex"} mr="2" ml="1" cursor={"pointer"}>
                 <Popover trigger={"hover"}>
@@ -204,6 +279,7 @@ const Navbar = () => {
                     <Box
                       display={"flex"}
                       my="auto"
+                      color={"white"}
                       minW={"113px"}
                       maxW="200px"
                       paddingLeft="5px"
@@ -222,7 +298,6 @@ const Navbar = () => {
                         width={"25px"}
                         height="25px"
                         my="auto"
-                        // src={`${apiImg}/${authSelector.profile_picture}`}
                       />
                       <Text my="auto" padding={"8px"}>
                         {authSelector.username.split(" ")[0]}
@@ -247,7 +322,6 @@ const Navbar = () => {
                             width={"50px"}
                             height="50px"
                             my="auto"
-                            // src={`${apiImg}/${authSelector.profile_picture}`}
                           />
                           <Text
                             my="auto"
@@ -320,7 +394,7 @@ const Navbar = () => {
                 </Popover>
               </Box>
             ) : (
-              // User belum login
+              // Before login
               <Box gap="2" display={"flex"} pl={"15px"} mr={"0px"}>
                 <Link to={"/login"}>
                   <Box width={"73px"}>

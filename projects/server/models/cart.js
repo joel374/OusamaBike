@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Cart.init(
     {
       quantity: DataTypes.INTEGER,
+      is_checked: DataTypes.BOOLEAN,
     },
     {
       sequelize,

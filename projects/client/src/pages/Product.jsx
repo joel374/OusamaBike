@@ -12,7 +12,7 @@ import { BiHeart } from "react-icons/bi";
 import { BsChatLeftText } from "react-icons/bs";
 import { axiosInstance } from "../api";
 import { useDispatch, useSelector } from "react-redux";
-import { setMyCart, setTotalCart } from "../redux/features/cartSlice";
+import { setTotalCart } from "../redux/features/cartSlice";
 
 const Product = () => {
   const [product, setProduct] = useState({});
@@ -29,10 +29,8 @@ const Product = () => {
       const response = await axiosInstance.post(`/cart/addToCart/${id}`, {
         quantity: 1,
       });
-      dispatch(setTotalCart(+1));
-      dispatch(setMyCart([response.data.data]));
-      console.log("redux", cartSelector.myCart);
-      console.log(response.data);
+
+      dispatch(setTotalCart(cartSelector.totalCart + 1));
 
       toast({
         title: "Product ditambahkan ke keranjang",
@@ -50,6 +48,7 @@ const Product = () => {
       });
     }
   };
+  console.log(cartSelector.totalCart);
 
   useEffect(() => {
     fetchProduct(params.id).then((res) =>

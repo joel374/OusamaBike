@@ -117,6 +117,7 @@ const ProductList = () => {
                       bgColor={"transparent"}
                       m="0"
                       p="0"
+                      justifyContent={"start"}
                     >
                       {val?.category_name}
                     </Button>

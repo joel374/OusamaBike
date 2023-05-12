@@ -39,6 +39,7 @@ const cartController = {
         ProductId,
         UserId: req.user.id,
         quantity,
+        is_checked: false,
       });
 
       return res.status(200).json({
@@ -89,11 +90,126 @@ const cartController = {
           UserId: req.user.id,
         },
         include: [{ model: db.Product, include: [{ model: db.Image_Url }] }],
+        order: [["createdAt", "DESC"]],
       });
 
       return res.status(200).json({
         message: "Successfully get all cart items",
         data: response,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Server Error",
+      });
+    }
+  },
+  checkedCart: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const findProductInCart = await db.Cart.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!findProductInCart) {
+        return res.status(400).json({
+          message: "Cart not found",
+        });
+      }
+
+      await db.Cart.update(
+        {
+          is_checked: findProductInCart.is_checked === true ? false : true,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+
+      return res.status(200).json({
+        message: "Cheked items successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Server Error",
+      });
+    }
+  },
+  checkedAllCart: async (req, res) => {
+    try {
+      const findAllItems = await db.Cart.findAll();
+      const findAllItemsChecked = await db.Cart.findAll({
+        where: {
+          is_checked: 1,
+        },
+      });
+
+      if (findAllItemsChecked.length === findAllItems.length) {
+        await db.Cart.update(
+          {
+            is_checked: 0,
+          },
+          {
+            where: {
+              is_checked: 1,
+            },
+          }
+        );
+
+        return res.status(200).json({
+          message: "Unchecked items successfully",
+        });
+      }
+
+      await db.Cart.update(
+        {
+          is_checked: 1,
+        },
+        {
+          where: {
+            is_checked: 0,
+          },
+        }
+      );
+
+      return res.status(200).json({
+        message: "Checked all items successfully",
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Server Error",
+      });
+    }
+  },
+  totalPrice: async (req, res) => {
+    try {
+      const findProduct = await db.Cart.findAll({
+        where: {
+          is_checked: 1,
+        },
+        include: [{ model: db.Product }],
+      });
+
+      const countTotalPrice = findProduct.map(
+        (val) => val.Product.price * val.quantity
+      );
+      let totalPrice = 0;
+      const totalQuantity = findProduct.length;
+
+      for (let i = 0; i < countTotalPrice.length; i++) {
+        totalPrice += countTotalPrice[i];
+      }
+
+      return res.status(200).json({
+        message: "Get total price",
+        data: { totalPrice, totalQuantity },
       });
     } catch (error) {
       console.log(error);
