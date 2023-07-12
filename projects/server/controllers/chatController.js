@@ -1,5 +1,5 @@
-const { Op } = require("sequelize");
-const db = require("../models");
+const { Op } = require('sequelize');
+const db = require('../models');
 const chatController = {
   postChat: async (req, res) => {
     try {
@@ -15,7 +15,7 @@ const chatController = {
         const chat = await db.Chat.create({
           UserId: req.user.id,
           from: req.user.id,
-          to: "admin",
+          to: 'admin',
         });
 
         await db.Message.create({
@@ -24,7 +24,7 @@ const chatController = {
         });
 
         return res.status(200).json({
-          message: "Message Sent",
+          message: 'Message Sent',
         });
       }
 
@@ -35,64 +35,60 @@ const chatController = {
       });
 
       return res.status(200).json({
-        message: "Message Sent",
+        message: 'Message Sent',
       });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
       });
     }
   },
   postChatUser: async (req, res) => {
     try {
       const { message } = req.body;
+      const { id } = req.params;
 
-      const findAdmin = await db.User.findOne({
-        where: req.user.id,
+      const findChat = await db.Chat.findOne({
+        where: {
+          from: id,
+          to: 'admin',
+        },
       });
 
-      if (findAdmin.is_admin === false) {
-        return res.status(400).json({
-          message: "Admin not found",
-        });
-      }
-
-      await db.Chat.create({
-        message,
-        from: "admin",
-        to: req.params.id,
+      await db.Message.create({
+        message: message,
+        ChatId: findChat.id,
+        // UserId: 'admin',
       });
 
       return res.status(200).json({
-        message: "Message Sent",
+        message: 'Message Sent',
       });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
       });
     }
   },
   fetchChat: async (req, res) => {
     try {
-      const response = await db.Chat.findAll({
+      const response = await db.Chat.findOne({
         where: {
-          [Op.or]: {
-            from: req.user.id,
-            to: req.user.id,
-          },
+          from: req.user.id,
         },
+        include: [{ model: db.Message }],
       });
 
       return res.status(200).json({
-        message: "Fetch Chat",
+        message: 'Fetch Chat',
         data: response,
       });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
       });
     }
   },
@@ -100,22 +96,19 @@ const chatController = {
     try {
       const response = await db.Chat.findAll({
         where: {
-          // [Op.or]: {
-          // from: "admin",
-          to: "admin",
-          // },
+          to: 'admin',
         },
         include: [{ model: db.User }, { model: db.Message }],
       });
 
       return res.status(200).json({
-        message: "Fetch Chat",
+        message: 'Fetch Chat',
         data: response,
       });
     } catch (error) {
       console.log(error);
       return res.status(500).json({
-        message: "Server Error",
+        message: 'Server Error',
       });
     }
   },
