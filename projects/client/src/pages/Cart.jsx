@@ -85,11 +85,19 @@ const Cart = () => {
     }
   };
 
+  console.log('lengthnya', cart.length === 0);
+
   useEffect(() => {
     fetchMyCart();
   }, []);
   return (
-    <Box p='19px 0 0 ' mx='auto' w='1188px' mt='65px'>
+    <Box
+      p='19px 0 0 '
+      mx='auto'
+      w='1188px'
+      mt='65px'
+      h={cart.length === 0 ? '' : '100vh'}
+    >
       <Helmet>
         <meta charSet='utf-8' />
         <title>Keranjang | OusamaBike</title>
@@ -102,82 +110,118 @@ const Cart = () => {
         fontWeight={'bold'}
       >
         {/* Cart */}
-        <Box mr='45px'>
-          <Box>Keranjang</Box>
-          <Box w='677px'>
-            <Box
-              p='16px 0'
-              display={'flex'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-              fontSize={'14px'}
-            >
-              <Checkbox
-                onChange={() => checkBtnHandler()}
-                isChecked={checkedAll}
-              >
-                <Text fontWeight={'normal'} fontSize={'14px'}>
-                  Pilih Semua
-                </Text>
-              </Checkbox>
-              <Text
-                display={displayDelete}
-                cursor={'pointer'}
-                color={heroColor}
-              >
-                Hapus
-              </Text>
-            </Box>
-            <Box h='5px' bgColor={'var(--N50,#F3F4F5)'} />
-            {/* Cart Items */}
-            {renderCart()}
-          </Box>
-        </Box>
-        {/* Total Price */}
-        <Box>
+        {cart.length === 0 ? (
           <Box
-            w={'350px'}
-            top='140px'
-            position={'fixed'}
-            boxShadow={'0 1px 6px 0 var(--color-shadow,rgba(49,53,59,0.12))'}
-            p='16px'
-            m='16px'
-            borderRadius={'8px'}
-            fontSize={'16px'}
+            h='272px'
+            display='flex'
+            justifyContent={'center'}
+            width='100%'
+            alignItems={'center'}
           >
-            <Text mb='16px'>Ringkasan belanja</Text>
-            <Box display={'flex'} justifyContent={'space-between'}>
-              <Text fontSize={'14px'} fontWeight={'light'}>
-                Total Harga(
-                {totalQuantityChecked} barang)
+            <Box>
+              <Text>Wah, keranjang belanjamu kosong</Text>
+              <Text
+                fontWeight={'medium'}
+                fontSize={'14px'}
+                textAlign={'center'}
+              >
+                Yuk, isi dengan barang-barang impianmu!
               </Text>
-              <Text fontSize={'14px'} fontWeight={'light'}>
-                Rp. {totalPrice.toLocaleString('id-ID')}
-              </Text>
+              <Box display='flex' justifyContent={'center'}>
+                <Button
+                  bgColor={heroColor}
+                  color={'white'}
+                  mt='2'
+                  _hover={false}
+                  onClick={() => navigate('/product')}
+                >
+                  Mulai Belanja
+                </Button>
+              </Box>
             </Box>
-            <Divider m='16px 0' />
-            <Box
-              display={'flex'}
-              justifyContent={'space-between'}
-              fontWeight={'bold'}
-              fontSize={'16px'}
-            >
-              <Text>Total Harga</Text>
-              <Text>Rp. {totalPrice.toLocaleString('id-ID')}</Text>
-            </Box>
-            <Button
-              w='100%'
-              mt='20px'
-              h='48px'
-              color={'white'}
-              bgColor={heroColor}
-              _hover={false}
-              onClick={() => navigate('/checkout')}
-            >
-              Beli
-            </Button>
           </Box>
-        </Box>
+        ) : (
+          <>
+            <Box mr='45px'>
+              <Box>Keranjang</Box>
+              <Box w='677px'>
+                <Box
+                  p='16px 0'
+                  display={'flex'}
+                  alignItems={'center'}
+                  justifyContent={'space-between'}
+                  fontSize={'14px'}
+                >
+                  <Checkbox
+                    onChange={() => checkBtnHandler()}
+                    isChecked={checkedAll}
+                  >
+                    <Text fontWeight={'normal'} fontSize={'14px'}>
+                      Pilih Semua
+                    </Text>
+                  </Checkbox>
+                  <Text
+                    display={displayDelete}
+                    cursor={'pointer'}
+                    color={heroColor}
+                  >
+                    Hapus
+                  </Text>
+                </Box>
+                <Box h='5px' bgColor={'var(--N50,#F3F4F5)'} />
+                {/* Cart Items */}
+                {renderCart()}
+              </Box>
+            </Box>
+            {/* Total Price */}
+            <Box>
+              <Box
+                w={'350px'}
+                top='140px'
+                position={'fixed'}
+                boxShadow={
+                  '0 1px 6px 0 var(--color-shadow,rgba(49,53,59,0.12))'
+                }
+                p='16px'
+                m='16px'
+                borderRadius={'8px'}
+                fontSize={'16px'}
+              >
+                <Text mb='16px'>Ringkasan belanja</Text>
+                <Box display={'flex'} justifyContent={'space-between'}>
+                  <Text fontSize={'14px'} fontWeight={'light'}>
+                    Total Harga(
+                    {totalQuantityChecked} barang)
+                  </Text>
+                  <Text fontSize={'14px'} fontWeight={'light'}>
+                    Rp. {totalPrice.toLocaleString('id-ID')}
+                  </Text>
+                </Box>
+                <Divider m='16px 0' />
+                <Box
+                  display={'flex'}
+                  justifyContent={'space-between'}
+                  fontWeight={'bold'}
+                  fontSize={'16px'}
+                >
+                  <Text>Total Harga</Text>
+                  <Text>Rp. {totalPrice.toLocaleString('id-ID')}</Text>
+                </Box>
+                <Button
+                  w='100%'
+                  mt='20px'
+                  h='48px'
+                  color={'white'}
+                  bgColor={heroColor}
+                  _hover={false}
+                  onClick={() => navigate('/checkout')}
+                >
+                  Beli
+                </Button>
+              </Box>
+            </Box>
+          </>
+        )}
       </Box>
     </Box>
   );
