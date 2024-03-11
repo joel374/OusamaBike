@@ -196,7 +196,7 @@ const EditProduct = () => {
       formik.setFieldValue("is_active", product.is_active);
       formik.setFieldValue("stock", product.stock);
       formik.setFieldValue("SKU", product.SKU);
-      formik.setFieldValue("image_url2", product?.Image_Urls.shift().image_url);
+      formik.setFieldValue("image_url2", product?.Image_Urls?.shift().image_url);
 
       // console.log(product?.Image_Urls?.shift()?.image_url  );
     }
@@ -249,7 +249,7 @@ const EditProduct = () => {
                     desc={"Foto Utama"}
                     formik={formik}
                     setFieldImage={product?.Image_Urls}
-                    // images={images}
+                  // images={images}
                   />
                   {/* <ImageBox
                     name={"image_url2"}

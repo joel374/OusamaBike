@@ -2,7 +2,7 @@ import { Box, Image } from "@chakra-ui/react";
 import bmx from "../assets/BMX.jpeg";
 import { Link } from "react-router-dom";
 
-const CategoryChoiceList = ({ category_name, id }) => {
+const ChoiceList = ({ category_name, id }) => {
   return (
     <Link to={`/product?kategori=${id}`}>
       <Box p="0 8px">
@@ -23,4 +23,4 @@ const CategoryChoiceList = ({ category_name, id }) => {
   );
 };
 
-export default CategoryChoiceList;
+export default ChoiceList;

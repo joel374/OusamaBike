@@ -1,12 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../api";
-import { fetchCategory } from "./reuseable/fetch";
-import CategoryChoiceList from "./CategoryChoiceList";
+import ChoiceList from "./CategoryChoiceList";
 
 const ChoiceCategory = () => {
   const [category, setCategory] = useState([]);
-  console.log(category);
   const [loading, setLoading] = useState(false);
 
   const fetchCategory = async () => {
@@ -24,9 +22,7 @@ const ChoiceCategory = () => {
     return (
       loading &&
       Array.from(category)?.map((val) => {
-        return (
-          <CategoryChoiceList category_name={val.category_name} id={val.id} />
-        );
+        return <ChoiceList category_name={val.category_name} id={val.id} />;
       })
     );
   };
