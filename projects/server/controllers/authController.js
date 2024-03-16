@@ -10,6 +10,12 @@ const authController = {
     try {
       const { username, email, password } = req.body;
 
+      if (!req.body.username || !req.body.password || !req.body.email) {
+        return res.status(400).json({
+          message: "Invalid Data",
+        });
+      }
+
       const findEmail = await db.User.findOne({
         where: {
           email: email,

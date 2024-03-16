@@ -31,7 +31,7 @@ axiosInstance.interceptors.response.use(
     return resSuccess;
   },
   (resError) => {
-    if (resError.response.status === 401) {
+    if (resError.response?.status === 401) {
       console.log("LOGOUT USER");
       localStorage.removeItem("auth_token");
       store.dispatch(logout());
