@@ -49,7 +49,7 @@ const ChatAdmin = () => {
           <>
             <Box display={'flex'} justifyContent={'center'}>
               {new Date(val.createdAt).toLocaleDateString() !==
-              new Date(nextValue?.createdAt).toLocaleDateString() ? (
+                new Date(nextValue?.createdAt).toLocaleDateString() ? (
                 <Box
                   bgColor={heroColor}
                   p='2px 6px'
@@ -141,7 +141,7 @@ const ChatAdmin = () => {
         {/* Header */}
 
         {/* Content */}
-        <Box borderRadius={'8px'} bgColor='white' mt='65px'>
+        <Box borderRadius={'8px'} bgColor='white' mt='80px'>
           <Box minH={'584px'} display='flex'>
             <Box w='350px' borderRight={'1px solid var(--N75,#E5E7E9)'}>
               <Text

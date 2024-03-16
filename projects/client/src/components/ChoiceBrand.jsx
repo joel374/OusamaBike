@@ -32,7 +32,7 @@ const ChoiceBrand = () => {
   }, []);
   return (
     <Box
-      w='1208px'
+      w='100%'
       p='16px'
       m='auto'
       boxShadow={'rgb(0 0 0 / 12%) 0px 1px 6px 0px'}

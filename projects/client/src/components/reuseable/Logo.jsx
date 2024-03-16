@@ -7,10 +7,8 @@ const Logo = ({ color }) => {
       fontWeight="bold"
       color={color ? color : heroColor}
       display="inline"
-      fontFamily="serif"
-      fontStyle={"oblique"}
     >
-      OusamaBike
+      KING BIKE
     </Text>
   );
 };

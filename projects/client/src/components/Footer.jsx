@@ -59,10 +59,10 @@ export default function Footer() {
         >
           <Stack spacing={6}>
             <Box>
-              <Logo />
+              <Logo color='#222222' />
             </Box>
             <Text fontSize={"sm"}>
-              © 2022 Chakra Templates. All rights reserved
+              © 2024 KingBike. All rights reserved
             </Text>
             <Stack direction={"row"} spacing={6}>
               <SocialButton label={"Whatsapp"} href={"#"}>

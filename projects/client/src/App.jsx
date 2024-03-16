@@ -187,7 +187,7 @@ const App = () => {
         />
       </Routes>
 
-      {location.pathname === '/admin/chat' ||
+      {location.pathname === '/admin' ||
         location.pathname === '/login' ||
         location.pathname === '/login' ||
         location.pathname === '/register' ||

@@ -56,7 +56,7 @@ const Product = () => {
     );
   });
   return (
-    <Box p='19px 0 0 ' mx='auto' w='1188px' mt='65px'>
+    <Box p='19px 0 0 ' mx='auto' w='1188px' mt='80px'>
       <Box mb='19px'>
         <Text fontSize={'12px'} display='flex' color={heroColor}>
           <Link to='/'>Home </Link>
@@ -204,17 +204,17 @@ const Product = () => {
                     addToWishlistHandler(params.id).then((res) =>
                       res.error
                         ? toast({
-                            title: 'Produk gagal ditambahkan ke wishlist',
-                            description: res,
-                            status: 'error',
-                            variant: 'top-accent',
-                          })
+                          title: 'Produk gagal ditambahkan ke wishlist',
+                          description: res,
+                          status: 'error',
+                          variant: 'top-accent',
+                        })
                         : toast({
-                            title: 'Produk ditambahkan ke wishlist',
-                            description: res,
-                            status: 'success',
-                            variant: 'top-accent',
-                          })
+                          title: 'Produk ditambahkan ke wishlist',
+                          description: res,
+                          status: 'success',
+                          variant: 'top-accent',
+                        })
                     )
                   }
                   p='0 12px'

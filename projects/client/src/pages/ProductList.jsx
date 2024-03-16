@@ -46,7 +46,7 @@ const ProductList = () => {
     fetchBrandCategory().then((res) => setBrand(res));
   }, []);
   return (
-    <Box p='19px 0 0 ' mx='auto' w='1188px' mt='65px'>
+    <Box p='19px 0 0 ' mx='auto' w='1188px' mt='80px'>
       <Box
         mx='auto'
         w={{ lg: '1190px', md: 'auto', base: 'auto' }}

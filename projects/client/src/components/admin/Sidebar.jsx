@@ -20,7 +20,7 @@ const Sidebar = () => {
     <Box
       h='100vh'
       w='237px'
-      mt='65px'
+      mt='80px'
       position={'fixed'}
       bgColor='white'
       fontSize={'12px'}
