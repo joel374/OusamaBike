@@ -2,28 +2,22 @@ import {
   Box,
   Button,
   FormControl,
-  FormErrorMessage,
-  FormLabel,
   Input,
   InputGroup,
   InputRightElement,
-  Skeleton,
   Text,
   Image,
   Divider,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import { BiArrowBack } from "react-icons/bi";
 import { useFormik } from "formik";
 import { axiosInstance } from "../api";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/features/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import Logo, { heroColor } from "../components/reuseable/Logo";
-import ButtonMod from "../components/reuseable/ButtonMod";
+import ErrorNetworkToast from "../components/reuseable/ErrorNetworkToast";
 import Bar from "../components/Bar";
 import banner from '../assets/banner.png'
 import { RiEyeFill } from "react-icons/ri";
@@ -77,13 +71,15 @@ const Login = () => {
 
         navigate("/");
       } catch (error) {
-        console.log(error);
-        toast({
-          title: "Login Gagal",
-          status: "warning",
-          variant: "top-accent",
-          description: error.response.data.message,
-        });
+        const network = ErrorNetworkToast(error, toast);
+        if (!network) {
+          toast({
+            title: "Login Gagal",
+            status: "warning",
+            variant: "top-accent",
+            description: error.response.data.message,
+          });
+        }
 
         formik.setFieldValue("email", "");
         formik.setFieldValue("password", "");
@@ -106,170 +102,23 @@ const Login = () => {
   };
   return (
     <Box
-      // display={"flex"}
-      // alignItems={"center"}
-      // justifyContent={"center"}
-      position="relative"
+      bgColor={'#231f20'}
+      h={'100vh'}
+      alignItems={{ base: "center", lg: "none" }}
+      justifyContent={{ base: "center", lg: "none" }}
+      display={{ base: "flex", lg: "block" }}
     >
       <Bar />
-      {/* <Box
-        boxShadow={"rgba(0, 0, 0, 0.24) 0px 3px 8px"}
-        borderRadius={"8px"}
-        w={"500px"}
-        h="auto"
-        mx="auto"
-        mb="30px"
-      >
-        {isLoading === false ? (
-          <Box p="20px">
-            <Skeleton
-              height={"48px"}
-              startColor="#bab8b8"
-              endColor="#d4d2d2"
-              w="140px"
-              borderRadius="8px"
-            />
-            <Skeleton
-              m={"20px 0"}
-              height={"40px"}
-              startColor="#bab8b8"
-              endColor="#d4d2d2"
-              borderRadius="8px"
-            />
-            <Skeleton
-              m={"20px 0"}
-              height={"40px"}
-              startColor="#bab8b8"
-              endColor="#d4d2d2"
-              borderRadius="8px"
-            />
-            <Box display={"flex"} justifyContent="right">
-              <Skeleton
-                height={"18px"}
-                startColor="#bab8b8"
-                endColor="#d4d2d2"
-                borderRadius="8px"
-                w="160px"
-              />
-            </Box>
-            <Box mt="2" display={"flex"} justifyContent="center">
-              <Skeleton
-                height={"40px"}
-                startColor="#bab8b8"
-                endColor="#d4d2d2"
-                borderRadius="8px"
-                w="80px"
-              />
-            </Box>
-          </Box>
-        ) : (
-          <Box p={{ lg: "20px", md: "none", base: "none" }}>
-            <Box alignItems={"center"}>
-              <Box justifyContent={"center"} display={"flex"}>
-                <Logo />
-              </Box>
-              <Text fontSize={"x-large"} fontWeight="medium">
-                Masuk
-              </Text>
-            </Box>
-
-            <Box>
-              <form onSubmit={formik.handleSubmit}>
-                <FormControl m={"20px 0"} isInvalid={formik.errors.email}>
-                  <FormLabel
-                    fontSize={"14px"}
-                    color="var(--color-text-low,rgba(49,53,59,0.68))"
-                    m="0"
-                  >
-                    Email
-                  </FormLabel>
-                  <Input
-                    name="email"
-                    type={"email"}
-                    h={"40px"}
-                    p={"0 16px"}
-                    placeholder="Email"
-                    onChange={formChangeHandler}
-                    value={formik.values.email}
-                  />
-                  <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-                </FormControl>
-                <FormControl m="15px 0" isInvalid={formik.errors.password}>
-                  <FormLabel
-                    fontSize={"14px"}
-                    color="var(--color-text-low,rgba(49,53,59,0.68))"
-                    m="0"
-                  >
-                    Kata Sandi
-                  </FormLabel>
-                  <InputGroup>
-                    <Input
-                      h={"40px"}
-                      p={"0 16px"}
-                      name="password"
-                      placeholder="Kata sandi"
-                      onChange={formChangeHandler}
-                      type={showPassword ? "text" : "password"}
-                      value={formik.values.password}
-                    />
-                    <InputRightElement
-                      h={{ lg: "40px", md: "26px", base: "26px" }}
-                    >
-                      <Button
-                        bgColor={"transparent"}
-                        color={heroColor}
-                        _hover={false}
-                        _active={false}
-                        onClick={togglePassword}
-                        fontSize={{ lg: "20px", md: "16px", base: "16px" }}
-                      >
-                        <Box>
-                          {showPassword ? <VscEye /> : <VscEyeClosed />}
-                        </Box>
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                  <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
-                </FormControl>
-
-                <Box fontSize={"12px"} textAlign="right">
-                  Belum punya akun?{" "}
-                  <Link to="/register">
-                    <Text display={"inline"} color={heroColor}>
-                      Daftar
-                    </Text>
-                  </Link>
-                </Box>
-
-                <Box textAlign={"center"} mt="16px">
-                  <ButtonMod
-                    isDisabled={
-                      !formik.values.email.includes("@") ||
-                        !formik.values.email.includes(".co") ||
-                        formik.values.password.length < 8
-                        ? true
-                        : false
-                    }
-                    text={"Masuk"}
-                  />
-                </Box>
-              </form>
-            </Box>
-          </Box>
-        )}
-      </Box> */}
-
-      <Image src={banner} w='100%' mt='125px' />
+      <Image display={{ lg: 'block', base: 'none' }} src={banner} w='100%' mt='80px' />
       <Box
         position="absolute"
-        top="10%"
-        left="60%"
-        // transform="translate(-50%, -50%)"
+        top={{ lg: "10%", base: 'none' }}
+        left={{ lg: "60%", base: 'none' }}
         backgroundColor="white"
-        w='400px'
+        w={{ lg: '400px', base: "90%" }}
       >
-        <Text fontSize={'20px'} fontWeight={'600'} p='22px 30px'>
-          Log in
+        <Text fontSize={'20px'} fontWeight={'600'} p='22px 30px 0px'>
+          Masuk
         </Text>
         <Box p='0 30px 30px'>
           <form onSubmit={formik.handleSubmit}>
@@ -333,7 +182,7 @@ const Login = () => {
               type="submit"
               isLoading={isLoading ? false : true}
             >
-              LOG IN
+              MASUK
             </Button>
             <Text
               m='10px 0'
@@ -372,9 +221,11 @@ const Login = () => {
             </Button>
           </form>
         </Box>
-        <Text textAlign={'center'} color={'#F3C03D'} mb='40px'>Daftar</Text>
+        <Box textAlign={'center'} mb='40px'>
+          Belum punya akun? <Link to={'/register'}>Daftar</Link>
+        </Box>
       </Box>
-    </Box>
+    </Box >
   );
 };
 

@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom';
 const Bar = () => {
     const navigate = useNavigate();
     return (
-        <Grid templateColumns={"repeat(2,1fr)"} h='125px'
+        <Grid
+            display={{ lg: 'block', base: 'none' }}
+            templateColumns={"repeat(2,1fr)"}
+            h='80px'
             bgColor={'#222222'}
             fontWeight={'400'}
             w='100%'
@@ -15,7 +18,7 @@ const Bar = () => {
             zIndex={'99999'}
         >
             <GridItem display={'flex'} alignItems={'center'}>
-                <Image src={logo} h='120px' onClick={() => navigate('/')} ml='80px' />
+                <Image src={logo} h='80px' onClick={() => navigate('/')} ml='80px' />
             </GridItem>
             <GridItem display={'flex'} alignItems={'center'}>
                 <Box w='100%' textAlign={'right'}>
