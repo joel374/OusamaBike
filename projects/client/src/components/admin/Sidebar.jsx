@@ -1,11 +1,12 @@
-import { Box } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Box, Image } from '@chakra-ui/react';
+import { Link, useNavigate } from 'react-router-dom';
 import { CgBox } from 'react-icons/cg';
 import { GrFormDown, GrFormUp } from 'react-icons/gr';
 import { useState } from 'react';
 import { BiCategory } from 'react-icons/bi';
 import { AiOutlineHome } from 'react-icons/ai';
 import { BsChatLeftDots } from 'react-icons/bs';
+import logo from '../../assets/logo.png';
 
 const Sidebar = () => {
   const [openSelect, setOpenSelect] = useState(false);
@@ -16,16 +17,19 @@ const Sidebar = () => {
   const selectBtnHandlerCat = () => {
     openSelectCat === true ? setOpenSelectCat(false) : setOpenSelectCat(true);
   };
+  const navigate = useNavigate();
   return (
     <Box
       h='100vh'
       w='237px'
-      mt='80px'
       position={'fixed'}
       bgColor='white'
       fontSize={'12px'}
       fontWeight='bold'
     >
+      <Box bgColor={'#222222'} onClick={() => navigate('/')} cursor={'pointer'}>
+        <Image src={logo} h='80px' />
+      </Box>
       <Box _hover={{ backgroundColor: 'var(--N50,#F3F4F5)' }}>
         <Link to='/admin'>
           <Box my='auto' h='36px' pl='3px' pr='12px'>
@@ -38,7 +42,7 @@ const Sidebar = () => {
           </Box>
         </Link>
       </Box>
-      <Box _hover={{ backgroundColor: 'var(--N50,#F3F4F5)' }}>
+      <Box _hover={{ backgroundColor: 'var(--N50,#F3F4F5)' }} display={'none'}>
         <Link to='/admin/chat'>
           <Box my='auto' h='36px' pl='3px' pr='12px'>
             <Box p='8px 10px' display={'flex'} alignItems='center'>

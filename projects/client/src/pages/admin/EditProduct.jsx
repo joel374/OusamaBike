@@ -196,15 +196,15 @@ const EditProduct = () => {
       formik.setFieldValue("is_active", product.is_active);
       formik.setFieldValue("stock", product.stock);
       formik.setFieldValue("SKU", product.SKU);
-      formik.setFieldValue("image_url2", product?.Image_Urls?.shift().image_url);
+      formik.setFieldValue("image_url1", product?.Image_Urls?.[0].image_url);
 
-      // console.log(product?.Image_Urls?.shift()?.image_url  );
+      console.log('imagenyaaa', formik.values.image_url1, product?.Image_Urls?.[0].image_url);
     }
   }, [product]);
   return (
-    <Box m="85px auto" w="1200px">
+    <Box m="40px auto 85px" w="1200px">
       <Box m="16px" fontWeight={"bold"} fontSize="20px">
-        <Text m="20px 0">Tambah Produk</Text>
+        <Text m="20px 0">Edit Produk</Text>
       </Box>
       <Box mb="14px"></Box>
       <form onSubmit={formik.handleSubmit}>
@@ -215,7 +215,6 @@ const EditProduct = () => {
           boxShadow={"0 1px 6px 0 var(--color-shadow,rgba(49,53,59,0.12))"}
           borderRadius="8px"
         >
-          New
           <Box display={"flex"}>
             <Box w="272px">
               <Box display={"flex"}>
@@ -247,8 +246,8 @@ const EditProduct = () => {
                   <ImageBox
                     name={"image_url1"}
                     desc={"Foto Utama"}
-                    formik={formik}
-                    setFieldImage={product?.Image_Urls}
+                    formik={formik.values.image_url1}
+                    setFieldImage={product?.Image_Urls?.[0].image_url}
                   // images={images}
                   />
                   {/* <ImageBox

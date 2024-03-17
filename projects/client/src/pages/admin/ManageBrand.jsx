@@ -221,7 +221,7 @@ const ManageBrand = () => {
         isOpen={editForm}
         onClose={() => setEditForm(null)}
         fieldValue={editForm}
-        render={fetchBrandCategory()}
+        render={() => fetchBrandCategory()}
       />
 
       <Pagination

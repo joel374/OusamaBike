@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   FormControl,
-  HStack,
   Image,
   Input,
   InputGroup,
@@ -17,18 +16,15 @@ import {
   GridItem
 } from '@chakra-ui/react';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
-import { TbSearch } from 'react-icons/tb';
 import { BiHeart, BiLogOutCircle } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
-import Logo, { heroColor } from './reuseable/Logo';
+import { heroColor } from './reuseable/Logo';
 import { logout } from '../redux/features/authSlice';
 import { RiAdminLine } from 'react-icons/ri';
 import { useEffect, useState } from 'react';
-import { BsCart3 } from 'react-icons/bs';
 import { setTotalCart } from '../redux/features/cartSlice';
 import { axiosInstance } from '../api';
 import logo from '../assets/logo.png';
-import { PiUserCircle } from "react-icons/pi";
 
 
 const Navbar = () => {
@@ -555,119 +551,79 @@ const Navbar = () => {
             <Popover trigger={'hover'}>
               <PopoverTrigger>
                 <Avatar name={authSelector.username} w='45px' h='45px' cursor='pointer' />
-                {/* <Box
-                display={'flex'}
-                my='auto'
-                color={'white'}
-                minW={'113px'}
-                maxW='200px'
-                paddingLeft='5px'
-                paddingRight={'5px'}
-                _hover={{
-                  bgColor: 'var(--N50,#F3F4F5)',
-                  color: heroColor,
-                  borderRadius: '3px',
-                }}
-              >
-                <Avatar
-                  size='sm'
-                  name={authSelector.username}
-                  mr={2}
-                  ml={2}
-                  width={'25px'}
-                  height='25px'
-                  my='auto'
-                />
-                <Text my='auto' padding={'8px'}>
-                  {authSelector.username.split(' ')[0]}
-                </Text> */}
-                {/* </Box> */}
               </PopoverTrigger>
-              <PopoverContent w={'300px'} mr='4' bgColor={'white'}>
+              <PopoverContent mr='4' mt='4' bgColor={'#222'}>
                 <PopoverBody>
-                  <Box p='2 4' bgColor={'white'}>
-                    <Box
-                      boxShadow={'rgba(0, 0, 0, 0.24) 0px 3px 8px'}
-                      display={'flex'}
-                      my='auto'
-                      padding='6px 12px'
-                      borderRadius={'5px'}
-                      bgColor={'white'}
-                      cursor={'pointer'}
-                    >
-                      <Avatar
-                        name={authSelector.username}
-                        mr={2}
-                        width={'50px'}
-                        height='50px'
-                        my='auto'
-                      />
+                  <Grid
+                    boxShadow={'rgba(0, 0, 0, 0.24) 0px 3px 8px'}
+                    my='auto'
+                    borderRadius={'5px'}
+                    bgColor={'white'}
+                    cursor={'pointer'}
+                    templateColumns={"repeat(2,1fr)"}
+                  >
+                    <GridItem my='auto'>
                       <Text
-                        my='auto'
                         padding={'8px'}
                         fontSize='16px'
                         fontWeight={'bold'}
                         textOverflow='ellipsis'
+                        textAlign={'center'}
                       >
                         {authSelector.username}
                       </Text>
-                    </Box>
+                    </GridItem>
+                    <GridItem fontSize={'14px'} >
+                      <Grid templateRows={"repeat(2,1fr)"} h='100%'>
+                        <GridItem display={
+                          authSelector.is_admin === true ? 'block' : 'none'
+                        }>
+                          <Link to={'/admin'}>
+                            <Box
 
-                    <Box fontSize={'14px'} p='10px 0'>
-                      <Link to={'/admin'}>
-                        <Box
-                          display={
-                            authSelector.is_admin === true ? 'flex' : 'none'
-                          }
-                          _hover={{
-                            bgColor: 'var(--N50,#F3F4F5)',
-                            borderRadius: '7px',
-                            color: heroColor,
-                          }}
-                          p={'5px 4px'}
-                          b='0'
-                        >
-                          <Text>Admin</Text>
-                          <Box my='auto' ml='1'>
-                            <RiAdminLine />
+                              _hover={{
+                                bgColor: 'var(--N50,#F3F4F5)',
+                                color: heroColor,
+                                borderTopEndRadius: '5px'
+                              }}
+                              p='6px 10px'
+                              b='0'
+                            >
+                              <Box display={'flex'}
+                                justifyContent="center"
+                                alignItems="center" >
+                                <Text>Admin</Text>
+                                <Box my='auto' ml='1'>
+                                  <RiAdminLine />
+                                </Box>
+                              </Box>
+                            </Box>
+                          </Link>
+                        </GridItem>
+                        <GridItem>
+                          <Box
+                            _hover={{
+                              bgColor: 'var(--N50,#F3F4F5)',
+                              color: heroColor,
+                              borderBottomEndRadius: '5px'
+                            }}
+                            b='0'
+                            onClick={logoutBtnHandler}
+                            p='6px 10px'
+                          >
+                            <Box display={'flex'}
+                              justifyContent="center"
+                              alignItems="center" >
+                              <Text>Logout</Text>
+                              <Box my='auto' ml='1'>
+                                <BiLogOutCircle />
+                              </Box>
+                            </Box>
                           </Box>
-                        </Box>
-                      </Link>
-                      <Link to={'/wishlist'}>
-                        <Box
-                          display={'flex'}
-                          _hover={{
-                            bgColor: 'var(--N50,#F3F4F5)',
-                            borderRadius: '7px',
-                            color: heroColor,
-                          }}
-                          p={'5px 4px'}
-                          b='0'
-                        >
-                          <Text>Wishlist</Text>
-                          <Box my='auto' ml='1'>
-                            <BiHeart />
-                          </Box>
-                        </Box>
-                      </Link>
-                      <Box
-                        display={'flex'}
-                        _hover={{
-                          bgColor: 'var(--N50,#F3F4F5)',
-                          borderRadius: '7px',
-                          color: heroColor,
-                        }}
-                        p={'5px 4px'}
-                        b='0'
-                        onClick={logoutBtnHandler}
-                      >
-                        <Text>Logout</Text>
-                        <Box my='auto' ml='1'>
-                          <BiLogOutCircle />
-                        </Box>
-                      </Box>
-                    </Box>
-                  </Box>
+                        </GridItem>
+                      </Grid>
+                    </GridItem>
+                  </Grid>
                 </PopoverBody>
               </PopoverContent>
             </Popover>
@@ -683,7 +639,7 @@ const Navbar = () => {
             MASUK
           </Button>
         }
-      </GridItem>
+      </GridItem >
     </Grid >
 
   );

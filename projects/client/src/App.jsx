@@ -101,17 +101,16 @@ const App = () => {
   }
   return (
     <>
-      {location.pathname === '/login' ||
+      {location.pathname.startsWith('/admin') ||
+        location.pathname === '/login' ||
         location.pathname === '/register' ||
         location.pathname === '/verification' ? null : (
         <Navbar />
       )}
       {/* <BottomBar /> */}
-      {location.pathname === '/admin' ||
-        location.pathname === '/admin/manage-product' ||
-        location.pathname === '/admin/manage-brand' ||
-        location.pathname === '/admin/chat' ||
-        location.pathname === '/admin/manage-category' ? (
+      {location.pathname.startsWith('/admin') &&
+        location.pathname !== '/admin/add-product' &&
+        !location.pathname.startsWith('/admin/edit-product') ? (
         <Sidebar />
       ) : null}
 
@@ -187,7 +186,7 @@ const App = () => {
         />
       </Routes>
 
-      {location.pathname === '/admin' ||
+      {location.pathname.startsWith('/admin') ||
         location.pathname === '/login' ||
         location.pathname === '/login' ||
         location.pathname === '/register' ||

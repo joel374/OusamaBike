@@ -4,8 +4,7 @@ import { RiImageAddLine } from "react-icons/ri";
 import { IoMdTrash } from "react-icons/io";
 
 const ImageBox = ({ desc, formik, name, setFieldImage }) => {
-  const [selectedImage, setSelectedImage] = useState(formik.values.image_url);
-  console.log(selectedImage);
+  const [selectedImage, setSelectedImage] = useState(null);
   const inputFileRef = useRef();
 
   const cancel = () => {
@@ -51,7 +50,6 @@ const ImageBox = ({ desc, formik, name, setFieldImage }) => {
                     onChange={(e) => {
                       formik.setFieldValue(`${name}`, e.target.files[0]);
                       setSelectedImage(URL.createObjectURL(e.target.files[0]));
-                      // setSelectedImagess(e.target.files[0]);
                     }}
                     accept="image/*"
                     name={name}
@@ -66,9 +64,7 @@ const ImageBox = ({ desc, formik, name, setFieldImage }) => {
                     w="140px"
                     h="99.9%"
                     src={
-                      selectedImage
-                        ? `${process.env.REACT_APP_API_IMAGE_URL}${selectedImage}`
-                        : null
+                      selectedImage ? selectedImage : `${process.env.REACT_APP_API_IMAGE_URL}${setFieldImage}`
                     }
                     objectFit={"contain"}
                   />

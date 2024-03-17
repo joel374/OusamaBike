@@ -76,7 +76,7 @@ const NewProduct = () => {
         productData.append("is_active", active);
         productData.append("image_url1", image_url1);
         productData.append("image_url2", image_url2);
-        console.log(image_url1);
+        console.log('urlnya', image_url1);
         const response = await axiosInstance.post("/product/add", productData);
 
         formik.setFieldValue("product_name", "");
@@ -138,7 +138,7 @@ const NewProduct = () => {
     fetchBrandCategory().then((res) => setBrand(res));
   }, []);
   return (
-    <Box m="85px auto" w="1200px">
+    <Box m="40px auto 85px" w="1200px">
       <Box m="16px" fontWeight={"bold"} fontSize="20px">
         <Text m="20px 0">Tambah Produk</Text>
       </Box>

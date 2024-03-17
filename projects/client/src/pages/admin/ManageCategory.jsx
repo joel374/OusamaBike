@@ -223,7 +223,7 @@ const ManageCategory = () => {
         isOpen={editForm}
         onClose={() => setEditForm(null)}
         fieldValue={editForm}
-        render={fetchCategory()}
+        render={() => fetchCategory()}
       />
 
       <Pagination

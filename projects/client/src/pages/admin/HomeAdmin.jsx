@@ -29,7 +29,7 @@ const HomeAdmin = () => {
   return (
     <>
       <Box bgColor={'var(--N50,#F3F4F5)'} h='100%' pl='237px'>
-        <Box gap='16px'>
+        <Box gap='16px' ml={'20px'} display={'flex'}>
           <BoxHomeAdmin data={product} message={'Jumlah Produk Aktif'} />
           <BoxHomeAdmin data={category} message={'Jumlah Produk Aktif'} />
           <BoxHomeAdmin data={brand} message={'Jumlah Produk Aktif'} />

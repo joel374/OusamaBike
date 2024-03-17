@@ -94,7 +94,6 @@ const Cart = () => {
     <Box
       p='19px 0 0 '
       mx='auto'
-      w='1188px'
       mt='80px'
       h={cart.length === 0 ? '' : '100vh'}
     >
